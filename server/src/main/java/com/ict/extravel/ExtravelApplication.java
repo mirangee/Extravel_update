@@ -1,5 +1,6 @@
 package com.ict.extravel;
 
+import com.ict.extravel.global.scheduler.exchage.ExchageCrolling;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,8 @@ public class ExtravelApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ExtravelApplication.class, args);
+        ExchageCrolling crolling = new ExchageCrolling();
+        crolling.getExchageData();
     }
 
 }
