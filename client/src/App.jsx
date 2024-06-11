@@ -1,5 +1,7 @@
+import Section3 from './components/Section3';
+
 const App = () => {
-  return <div> First</div>;
+  return <Section3 />;
 };
 
 export default App;
