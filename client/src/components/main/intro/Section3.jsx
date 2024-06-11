@@ -1,5 +1,5 @@
 import React from 'react';
-import '../intro/Section3.css';
+import '../../../scss/Section3.scss';
 
 const Section3 = () => {
   return (
@@ -11,7 +11,7 @@ const Section3 = () => {
             width='560'
             height='315'
             src='https://www.youtube.com/embed/LkAREImGcBs'
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </div>
         <div className='minibox1Text'>
