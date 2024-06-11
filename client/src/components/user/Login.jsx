@@ -205,7 +205,7 @@ const Login = () => {
                       )}
                     />
                   </Grid>
-                  Grid item style={{ width: '100%' }}>
+                  <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='passwordConfirm'
                       defaultValue={''}
