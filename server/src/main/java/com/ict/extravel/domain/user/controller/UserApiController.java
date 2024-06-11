@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserApiController {
-    @GetMapping("/hello")
-    public String hello() {
+     @GetMapping("/hello")
+     public String hello() {
         return "hello";
     }
 }
