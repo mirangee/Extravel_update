@@ -3,10 +3,13 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/Header';
 import Section3 from './components/main/intro/Section3';
+import Login from './components/user/Login';
 
 const App = () => {
   return (
     <>
+          <Login />
+      <Section1 />
       <Router>
         <Header />
       </Router>
