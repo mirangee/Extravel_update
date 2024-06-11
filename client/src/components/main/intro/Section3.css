@@ -24,7 +24,7 @@ body, html {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('../assets/img/123.jpg'); 
+    background-image: url('../../../assets/img/123.jpg'); 
     background-size: cover;
     background-position: center;
   }
@@ -42,7 +42,7 @@ body, html {
     width: calc(80% / 3); 
     margin: 0 0.3%; 
     background-color: rgba(255, 255, 255);
-    background-image: url('../assets/img/a5.jpg');
+    background-image: url('../../../assets/img/a5.jpg');
     background-size: cover;
   background-position: center;
   align-items: center;
@@ -129,7 +129,7 @@ body, html {
     
   }
   .minibox3Picture {
-    background-image: url(../assets/img/a6.jpg);
+    background-image: url(../../../assets/img/a6.jpg);
   border-radius: 50%;
   margin-left: 15px;
     margin-right: 15px;
