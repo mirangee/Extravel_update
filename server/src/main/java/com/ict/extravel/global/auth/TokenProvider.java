@@ -1,6 +1,6 @@
 package com.ict.extravel.global.auth;
 
-import com.ict.extravel.domain.user.entity.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,7 +17,7 @@ public class TokenProvider {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    private String createToken(User user, String secretKey, long duration, ChronoUnit unit){
+    /*private String createToken(User user, String secretKey, long duration, ChronoUnit unit){
         Date expireDate = Date.from(Instant.now().plus(duration, unit));
         Claims claims = Jwts.claims();
         // 클레임 정의하기
@@ -40,4 +40,6 @@ public class TokenProvider {
     public String createAccessKey(User user){
         return createToken(user, SECRET_KEY, 2, ChronoUnit.HOURS);
     }
+
+     */
 }
