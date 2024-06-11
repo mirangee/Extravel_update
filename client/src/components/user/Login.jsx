@@ -206,38 +206,37 @@ const Login = () => {
                     />
                   </Grid>
                   Grid item style={{ width: '100%' }}>
-                    <Controller
-                      name='passwordConfirm'
-                      defaultValue={''}
-                      control={control}
-                      rules={{
-                        required: 'Password is required',
-                      }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label='Password'
-                          type='password'
-                          value={field.value}
-                          onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
-                          helperText={
-                            fieldState.error &&
-                            fieldState.error.message
-                          }
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item style={{ width: '100%' }}>
-                    <Button
-                      type='submit'
-                      variant='contained'
-                    >
-                      Submit
-                    </Button>
-                  </Grid>
+                  <Controller
+                    name='passwordConfirm'
+                    defaultValue={''}
+                    control={control}
+                    rules={{
+                      required: 'Password is required',
+                    }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label='Password'
+                        type='password'
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={
+                          fieldState.error !== undefined
+                        }
+                        helperText={
+                          fieldState.error &&
+                          fieldState.error.message
+                        }
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item style={{ width: '100%' }}>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                  >
+                    Submit
+                  </Button>
                 </Grid>
               </Grid>
             </form>
@@ -315,7 +314,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };
