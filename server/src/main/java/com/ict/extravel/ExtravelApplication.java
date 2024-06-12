@@ -11,8 +11,7 @@ public class ExtravelApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ExtravelApplication.class, args);
-        ExchageCrolling crolling = new ExchageCrolling();
-        crolling.calculateExchageData();
+
     }
 
 }
