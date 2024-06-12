@@ -1,18 +1,18 @@
 import React from 'react';
-import '../../../scss/Section3.scss';
+import styles from '../../../scss/Section3.module.scss';
 const Section3 = () => {
   return (
-    <div className='section3-container'>
-      <div className='spacer'></div>
-      <div className='box1'>
-        <div className='minibox1Youtube'>
+    <div className={styles.section3container}>
+      <div className={styles.spacer}></div>
+      <div className={styles.box1}>
+        <div className={styles.minibox1Youtube}>
           <iframe
             width='560'
             height='315'
             src='https://www.youtube.com/embed/LkAREImGcBs'
           ></iframe>
         </div>
-        <div className='minibox1Text'>
+        <div className={styles.minibox1Text}>
           <h1>삿포로 거기가 어딘데?</h1>
           일본여행고수가 소개해주는 랜선투어
           <br /> 도쿄에서부터 일본전지역
@@ -22,8 +22,8 @@ const Section3 = () => {
           초밥! 돈카츠도 놓치지마세요!!
         </div>
       </div>
-      <div className='box2'>
-        <div className='minibox2Text'>
+      <div className={styles.box2}>
+        <div className={styles.minibox2Text}>
           <h1>삿포로는 언제부터 아름다웠을까</h1>
           여행하기좋은따뜻한날씨
           <br />
@@ -37,9 +37,9 @@ const Section3 = () => {
           우리는 지금바로 여기 삿포로!
         </div>
       </div>
-      <div className='box3'>
-        <div className='minibox3Picture'></div>
-        <div className='minibox3Text'>
+      <div className={styles.box3}>
+        <div className={styles.minibox3Picture}></div>
+        <div className={styles.minibox3Text}>
           <h1>지금 예약하면 정말좋은!</h1>
           기대이상의 감동!
           <br />
@@ -51,7 +51,7 @@ const Section3 = () => {
           <br />
         </div>
       </div>
-      <div className='spacer'></div>
+      <div className={styles.spacer}></div>
     </div>
   );
 };
