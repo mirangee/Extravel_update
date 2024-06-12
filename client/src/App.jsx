@@ -4,18 +4,20 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Section3 from './components/main/intro/Section3';
-import Login from './components/user/Login';
+import Section2 from './components/main/intro/Section2';
+import ScrollToTopButton from './components/main/ScrollToTopButton';
 
 const App = () => {
   return (
     <>
-      <Section1 />
       <Router>
         <Header />
       </Router>
+      <Section1 />
+      <Section2 />
       <Section3 />
-      <Login />
-      {/* <Footer /> */}
+      <Footer />
+      <ScrollToTopButton />
     </>
   );
 };

@@ -1,4 +1,4 @@
-.body {
+.section1Body {
   background-image: url(../assets/img/home1.jpg);
   background-repeat: no-repeat;
   background-position: center;
@@ -9,7 +9,7 @@
   justify-content: space-between;
   flex-direction: column;
 
-  .title {
+  .section1Title {
     color: #fff;
     font-size: 100px;
     margin-bottom: 5px;
@@ -27,12 +27,12 @@
     }
   }
 
-  h5 {
+  .section1Small {
     color: #fff;
     font-size: 20px;
   }
 
-  button.explore {
+  .section1Explore {
     width: 160px;
     height: 70px;
     background-color: #14505c;
@@ -47,7 +47,7 @@
     }
   }
 
-  .side-rectangle {
+  .section1SideRectangle {
     width: 400px;
     background: #14505c;
     color: #fff;
@@ -58,7 +58,7 @@
     font-size: 20px;
     align-self: flex-end;
 
-    button.more {
+    .section1More {
       background: none;
       text-align: left;
       color: white;
