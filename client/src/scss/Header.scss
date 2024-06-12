@@ -9,9 +9,9 @@
   left: 0;
   right: 0;
   background-color: #14505c;
-  // background-color: transparent;
-  // transition: background-color 0.3s ease;
-  // z-index: 1000;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
 
   &.scrolled {
     background-color: #14505c; /* 스크롤 시 배경 색상 변경 */
