@@ -88,31 +88,33 @@ const countries = [
 const Section2 = () => {
   return (
     <>
-      <h3 className='title'>각 나라의 환율 정보</h3>
-      <div className='section2-container'>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={50}
-          slidesPerView={5}
-          navigation
-          pagination={{ clickable: true }}
-          freeMode={true}
-          style={{ width: '1800px', height: '500px' }} // Swiper 컨테이너 크기 설정
-        >
-          {countries.map((country, index) => (
-            <SwiperSlide key={index}>
-              <div className='country-card'>
-                <img
-                  src={country.flag}
-                  alt={`${country.name} flag`}
-                  className='flag'
-                />
-                <h3>{country.name}</h3>
-                <p>{country.description}</p>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <div className='section2'>
+        {/* <h3 className='title'>각 나라의 환율 정보</h3> */}
+        <div className='section2-container'>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={50}
+            slidesPerView={5}
+            navigation
+            pagination={{ clickable: true }}
+            freeMode={true}
+            style={{ width: '1800px', height: '500px' }} // Swiper 컨테이너 크기 설정
+          >
+            {countries.map((country, index) => (
+              <SwiperSlide key={index}>
+                <div className='country-card'>
+                  <img
+                    src={country.flag}
+                    alt={`${country.name} flag`}
+                    className='flag'
+                  />
+                  <h3>{country.name}</h3>
+                  <p>{country.description}</p>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </>
   );
