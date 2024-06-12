@@ -37,4 +37,5 @@
         "no-useless-escape": "off",
         "space-before-function-paren": "off"
     }
+
 }
