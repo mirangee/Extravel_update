@@ -1,11 +1,11 @@
-.scroll-to-top {
+.scrollToTop {
   position: fixed;
   bottom: 40px;
   right: 40px;
   z-index: 1000;
 }
 
-.top-button {
+.topButton {
   width: 60px;
   height: 60px;
   background-color: #ffffff; /* 갈색 배경색 */
@@ -18,6 +18,6 @@
   transition: opacity 0.3s ease;
 }
 
-.top-button:hover {
+.topButton:hover {
   opacity: 0.8;
 }

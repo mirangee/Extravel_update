@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../scss/ScrollToTopButton.scss';
+import styles from '../../scss/ScrollToTopButton.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,9 +35,12 @@ const ScrollToTopButton = () => {
   };
 
   return (
-    <div className='scroll-to-top'>
+    <div className={styles.scrollToTop}>
       {isVisible && (
-        <div className='top-button' onClick={scrollToTop}>
+        <div
+          className={styles.topButton}
+          onClick={scrollToTop}
+        >
           <FontAwesomeIcon
             icon={faArrowUp}
             size='lg'

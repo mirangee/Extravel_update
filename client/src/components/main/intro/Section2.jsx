@@ -4,7 +4,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import '../../../scss/Section2.scss'; // 스타일을 위한 SCSS 파일 import
+import styles from '../../../scss/Section2.module.scss'; // 스타일을 위한 SCSS 파일 import
 
 const countries = [
   {
@@ -88,9 +88,9 @@ const countries = [
 const Section2 = () => {
   return (
     <>
-      <div className='section2'>
+      <div className={styles.section2}>
         {/* <h3 className='title'>각 나라의 환율 정보</h3> */}
-        <div className='section2-container'>
+        <div className={styles.section2Container}>
           <Swiper
             modules={[Navigation, Pagination]}
             spaceBetween={50}
@@ -101,12 +101,22 @@ const Section2 = () => {
             style={{ width: '1800px', height: '500px' }} // Swiper 컨테이너 크기 설정
           >
             {countries.map((country, index) => (
-              <SwiperSlide key={index}>
-                <div className='country-card'>
+              <SwiperSlide
+                key={index}
+                style={{
+                  textAlign: 'center',
+                  fontSize: '18px',
+                  background: '#fff',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <div className={styles.countryCard}>
                   <img
                     src={country.flag}
                     alt={`${country.name} flag`}
-                    className='flag'
+                    className={styles.flag}
                   />
                   <h3>{country.name}</h3>
                   <p>{country.description}</p>
