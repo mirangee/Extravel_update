@@ -1,4 +1,4 @@
-.body {
+.section1-body {
   background-image: url(../assets/img/home1.jpg);
   background-repeat: no-repeat;
   background-position: center;
@@ -9,7 +9,7 @@
   justify-content: space-between;
   flex-direction: column;
 
-  .title {
+  .section1-title {
     color: #fff;
     font-size: 100px;
     margin-bottom: 5px;
@@ -32,7 +32,7 @@
     font-size: 20px;
   }
 
-  button.explore {
+  button.section1-explore {
     width: 160px;
     height: 70px;
     background-color: #14505c;
