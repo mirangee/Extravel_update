@@ -1,0 +1,153 @@
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ownglyph_jooreeletter-Rg';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/Ownglyph_jooreeletter-Rg.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    
+  }
+  
+  .section3container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../assets/img/123.jpg'); 
+    background-size: cover;
+    background-position: center;
+  
+  
+  .box1 {
+    height: 70%;
+    width: calc(80% / 3); 
+    margin: 0 0.3%; 
+    background-color: rgba(255, 255, 255); 
+    overflow: hidden;
+    
+    .minibox1Youtube, .minibox1Text {
+      height: 50%;
+      display: flex;
+      justify-content: center;
+      
+    
+    }
+    
+    .minibox1Youtube {
+       margin: 30px;
+      
+    }
+    
+    .minibox1Text {
+      background-color: white; 
+      text-align: left; 
+      flex-direction: column; 
+      justify-content: flex-start; 
+      color: black;
+      font-family: 'Ownglyph_jooreeletter-Rg';
+      font-size: 25px;
+      padding-left: 10px; 
+      text-align: left;
+  
+  }
+  
+  .minibox1Text h1 {
+      margin: 0; 
+      padding-bottom: 10px; 
+      font-family: 'TTLaundryGothicB'; 
+      color: black;   
+  }
+  }
+  .box2{
+    height: 70%;
+    width: calc(80% / 3); 
+    margin: 0 0.3%; 
+    background-color: rgba(255, 255, 255);
+    background-image: url('../assets/img/a5.jpg');
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+
+    .minibox2Text {
+      text-align: left; 
+      flex-direction: column; 
+      justify-content: flex-start; 
+      color: black;
+      font-family: 'Ownglyph_jooreeletter-Rg';
+      font-size: 25px;
+      padding-left: 10px; 
+      padding-top: 76%;
+      color: white;
+    }
+    .minibox2Text h1 {
+      color: white;
+      font-size: 30px;
+    }
+  }
+  .box3 {
+    height: 70%;
+    width: calc(50% / 3); 
+    margin: 0 0.3%; 
+    background-color: rgba(255, 255, 255);
+    overflow: hidden;
+
+    .minibox3Text {
+      background-color: white; 
+      text-align: left; 
+      flex-direction: column; 
+      justify-content: flex-start; 
+      color: black;
+      font-family: 'Ownglyph_jooreeletter-Rg';
+      font-size: 25px;
+      padding-left: 10px;
+      text-align: left;
+    }
+    .minibox3Text h1 {
+      color: black;
+      font-size: 25px;
+      
+    }
+    .minibox3Picture {
+      background-image: url('../assets/img/a6.jpg');
+    border-radius: 50%;
+    margin-left: 15px;
+      margin-right: 15px;
+    margin-top: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    align-items: center;
+    }
+    .minibox3Picture, .minibox3Text {
+      height: 50%;
+      display: flex;
+      justify-content: center;
+      
+      
+     
+    }
+  }
+  
+  .spacer {
+    flex-grow: 1;
+  }
+
+  
+  h1 {
+    font-family: 'TTLaundryGothicB';
+    font-size: 30px;
+  }
+
+  
+ 
+}
