@@ -8,13 +8,13 @@ import Login from './components/user/Login';
 const App = () => {
   return (
     <>
-      <Login />
-      {/* <Section1 />
+          <Login />
+      <Section1 />
       <Router>
         <Header />
       </Router>
       <Section1 />
-      <Section3 /> */}
+      <Section3 />
     </>
   );
 };
