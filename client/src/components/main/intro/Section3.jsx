@@ -1,9 +1,8 @@
 import React from 'react';
-import '../intro/Section3.css';
-
+import '../../../scss/Section3.scss';
 const Section3 = () => {
   return (
-    <div className='container'>
+    <div className='section3-container'>
       <div className='spacer'></div>
       <div className='box1'>
         <div className='minibox1Youtube'>
@@ -11,7 +10,6 @@ const Section3 = () => {
             width='560'
             height='315'
             src='https://www.youtube.com/embed/LkAREImGcBs'
-            allowfullscreen
           ></iframe>
         </div>
         <div className='minibox1Text'>
