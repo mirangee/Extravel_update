@@ -5,9 +5,9 @@ import rectangle from '../../../assets/img/home2.jpg';
 const Section1 = () => {
   return (
     <>
-      <div className='body'>
+      <div className='section1-body'>
         <div className='left'>
-          <h1 className='title'>
+          <h1 className='section1-title'>
             Exchange
             <br />
             Travel
@@ -16,7 +16,9 @@ const Section1 = () => {
             환전하면 적립되는 포인트로 투어 패키지를 구매해
             더욱 큰 혜택을 누리세요.
           </h5>
-          <button className='explore'>Explore</button>
+          <button className='section1-explore'>
+            Explore
+          </button>
         </div>
         <div className='side-rectangle'>
           <div>
