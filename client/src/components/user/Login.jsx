@@ -30,7 +30,6 @@ const Login = () => {
   const handleSignUpClick = () => {
     setIsRightPanelActive(true);
   };
-
   // 'Sign In' 버튼 클릭 시 호출되는 함수
   const handleSignInClick = () => {
     setIsRightPanelActive(false);
@@ -39,41 +38,41 @@ const Login = () => {
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
   return (
-    <div className={styles.body2}>
-      <h2 className={styles.h2}>EXTRAVEL LOGIN</h2>
+    <div className={styles.login}>
+      <h2>EXTRAVEL LOGIN</h2>
 
       <div
-        className={`${styles.container} ${isRightPanelActive ? styles.rightpanelactive : ''}`}
+        className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
       >
         <div className={styles.container}>
           <div
-            className={`${styles.formcontainer} ${styles.signincontainer}`}
+            className={`${styles['form-container']} ${styles['sign-up-container']}`}
           >
             <form
               className={styles.form}
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
-              <h1 className={styles.h1}>Create Account</h1>
-              <div className={styles.socialcontainer}>
+              <h1>Create Account</h1>
+              <div className={styles['social-container']}>
                 {/* 소셜 아이콘 (Facebook, Google, LinkedIn) */}
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
@@ -296,32 +295,32 @@ const Login = () => {
             </form>
           </div>
           <div
-            className={`${styles.formcontainer} signincontainer`}
+            className={`${styles['form-container']} ${styles['sign-in-container']}`}
           >
             <form
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
-              <h1 className={styles.h1}>Sign in</h1>
-              <div className={styles.socialcontainer}>
+              <h1>Sign in</h1>
+              <div className={styles['social-container']}>
                 {/* 소셜 로그인 아이콘 (네이버, 카카오, 구글) */}
                 <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
                 <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
                 <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
@@ -348,15 +347,13 @@ const Login = () => {
               </button>
             </form>
           </div>
-          <div className={styles.overlaycontainer}>
+          <div className={styles['overlay-container']}>
             <div className={styles.overlay}>
               <div
-                className={`${styles.overlaypanel} overlayright`}
+                className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
               >
-                <h1 className={styles.h1}>
-                  EXTRAVEL 회원가입 하기
-                </h1>
-                <p className={styles.p}>
+                <h1>EXTRAVEL 회원가입 하기</h1>
+                <p>
                   To keep connected with us please login
                   with your personal info
                 </p>
@@ -369,17 +366,15 @@ const Login = () => {
                 </button>
               </div>
               <div
-                className={`${styles.overlaypanel} overlayright`}
+                className={`${styles['overlay-panel']} ${styles['overlay-right']}`}
               >
-                <h1 className={styles.h1}>
-                  EXTRAVEL 로그인 하기
-                </h1>
-                <p className={styles.p}>
+                <h1>EXTRAVEL 로그인 하기</h1>
+                <p>
                   Enter your personal details and start
                   journey with us
                 </p>
                 <button
-                  className='ghost'
+                  className={styles.ghost}
                   id='signUp'
                   onClick={handleSignUpClick}
                 >

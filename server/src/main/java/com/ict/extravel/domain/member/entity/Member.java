@@ -1,10 +1,12 @@
 package com.ict.extravel.domain.member.entity;
 
+import com.ict.extravel.domain.nation.entity.Nation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -37,10 +39,12 @@ public class Member {
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
-    @Size(max = 3)
-    @Column(name = "country_code", length = 3)
-    private String countryCode;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "nation_code", nullable = false)
+    private Nation nationCode;
 
+    @ColumnDefault("(now())")
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
