@@ -15,6 +15,7 @@ import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
+import { NAVER_AUTH_URI } from '../../config/Naver-config';
 
 const Login = () => {
   // const { register, handleSubmit } = useForm();
@@ -305,7 +306,7 @@ const Login = () => {
               <div className={styles['social-container']}>
                 {/* 소셜 로그인 아이콘 (네이버, 카카오, 구글) */}
                 <a
-                  href='{NAVER_AUTH_URI}'
+                  href={NAVER_AUTH_URI}
                   className={styles.social}
                 >
                   <img

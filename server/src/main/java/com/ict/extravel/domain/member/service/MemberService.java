@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.member.service;
 
 
+import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,18 +24,35 @@ public class MemberService {
    private String client_id;
     @Value("{NaverLogin.client_secret}")
    private String client_secret;
+    @Value("{NaverLogin.client_state}")
+    private String state;
+
 
 
   public void NaverLoginService(String code) {
       String AccessToken = getNaverAccessToken(code);
       log.info("token: {}", AccessToken);
 
-     getNaverUserInfo(AccessToken);
+      NaverUserDTO naverUserInfo = getNaverUserInfo(AccessToken);
   }
 
-    private void getNaverUserInfo(String accessToken) {
+    private NaverUserDTO getNaverUserInfo(String accessToken) {
 
       String requestURI = "https://openapi.naver.com/v1/nid/me";
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", "Bearer" + accessToken);
+      log.info("accessToken :{}",accessToken);
+
+      //요청보내기
+      RestTemplate template = new RestTemplate();
+        ResponseEntity<NaverUserDTO> responseEntity = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), NaverUserDTO.class);
+
+        // 응답 바디 꺼내기
+        NaverUserDTO responseData = responseEntity.getBody();
+        log.info("user profile: {}" , responseData);
+
+        return responseData;
     }
 
     private String getNaverAccessToken(String code) {
@@ -44,10 +62,13 @@ public class MemberService {
         HttpHeaders headers = new HttpHeaders();
 
 
+
         MultiValueMap<String ,String> params = new LinkedMultiValueMap<>();
         params.add("grant_type","authorization_code");
         params.add("client_id",client_id);
         params.add("client_secret", client_secret);
+        params.add("code",code);
+        params.add("state",state);
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(params,headers);
 
