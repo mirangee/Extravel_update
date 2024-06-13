@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Button,
   Grid,
@@ -15,14 +17,22 @@ import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
+import check from './Check.jsx';
 
 const Login = () => {
-  // const { register, handleSubmit } = useForm();
   const { control, handleSubmit, watch } = useForm({
-    mode: 'onChange',
+    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
   });
+
+  const navigate = useNavigate(); //변수 할당시켜서 사용
+  const onClickBtn = () => {
+    navigate(-1); // 바로 이전 페이지로 이동, '/main' 등 직접 지정도 당연히 가능
+  };
+
+  // 폼이 제출되었을 때 호출되는 함수
   const onSubmit = (data) => console.log(data);
 
+  // 'isRightPanelActive' 상태는 패널이 활성화되어 있는지 체크
   const [isRightPanelActive, setIsRightPanelActive] =
     useState(false);
 
@@ -48,14 +58,21 @@ const Login = () => {
           <div
             className={`${styles['form-container']} ${styles['sign-up-container']}`}
           >
+            {/* 회원가입 화면 */}
             <form
               className={styles.form}
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
-              <h1>Create Account</h1>
+              <button
+                className={styles.backButton}
+                onClick={onClickBtn}
+              >
+                X
+              </button>
+              <h1>회원가입 하기</h1>
               <div className={styles['social-container']}>
-                {/* 소셜 아이콘 (Facebook, Google, LinkedIn) */}
+                {/* 소셜 아이콘 (네이버, 카카오, 구글) */}
                 <a href='#' className={styles.social}>
                   <img
                     className={styles.naverImg}
@@ -79,21 +96,21 @@ const Login = () => {
                 </a>
               </div>
               <span className={styles.span}>
-                or use your email for registration
+                혹은 이메일을 사용하여 회원가입 하기
               </span>
               <Grid item>
                 <Grid
                   container
                   direction={'column'}
-                  spacing={3}
+                  spacing={1}
                 >
                   <Grid item style={{ width: '100%' }}>
                     <Controller
-                      name='Name'
-                      control={control}
-                      defaultValue={''}
+                      name='Name' // 컨트롤러의 이름
+                      control={control} // useForm에서 제공하는 컨트롤 객체
+                      defaultValue={''} // 초기 값
                       rules={{
-                        required: 'First Name is required',
+                        required: '이름은 필수값 입니다.', // 필수 입력 필드
                         maxLength: {
                           value: 10,
                           message:
@@ -105,24 +122,26 @@ const Login = () => {
                             '이름은 공백없이 한글만으로 작성해주세요',
                         },
                       }}
+                      // 유효성 검사 규칙
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Name'
-                          value={field.value}
-                          onChange={field.onChange}
+                          value={field.value} // 컨트롤러의 값
+                          onChange={field.onChange} // 값이 변경될 때 호출되는 함수
                           error={
-                            fieldState.error !== undefined
+                            fieldState.error !== undefined // 오류 상태
                           }
                           helperText={
                             fieldState.error &&
-                            fieldState.error.message
+                            fieldState.error.message // 오류 메시지
                           }
                         />
                       )}
                     />
                   </Grid>
 
-                  <Grid item style={{ width: '100%' }}>
+                  {/*
+                  <Grid item style={{ width: '100%' }}> 
                     <FormControl fullWidth>
                       <InputLabel>Country</InputLabel>
                       <Controller
@@ -130,7 +149,7 @@ const Login = () => {
                         control={control}
                         defaultValue={''}
                         rules={{
-                          required: 'Country is required',
+                          required: '국적을 선택해 주세요.',
                         }}
                         render={({ field }) => (
                           <Select
@@ -152,6 +171,7 @@ const Login = () => {
                       />
                     </FormControl>
                   </Grid>
+                  */}
 
                   <Grid item style={{ width: '100%' }}>
                     <Controller
@@ -160,16 +180,15 @@ const Login = () => {
                       control={control}
                       rules={{
                         required:
-                          'Phone Number is required',
+                          '전화번호를 입력해주세요.',
                         pattern: {
                           value: /^[0-9]*$/,
-                          message:
-                            'Only numbers are allowed',
+                          message: '숫자만 입력해주세요.',
                         },
                         maxLength: {
                           value: 11,
                           message:
-                            'Phone Number cannot exceed 11 digits',
+                            '전화번호는 11자리를 넘을 수 없습니다.',
                         },
                       }}
                       render={({ field, fieldState }) => (
@@ -194,7 +213,7 @@ const Login = () => {
                       control={control}
                       defaultValue={''}
                       rules={{
-                        required: 'Email ID is required',
+                        required: '이메일을 입력해주세요.',
                         pattern: {
                           value:
                             /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -294,6 +313,7 @@ const Login = () => {
               </Grid>
             </form>
           </div>
+          {/* 로그인 화면 */}
           <div
             className={`${styles['form-container']} ${styles['sign-in-container']}`}
           >
@@ -327,7 +347,7 @@ const Login = () => {
                 </a>
               </div>
               <span className={styles.span}>
-                or use your account
+                혹은 이메일로 로그인하기
               </span>
               <input
                 className={styles.input1}
@@ -340,10 +360,10 @@ const Login = () => {
                 placeholder='Password'
               />
               <a className={styles.a} href='#'>
-                Forgot your password?
+                비밀번호를 잊으셨나요?
               </a>
               <button className={styles.button}>
-                Sign In
+                로그인
               </button>
             </form>
           </div>
@@ -362,12 +382,19 @@ const Login = () => {
                   id='signIn'
                   onClick={handleSignInClick}
                 >
-                  Sign In
+                  로그인 하러 가기
                 </button>
               </div>
+
               <div
                 className={`${styles['overlay-panel']} ${styles['overlay-right']}`}
               >
+                <button
+                  className={styles.backButton}
+                  onClick={onClickBtn}
+                >
+                  X
+                </button>
                 <h1>EXTRAVEL 로그인 하기</h1>
                 <p>
                   Enter your personal details and start
@@ -378,7 +405,7 @@ const Login = () => {
                   id='signUp'
                   onClick={handleSignUpClick}
                 >
-                  Sign Up
+                  회원가입 하러 가기
                 </button>
               </div>
             </div>
