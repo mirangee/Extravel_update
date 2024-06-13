@@ -5,7 +5,7 @@ import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
-import '../../scss/Login.scss';
+import styles from '../../scss/Login.module.scss';
 
 const Login = () => {
   // const { register, handleSubmit } = useForm();
@@ -21,44 +21,45 @@ const Login = () => {
   const handleSignUpClick = () => {
     setIsRightPanelActive(true);
   };
-
   // 'Sign In' 버튼 클릭 시 호출되는 함수
   const handleSignInClick = () => {
     setIsRightPanelActive(false);
   };
   return (
-    <>
+    <div className={styles.login}>
       <h2>EXTRAVEL LOGIN</h2>
 
       <div
-        className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}
+        className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
       >
-        <div className='container'>
-          <div className='form-container sign-up-container'>
+        <div className={styles.container}>
+          <div
+            className={`${styles['form-container']} ${styles['sign-up-container']}`}
+          >
             <form
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
               <h1>Create Account</h1>
-              <div className='social-container'>
+              <div className={styles['social-container']}>
                 {/* 소셜 아이콘 (Facebook, Google, LinkedIn) */}
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
@@ -205,7 +206,7 @@ const Login = () => {
                       )}
                     />
                   </Grid>
-                  Grid item style={{ width: '100%' }}>
+                  <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='passwordConfirm'
                       defaultValue={''}
@@ -242,31 +243,33 @@ const Login = () => {
               </Grid>
             </form>
           </div>
-          <div className='form-container sign-in-container'>
+          <div
+            className={`${styles['form-container']} ${styles['sign-in-container']}`}
+          >
             <form
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
               <h1>Sign in</h1>
-              <div className='social-container'>
+              <div className={styles['social-container']}>
                 {/* 소셜 로그인 아이콘 (네이버, 카카오, 구글) */}
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
@@ -282,30 +285,34 @@ const Login = () => {
               <button>Sign In</button>
             </form>
           </div>
-          <div className='overlay-container'>
-            <div className='overlay'>
-              <div className='overlay-panel overlay-left'>
+          <div className={styles['overlay-container']}>
+            <div className={styles.overlay}>
+              <div
+                className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
+              >
                 <h1>EXTRAVEL 회원가입 하기</h1>
                 <p>
                   To keep connected with us please login
                   with your personal info
                 </p>
                 <button
-                  className='ghost'
+                  className={styles.ghost}
                   id='signIn'
                   onClick={handleSignInClick}
                 >
                   Sign In
                 </button>
               </div>
-              <div className='overlay-panel overlay-right'>
+              <div
+                className={`${styles['overlay-panel']} ${styles['overlay-right']}`}
+              >
                 <h1>EXTRAVEL 로그인 하기</h1>
                 <p>
                   Enter your personal details and start
                   journey with us
                 </p>
                 <button
-                  className='ghost'
+                  className={styles.ghost}
                   id='signUp'
                   onClick={handleSignUpClick}
                 >
@@ -316,7 +323,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
