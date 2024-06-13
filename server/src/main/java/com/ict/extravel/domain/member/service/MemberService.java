@@ -40,7 +40,7 @@ public class MemberService {
     public boolean isDuplicate(String email) {
         if(memberRepository.existsByEmail(email)) {
             return true;
-        } else return false;
+        }   else return false;
     }
 
     public void kakaoService(String code) {
