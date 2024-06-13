@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/Section1.module.scss';
 import rectangle from '../../../assets/img/home2.jpg';
+import { KAKAO_AUTH_URL } from '../../../config/kakao-config';
 
 const Section1 = () => {
   return (
@@ -27,7 +28,9 @@ const Section1 = () => {
               More →
             </button>
           </div>
-          <img src={rectangle} />
+          <a href={KAKAO_AUTH_URL}>
+            <img src={rectangle} />
+          </a>
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ package com.ict.extravel.domain.member.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "member")
 public class Member {
@@ -47,5 +49,11 @@ public class Member {
     @Size(max = 50)
     @Column(name = "grade", length = 50)
     private String grade;
+
+    private String accessToken;
+
+    public void changeAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
 }
