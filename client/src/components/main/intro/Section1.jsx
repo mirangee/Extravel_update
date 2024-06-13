@@ -1,8 +1,20 @@
 import React from 'react';
 import styles from '../../../scss/Section1.module.scss';
 import rectangle from '../../../assets/img/home2.jpg';
+import {
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
+
+import Login from '../../user/Login';
 
 const Section1 = () => {
+  const navigate = useNavigate();
+  const goToLogin = () => {
+    navigate('/Login');
+  };
+
   return (
     <>
       <div className={styles.section1Body}>
@@ -16,7 +28,10 @@ const Section1 = () => {
             환전하면 적립되는 포인트로 투어 패키지를 구매해
             더욱 큰 혜택을 누리세요.
           </h5>
-          <button className={styles.section1Explore}>
+          <button
+            className={styles.section1Explore}
+            onClick={goToLogin}
+          >
             Explore
           </button>
         </div>
