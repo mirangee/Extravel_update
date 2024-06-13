@@ -12,7 +12,7 @@ const NaverLoginHandler = () => {
   const code = new URL(
     window.location.href,
   ).searchParams.get('code');
-
+  //
   useEffect(() => {
     const NaverLogin = async () => {
       const res = await fetch(
