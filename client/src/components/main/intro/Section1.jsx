@@ -45,9 +45,7 @@ const Section1 = () => {
               More →
             </button>
           </div>
-          <a href={KAKAO_AUTH_URL}>
-            <img src={rectangle} />
-          </a>
+          <img src={rectangle} />
         </div>
       </div>
     </>

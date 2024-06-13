@@ -30,7 +30,7 @@ public class MemberService {
     private final TokenProvider tokenProvider;
 
 
-    private static String KAKAO_CLIENT_ID ;
+    private static String KAKAO_CLIENT_ID;
 
 
     private static String KAKAO_REDIRECT_URL;
