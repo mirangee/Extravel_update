@@ -6,20 +6,10 @@ import Footer from './components/Footer';
 import Section3 from './components/main/intro/Section3';
 import Section2 from './components/main/intro/Section2';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
+import Login from './components/user/Login';
 
 const App = () => {
-  return (
-    <>
-      <Router>
-        <Header />
-      </Router>
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Footer />
-      <ScrollToTopButton />
-    </>
-  );
+  return <Login />;
 };
 
 export default App;
