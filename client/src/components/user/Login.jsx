@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Grid, TextField } from '@mui/material';
+import {
+  Button,
+  Grid,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
+
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
-import '../../scss/Login.scss';
+import styles from '../../scss/Login.module.scss';
 
 const Login = () => {
   // const { register, handleSubmit } = useForm();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     mode: 'onChange',
   });
   const onSubmit = (data) => console.log(data);
@@ -21,50 +30,55 @@ const Login = () => {
   const handleSignUpClick = () => {
     setIsRightPanelActive(true);
   };
-
   // 'Sign In' 버튼 클릭 시 호출되는 함수
   const handleSignInClick = () => {
     setIsRightPanelActive(false);
   };
+
+  // watch를 사용해 password 필드의 값을 추적
+  const passwordValue = watch('password');
   return (
-    <>
+    <div className={styles.login}>
       <h2>EXTRAVEL LOGIN</h2>
 
       <div
-        className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}
+        className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
       >
-        <div className='container'>
-          <div className='form-container sign-up-container'>
+        <div className={styles.container}>
+          <div
+            className={`${styles['form-container']} ${styles['sign-up-container']}`}
+          >
             <form
+              className={styles.form}
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
               <h1>Create Account</h1>
-              <div className='social-container'>
+              <div className={styles['social-container']}>
                 {/* 소셜 아이콘 (Facebook, Google, LinkedIn) */}
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
                 </a>
               </div>
-              <span>
+              <span className={styles.span}>
                 or use your email for registration
               </span>
               <Grid item>
@@ -75,15 +89,25 @@ const Login = () => {
                 >
                   <Grid item style={{ width: '100%' }}>
                     <Controller
-                      name='firstName'
+                      name='Name'
                       control={control}
                       defaultValue={''}
                       rules={{
                         required: 'First Name is required',
+                        maxLength: {
+                          value: 10,
+                          message:
+                            '이름은 10글자를 넘을 수 없습니다.',
+                        },
+                        pattern: {
+                          value: /^[가-힣]+$/,
+                          message:
+                            '이름은 공백없이 한글만으로 작성해주세요',
+                        },
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
-                          label='First Name'
+                          label='Name'
                           value={field.value}
                           onChange={field.onChange}
                           error={
@@ -97,30 +121,38 @@ const Login = () => {
                       )}
                     />
                   </Grid>
+
                   <Grid item style={{ width: '100%' }}>
-                    <Controller
-                      name='lastName'
-                      control={control}
-                      defaultValue={''}
-                      rules={{
-                        required: 'Last Name is required',
-                      }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label='Last Name'
-                          value={field.value}
-                          onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
-                          helperText={
-                            fieldState.error &&
-                            fieldState.error.message
-                          }
-                        />
-                      )}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel>Country</InputLabel>
+                      <Controller
+                        name='country'
+                        control={control}
+                        defaultValue={''}
+                        rules={{
+                          required: 'Country is required',
+                        }}
+                        render={({ field }) => (
+                          <Select
+                            label='Country'
+                            value={field.value}
+                            onChange={field.onChange}
+                          >
+                            <MenuItem value='Korea'>
+                              한국
+                            </MenuItem>
+                            <MenuItem value='Japan'>
+                              일본
+                            </MenuItem>
+                            <MenuItem value='China'>
+                              중국
+                            </MenuItem>
+                          </Select>
+                        )}
+                      />
+                    </FormControl>
                   </Grid>
+
                   <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='phone'
@@ -129,6 +161,16 @@ const Login = () => {
                       rules={{
                         required:
                           'Phone Number is required',
+                        pattern: {
+                          value: /^[0-9]*$/,
+                          message:
+                            'Only numbers are allowed',
+                        },
+                        maxLength: {
+                          value: 11,
+                          message:
+                            'Phone Number cannot exceed 11 digits',
+                        },
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
@@ -187,6 +229,12 @@ const Login = () => {
                       control={control}
                       rules={{
                         required: 'Password is required',
+                        pattern: {
+                          value:
+                            /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+                          message:
+                            '영문 숫자 특수기호 조합 8자리 이상',
+                        },
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
@@ -205,17 +253,21 @@ const Login = () => {
                       )}
                     />
                   </Grid>
-                  Grid item style={{ width: '100%' }}>
+                  <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='passwordConfirm'
                       defaultValue={''}
                       control={control}
                       rules={{
-                        required: 'Password is required',
+                        required:
+                          'Password confirmation is required',
+                        validate: (value) =>
+                          value === passwordValue ||
+                          'Passwords do not match',
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
-                          label='Password'
+                          label='Confirm Password'
                           type='password'
                           value={field.value}
                           onChange={field.onChange}
@@ -242,70 +294,87 @@ const Login = () => {
               </Grid>
             </form>
           </div>
-          <div className='form-container sign-in-container'>
+          <div
+            className={`${styles['form-container']} ${styles['sign-in-container']}`}
+          >
             <form
               action='#'
               onSubmit={handleSubmit(onSubmit)}
             >
               <h1>Sign in</h1>
-              <div className='social-container'>
+              <div className={styles['social-container']}>
                 {/* 소셜 로그인 아이콘 (네이버, 카카오, 구글) */}
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className='social'>
+                <a href='#' className={styles.social}>
                   <img
-                    className='naverImg'
+                    className={styles.naverImg}
                     alt='naverImg'
                     src={googleCircle}
                   />
                 </a>
               </div>
-              <span>or use your account</span>
-              <input type='email' placeholder='Email' />
+              <span className={styles.span}>
+                or use your account
+              </span>
               <input
+                className={styles.input1}
+                type='email'
+                placeholder='Email'
+              />
+              <input
+                className={styles.input1}
                 type='password'
                 placeholder='Password'
               />
-              <a href='#'>Forgot your password?</a>
-              <button>Sign In</button>
+              <a className={styles.a} href='#'>
+                Forgot your password?
+              </a>
+              <button className={styles.button}>
+                Sign In
+              </button>
             </form>
           </div>
-          <div className='overlay-container'>
-            <div className='overlay'>
-              <div className='overlay-panel overlay-left'>
+          <div className={styles['overlay-container']}>
+            <div className={styles.overlay}>
+              <div
+                className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
+              >
                 <h1>EXTRAVEL 회원가입 하기</h1>
                 <p>
                   To keep connected with us please login
                   with your personal info
                 </p>
                 <button
-                  className='ghost'
+                  className={styles.ghost}
                   id='signIn'
                   onClick={handleSignInClick}
                 >
                   Sign In
                 </button>
               </div>
-              <div className='overlay-panel overlay-right'>
+              <div
+                className={`${styles['overlay-panel']} ${styles['overlay-right']}`}
+              >
                 <h1>EXTRAVEL 로그인 하기</h1>
                 <p>
                   Enter your personal details and start
                   journey with us
                 </p>
                 <button
-                  className='ghost'
+                  className={styles.ghost}
                   id='signUp'
                   onClick={handleSignUpClick}
                 >
@@ -316,7 +385,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

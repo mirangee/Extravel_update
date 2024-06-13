@@ -1,41 +1,33 @@
-import Section1 from './components/main/intro/Section1';
 import React from 'react';
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Section3 from './components/main/intro/Section3';
-import Section2 from './components/main/intro/Section2';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
+
 import KakaoLoginHandler from './components/user/KakaoLoginHandler';
 import { AuthContextProvider } from './utils/AuthContext';
+
+import Login from './components/user/Login';
+import MainIntro from './components/main/intro/MainIntro';
 
 const App = () => {
   return (
     <>
-      <Router>
+      <AuthContextProvider>
         <Header />
-      </Router>
-      <Section1>
-        <AuthContextProvider>
-          <div className='content-wrapper'>
-            <Routes>
-              <Route
-                path='/oauth/kakao'
-                element={<KakaoLoginHandler />}
-              />
-            </Routes>
-          </div>
-        </AuthContextProvider>
-      </Section1>
+        <Routes>
+          <Route path='/' element={<MainIntro />} />
+          <Route path='/login' element={<Login />} />
+          <Route
+            path='/oauth/kakao'
+            element={<KakaoLoginHandler />}
+          />
+        </Routes>
 
-      <Section2 />
-      <Section3 />
-      <Footer />
-      <ScrollToTopButton />
+        <Footer />
+        <ScrollToTopButton />
+      </AuthContextProvider>
     </>
   );
 };
