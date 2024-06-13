@@ -1,21 +1,19 @@
-import Section1 from './components/main/intro/Section1';
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Section3 from './components/main/intro/Section3';
-import Section2 from './components/main/intro/Section2';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
+import Login from './components/user/Login';
+import MainIntro from './components/main/intro/MainIntro';
 
 const App = () => {
   return (
     <>
-      <Router>
-        <Header />
-      </Router>
-      <Section1 />
-      <Section2 />
-      <Section3 />
+      <Header />
+      <Routes>
+        <Route path='/' element={<MainIntro />} />
+        <Route path='/login' element={<Login />} />
+      </Routes>
       <Footer />
       <ScrollToTopButton />
     </>

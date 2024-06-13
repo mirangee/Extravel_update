@@ -102,17 +102,15 @@ const Header = () => {
             <Link to='/contact'>Places</Link>
           </li>
           <li>
-            <start>
-              <Select
-                value={countryOptions.find(
-                  (option) => option.value === country,
-                )}
-                onChange={handleCountryChange}
-                options={countryOptions}
-                className={styles.countrySelect}
-                classNamePrefix={styles.reactSelect}
-              />
-            </start>
+            <Select
+              value={countryOptions.find(
+                (option) => option.value === country,
+              )}
+              onChange={handleCountryChange}
+              options={countryOptions}
+              className={styles.countrySelect}
+              classNamePrefix={styles.reactSelect}
+            />
           </li>
         </ul>
       </nav>
