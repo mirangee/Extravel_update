@@ -1,5 +1,5 @@
 import React from 'react';
-import '../scss/Footer.scss';
+import styles from '../scss/Footer.module.scss';
 import logo0 from '../assets/img/tour_logos/naver.png';
 import logo1 from '../assets/img/tour_logos/norang.png';
 import logo2 from '../assets/img/tour_logos/onlinetour.png';
@@ -10,8 +10,8 @@ import { IoMdMail } from 'react-icons/io';
 
 const Footer = () => {
   return (
-    <div className='wrap'>
-      <div className='logo-container'>
+    <div className={styles.wrap}>
+      <div className={styles.container}>
         <img src={logo0} alt='description' />
         <img src={logo1} alt='description' />
         <img src={logo2} alt='description' />
@@ -19,15 +19,15 @@ const Footer = () => {
         <img src={logo4} alt='description' />
       </div>
 
-      <div className='footer'>
-        <div className='footer-inner'>
-          <div className='company-info'>
-            <ul className='menu'>
+      <div className={styles.footer}>
+        <div className={styles.inner}>
+          <div className={styles.info}>
+            <ul className={styles.menu}>
               <li>회사소개</li>
               <li>제휴제안</li>
               <li>이용약관</li>
             </ul>
-            <div className='description'>
+            <div className={styles.description}>
               <p>
                 대표 : 김상진 &nbsp;&nbsp;&nbsp;사업자
                 등록번호 : 000-00-0000
@@ -38,17 +38,17 @@ const Footer = () => {
               </p>
             </div>
           </div>
-          <div className='logo-part'>
-            <h2 className='ft-logo'>
+          <div className={styles.logo}>
+            <h2>
               <img src={extravelLogo} alt='ft-logo' />
             </h2>
-            <p className='copyright'>
+            <p>
               &#x00A9; 2024 Copyright ExTravel All Rights
               Reserved.
             </p>
           </div>
-          <div className='email-part'>
-            <p className='mail'>
+          <div className={styles.email}>
+            <p>
               <span>
                 <IoMdMail />
                 &nbsp; Mail us, stay updated

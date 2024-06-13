@@ -1,4 +1,4 @@
-.logo-container {
+.container {
   width: 60%;
   height: 150px;
   margin: 0 auto;
@@ -12,22 +12,20 @@
   }
 }
 
-
-
 .footer {
   color: #fff;
   height: 170px;
   background-color: #14505c;;
   display: flex;
     align-items: center;
-  .footer-inner {
+  .inner {
     width: 60%;
     margin: 0 auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
 
-    .company-info { 
+    .info { 
       font-size: 12px;
       align-items: center;
       margin-top: 20px;
@@ -46,31 +44,28 @@
 
       .description {
         margin-top: 10px;
-        // background-color: aqua;
         p:first-child {
           margin-top: 30px;
           margin-bottom: -10px;
         }
       }
     }
-    .logo-part {
+    .logo {
       width: 30%;
       h2 {
-        
         text-align: center;
         img {
           width: 100px;
         }
       }
       p {
-    
         font-size: 12px;
         flex-grow: 2;
         text-align: center;
       }
     }
-    .email-part {
-      p.mail {
+    .email {
+      p {
         font-size: 15px;
         font-size: bold;
       }
