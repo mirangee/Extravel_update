@@ -1,3 +1,5 @@
+import { NAVER_AUTH_URI } from './Naver-config';
+
 const clientHostName = window.location.hostname;
 
 let backEndHostName;

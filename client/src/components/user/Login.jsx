@@ -253,7 +253,10 @@ const Login = () => {
               <h1>Sign in</h1>
               <div className={styles['social-container']}>
                 {/* 소셜 로그인 아이콘 (네이버, 카카오, 구글) */}
-                <a href='#' className={styles.social}>
+                <a
+                  href='{NAVER_AUTH_URI}'
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'
