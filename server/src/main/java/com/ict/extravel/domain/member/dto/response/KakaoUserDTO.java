@@ -37,13 +37,13 @@ public class KakaoUserDTO {
         }
     }
 
-    public Member toEntity(String accessToken) {
+    /* public Member toEntity(String accessToken) {
         return Member.builder()
                 .email(this.kakaoAccount.email)
                 .name(this.kakaoAccount.profile.nickname)
                 .password("password!")
                 .accessToken(accessToken)
                 .build();
-    }
+    }*/
 
 }

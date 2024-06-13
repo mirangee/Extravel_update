@@ -20,14 +20,11 @@ public class MemberController {
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
         log.info("/api/auth/kakaoLogin - GET! code: {}", code);
-        //LoginResponseDTO responseDTO = memberService.kakaoService(code);
+        memberService.kakaoService(code);
 
-        return null;// ResponseEntity.ok().body(responseDTO);
+        return ResponseEntity.ok().body("ok");
     }
-    @GetMapping("/oauth/kakao")
-    public void getCode(String code){
-        System.out.println(code);
-    }
+
 
 }
 

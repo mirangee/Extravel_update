@@ -54,10 +54,5 @@ public class Member {
     @Column(name = "grade", length = 50)
     private String grade;
 
-    private String accessToken;
-
-    public void changeAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 
 }
