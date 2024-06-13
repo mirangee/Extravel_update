@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import '../scss/Header.scss';
+import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
 import usaFlag from '../assets/flags/usa.png';
 import koreaFlag from '../assets/flags/korea.png';
@@ -16,7 +16,7 @@ const countryOptions = [
         <img
           src={usaFlag}
           alt='USA Flag'
-          className='flag'
+          className={styles.flag}
         />{' '}
         USA
       </>
@@ -29,7 +29,7 @@ const countryOptions = [
         <img
           src={koreaFlag}
           alt='Korea Flag'
-          className='flag'
+          className={styles.flag}
         />{' '}
         Korea
       </>
@@ -42,7 +42,7 @@ const countryOptions = [
         <img
           src={japanFlag}
           alt='Japan Flag'
-          className='flag'
+          className={styles.flag}
         />{' '}
         Japan
       </>
@@ -80,11 +80,15 @@ const Header = () => {
 
   return (
     <header
-      className={`header ${scrolled ? 'scrolled' : ''}`}
+      className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
     >
-      <img src={logoImage} alt='Logo' className='logo' />
-      <nav className='nav'>
-        <ul className='menu'>
+      <img
+        src={logoImage}
+        alt='Logo'
+        className={styles.logo}
+      />
+      <nav className={styles.nav}>
+        <ul className={styles.menu}>
           <li>
             <Link to='/home'>패키지</Link>
           </li>
@@ -104,8 +108,8 @@ const Header = () => {
               )}
               onChange={handleCountryChange}
               options={countryOptions}
-              className='country-select'
-              classNamePrefix='react-select'
+              className={styles.countrySelect}
+              classNamePrefix={styles.reactSelect}
             />
           </li>
         </ul>
