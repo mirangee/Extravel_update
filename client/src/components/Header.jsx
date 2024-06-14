@@ -79,42 +79,45 @@ const Header = () => {
   };
 
   return (
-    <header
-      className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
-    >
-      <img
-        src={logoImage}
-        alt='Logo'
-        className={styles.logo}
-      />
-      <nav className={styles.nav}>
-        <ul className={styles.menu}>
-          <li>
-            <Link to='/home'>패키지</Link>
-          </li>
-          <li>
-            <Link to='/about'>뉴스</Link>
-          </li>
-          <li>
-            <Link to='/services'>내정보</Link>
-          </li>
-          <li>
-            <Link to='/contact'>Places</Link>
-          </li>
-          <li>
-            <Select
-              value={countryOptions.find(
-                (option) => option.value === country,
-              )}
-              onChange={handleCountryChange}
-              options={countryOptions}
-              className={styles.countrySelect}
-              classNamePrefix={styles.reactSelect}
-            />
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <>
+      <header
+        className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
+      >
+        <img
+          src={logoImage}
+          alt='Logo'
+          className={styles.logo}
+        />
+        <nav className={styles.nav}>
+          <ul className={styles.menu}>
+            <li>
+              <Link to='/home'>패키지</Link>
+            </li>
+            <li>
+              <Link to='/about'>뉴스</Link>
+            </li>
+            <li>
+              <Link to='/services'>내정보</Link>
+            </li>
+            <li>
+              <Link to='/contact'>Places</Link>
+            </li>
+            <li>
+              <Select
+                value={countryOptions.find(
+                  (option) => option.value === country,
+                )}
+                onChange={handleCountryChange}
+                options={countryOptions}
+                className={styles.countrySelect}
+                classNamePrefix={styles.reactSelect}
+              />
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <div className={styles.fake}></div>
+    </>
   );
 };
 

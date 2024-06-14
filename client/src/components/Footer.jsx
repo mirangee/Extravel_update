@@ -29,7 +29,7 @@ const Footer = () => {
             </ul>
             <div className={styles.description}>
               <p>
-                대표 : 김상진 &nbsp;&nbsp;&nbsp;사업자
+                대표 : 김태훈 &nbsp;&nbsp;&nbsp;사업자
                 등록번호 : 000-00-0000
               </p>
               <p>
