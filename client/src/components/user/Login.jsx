@@ -60,6 +60,9 @@ const Login = () => {
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
 
+  const sleep = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   // 회원가입 데이터 전송을 위한 핸들러
   const onSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
