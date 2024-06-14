@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 private final MemberService memberService;
 
-    @GetMapping("/naverLogin")
+    @GetMapping("/naver")
     public ResponseEntity<?> NaverLogin(@RequestParam String code) {
-          log.info("/api/auth/naverLogin - Get code : ",code);
+          log.info("/api/auth/naver- Get code : ",code);
 
           memberService.NaverLoginService(code);
 
