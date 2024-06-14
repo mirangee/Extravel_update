@@ -30,7 +30,7 @@ const KakaoLoginHandler = () => {
       const { token, userName, email, role } =
         await res.json(); // 서버에서 온 json 읽기
 
-      onLogin(token, userName, role);
+      onLogin(token, userName, email, role);
 
       redirection('/');
     };
