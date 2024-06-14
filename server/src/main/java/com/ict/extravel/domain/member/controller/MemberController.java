@@ -1,10 +1,16 @@
 package com.ict.extravel.domain.member.controller;
-import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
+
+import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,22 +22,14 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
-    @Value("{spring.security.oauth2.client.registration.google.client-id}")
-    private String clientId;
+   
+    @GetMapping("/kakaologin")
+    public ResponseEntity<?> kakaoLogin(String code) {
+        log.info("/api/auth/kakaoLogin - GET! code: {}", code);
+        memberService.kakaoService(code);
 
-    @Value("{spring.security.oauth2.client.registration.google.client-secret}")
-    private String clientSecret;
-
-    @Value("{spring.security.oauth2.client.registration.google.redirect-uri}")
-    private String redirectUri;
-
-
-//    @PostMapping("/google/login")
-//    public ResponseEntity<?> googleLogin(@RequestBody String code) {
-//        log.info("google backend 들어옴!");
-//        memberService.getGoogleAccessToken(code, clientId, clientSecret, redirectUri);
-//        return ResponseEntity.ok().body("SUCCESS");
-//    }
+        return ResponseEntity.ok().body("ok");
+    }
 
     @PostMapping("/google")
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {

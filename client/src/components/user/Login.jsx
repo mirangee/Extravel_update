@@ -14,6 +14,7 @@ import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
 
 import styles from '../../scss/Login.module.scss';
+import { KAKAO_AUTH_URL } from '../../config/kakao-config';
 import GoogleLogin from './GoogleLogin';
 
 const Login = () => {
@@ -305,7 +306,10 @@ const Login = () => {
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
+                <a
+                  href={KAKAO_AUTH_URL}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'

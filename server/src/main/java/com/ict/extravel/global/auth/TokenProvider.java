@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class TokenProvider {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    private String createToken(Member member, String secretKey, long duration, ChronoUnit unit){
+    public String createToken(Member memberEntity, String secretKey, long duration, ChronoUnit unit){
         Date expireDate = Date.from(Instant.now().plus(duration, unit));
         Claims claims = Jwts.claims();
         // 클레임 정의하기
@@ -32,14 +34,14 @@ public class TokenProvider {
                 ).setClaims(claims)
                 .setExpiration(expireDate)
                 .setIssuedAt(new Date())
-                .setSubject(String.valueOf(member.getId()))
+                .setSubject(String.valueOf(memberEntity.getId()))
                 .setIssuer("Master")
                 .compact();
 
     }
 
-    public String createAccessKey(Member member){
-        return createToken(member, SECRET_KEY, 2, ChronoUnit.HOURS);
+    public String createAccessKey(Member memberEntity){
+        return createToken(memberEntity, SECRET_KEY, 2, ChronoUnit.HOURS);
     }
 
 
