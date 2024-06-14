@@ -9,14 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+
+
 @RestController
+
 @RequestMapping("/user/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
-
     private final MemberService memberService;
 
+   
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
         log.info("/api/auth/kakaoLogin - GET! code: {}", code);
@@ -25,7 +31,11 @@ public class MemberController {
         return ResponseEntity.ok().body("ok");
     }
 
-
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
+        log.info(googleUserInfoDTO.getName());
+        log.info(googleUserInfoDTO.getEmail());
+        return ResponseEntity.ok().body("SUCCESS");
+    }
 }
-
 

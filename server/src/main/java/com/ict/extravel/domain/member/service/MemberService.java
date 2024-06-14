@@ -1,4 +1,5 @@
 package com.ict.extravel.domain.member.service;
+
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.entity.Member;
