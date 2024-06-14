@@ -44,15 +44,15 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/siginin")
-    public ResponseEntity<?> signIn(
-            @Validated @RequestBody LoginRequestDTO dto,
-            BindingResult result
-    ) {
-        log.info("/api/auth/signin - POST - {}", dto);
-
-        R
-    }
+//    @PostMapping("/siginin")
+//    public ResponseEntity<?> signIn(
+//            @Validated @RequestBody LoginRequestDTO dto,
+//            BindingResult result
+//    ) {
+//        log.info("/api/auth/signin - POST - {}", dto);
+//
+//        
+//    }
 
 
 }
