@@ -30,13 +30,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
 
+    @Value("${kakao.client_id}")
+    private String KAKAO_CLIENT_ID;
 
-    private static String KAKAO_CLIENT_ID;
+    @Value("${kakao.redirect_url}")
+    private String KAKAO_REDIRECT_URL;
 
-
-    private static String KAKAO_REDIRECT_URL;
-
-    private static String KAKAO_CLIENT_SECRET;
+    @Value("${kakao.client_secret}")
+    private String KAKAO_CLIENT_SECRET;
 
     public boolean isDuplicate(String email) {
         if(memberRepository.existsByEmail(email)) {
@@ -78,7 +79,7 @@ public class MemberService {
         return responseData;
     }
 
-    private static String getKakaoAccessToken(String code) {
+    private String getKakaoAccessToken(String code) {
         // 요청 uri
         String requestURI = "https://kauth.kakao.com/oauth/token";
 
