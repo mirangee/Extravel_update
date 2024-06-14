@@ -1,13 +1,8 @@
 import React from 'react';
 import styles from '../../../scss/Section1.module.scss';
 import rectangle from '../../../assets/img/home2.jpg';
-import {
-  Routes,
-  Route,
-  useNavigate,
-} from 'react-router-dom';
 
-import Login from '../../user/Login';
+import { useNavigate } from 'react-router-dom';
 
 const Section1 = () => {
   const navigate = useNavigate();
