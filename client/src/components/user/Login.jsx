@@ -3,10 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Grid, TextField } from '@mui/material';
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
-import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
-import GoogleLoginHandler from './GoogleLoginHandler';
+import GoogleLogin from './GoogleLogin';
 
 const Login = () => {
   // const { register, handleSubmit } = useForm();
@@ -58,16 +57,7 @@ const Login = () => {
                     src={kakaoCircle}
                   />
                 </a>
-                <a
-                  className={styles.social}
-                  onClick={GoogleLoginHandler}
-                >
-                  <img
-                    className={styles.naverImg}
-                    alt='naverImg'
-                    src={googleCircle}
-                  />
-                </a>
+                <GoogleLogin />
               </div>
               <span>
                 or use your email for registration
@@ -271,13 +261,7 @@ const Login = () => {
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
-                  <img
-                    className={styles.naverImg}
-                    alt='naverImg'
-                    src={googleCircle}
-                  />
-                </a>
+                <GoogleLogin />
               </div>
               <span>or use your account</span>
               <input type='email' placeholder='Email' />

@@ -28,7 +28,7 @@ public class MemberController {
         log.info("google backend 들어옴!");
         log.info(requestDTO.toString());
         ResponseEntity<FieldError> resultEntity = getFieldErrorResponseEntity(result);
-        return ResponseEntity.ok().body(requestDTO.getName());
+        return ResponseEntity.ok().body("SUCCESS");
     }
 
     private static ResponseEntity<FieldError> getFieldErrorResponseEntity(BindingResult result) {

@@ -11,12 +11,12 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class GoogleSignupRequestDTO {
-    @NotBlank
-    @Email
-    private String email;
-
-    @NotBlank
-    private String name;
+//    @NotBlank
+//    @Email
+//    private String email;
+//
+//    @NotBlank
+//    private String name;
 
     @NotBlank
     private String accessToken;

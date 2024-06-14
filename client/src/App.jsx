@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
 import Login from './components/user/Login';
 import MainIntro from './components/main/intro/MainIntro';
-import GoogleLoginHandler from './components/user/GoogleLoginHandler';
 
 const App = () => {
   return (
@@ -17,7 +16,6 @@ const App = () => {
       </Routes>
       <Footer />
       <ScrollToTopButton />
-      <GoogleLoginHandler />
     </>
   );
 };
