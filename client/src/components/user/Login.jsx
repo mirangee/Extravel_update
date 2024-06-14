@@ -17,20 +17,32 @@ import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
-import check from './Check.jsx';
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 const Login = () => {
-  const { control, handleSubmit, watch } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { isSubmitSuccessful, errors },
+    formState,
+    register,
+  } = useForm({
     mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
   });
 
-  const navigate = useNavigate(); //변수 할당시켜서 사용
+  const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const onClickBtn = () => {
     navigate(-1); // 바로 이전 페이지로 이동, '/main' 등 직접 지정도 당연히 가능
   };
 
   // 폼이 제출되었을 때 호출되는 함수
-  const onSubmit = (data) => console.log(data);
+  // const onSubmit = (data) => console.log(data);
 
   // 'isRightPanelActive' 상태는 패널이 활성화되어 있는지 체크
   const [isRightPanelActive, setIsRightPanelActive] =
@@ -47,6 +59,59 @@ const Login = () => {
 
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
+
+  // 회원가입 데이터 전송을 위한 핸들러
+  const onSubmit = async (data) => {
+    // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
+    const { passwordConfirm, ...submitData } = data;
+    console.log(submitData);
+    await sleep(2000);
+
+    try {
+      // 서버에 회원가입 요청을 보내는 fetch API 호출
+      const response = await fetch(
+        'http://localhost:8181/user/auth/signup',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(submitData), // 폼에서 수집한 데이터를 JSON 형태로 변환(passwordConfirm 제외)
+        },
+      );
+
+      if (!response.ok) {
+        // 서버가 2xx 외의 상태 코드를 반환하면 오류 처리
+        throw new Error(
+          '서버가 올바르게 응답하지 않았습니다.',
+        );
+      }
+
+      // 서버에서 받은 응답을 JSON 형태로 파싱
+      const result = await response.json();
+
+      if (response.url.includes('signup')) {
+        // 회원가입 성공 시 사용자에게 알림 및 페이지 이동
+        alert(
+          `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
+        );
+        navigate('/'); // 회원가입 후 메인 페이지로 이동
+      } else if (response.url.includes('login')) {
+        // 로그인 성공 시 사용자에게 알림 및 페이지 이동
+        alert(
+          `${result.name}님 로그인이 성공적으로 완료되었습니다.`,
+        );
+        navigate('/main'); // 로그인 후 메인 페이지로 이동
+      }
+    } catch (error) {
+      console.error(
+        '회원가입 또는 로그인 요청 중 오류 발생:',
+        error,
+      );
+      alert(
+        '회원가입 또는 로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
+      );
+    }
+  };
+
   return (
     <div className={styles.login}>
       <h2>EXTRAVEL LOGIN</h2>
@@ -60,9 +125,12 @@ const Login = () => {
           >
             {/* 회원가입 화면 */}
             <form
+              action='/user/auth/Login'
               className={styles.form}
-              action='#'
               onSubmit={handleSubmit(onSubmit)}
+              //handleSubmit 메서드를 사용하여 폼 제출을 처리
+              //handleSubmit은 React Hook Form에서 제공하는 함수
+              //폼 제출 시 실행되어야 하는 함수를 감싸주는 역할
             >
               <button
                 className={styles.backButton}
@@ -106,9 +174,10 @@ const Login = () => {
                 >
                   <Grid item style={{ width: '100%' }}>
                     <Controller
-                      name='Name' // 컨트롤러의 이름
+                      name='name' // 컨트롤러의 이름
                       control={control} // useForm에서 제공하는 컨트롤 객체
                       defaultValue={''} // 초기 값
+                      {...register('name')}
                       rules={{
                         required: '이름은 필수값 입니다.', // 필수 입력 필드
                         maxLength: {
@@ -126,11 +195,10 @@ const Login = () => {
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Name'
+                          {...field} // 필드 프로퍼티들을 TextField로 전달
                           value={field.value} // 컨트롤러의 값
                           onChange={field.onChange} // 값이 변경될 때 호출되는 함수
-                          error={
-                            fieldState.error !== undefined // 오류 상태
-                          }
+                          error={!!fieldState.error}
                           helperText={
                             fieldState.error &&
                             fieldState.error.message // 오류 메시지
@@ -140,42 +208,9 @@ const Login = () => {
                     />
                   </Grid>
 
-                  {/*
-                  <Grid item style={{ width: '100%' }}> 
-                    <FormControl fullWidth>
-                      <InputLabel>Country</InputLabel>
-                      <Controller
-                        name='country'
-                        control={control}
-                        defaultValue={''}
-                        rules={{
-                          required: '국적을 선택해 주세요.',
-                        }}
-                        render={({ field }) => (
-                          <Select
-                            label='Country'
-                            value={field.value}
-                            onChange={field.onChange}
-                          >
-                            <MenuItem value='Korea'>
-                              한국
-                            </MenuItem>
-                            <MenuItem value='Japan'>
-                              일본
-                            </MenuItem>
-                            <MenuItem value='China'>
-                              중국
-                            </MenuItem>
-                          </Select>
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  */}
-
                   <Grid item style={{ width: '100%' }}>
                     <Controller
-                      name='phone'
+                      name='phoneNumber'
                       defaultValue={''}
                       control={control}
                       rules={{
@@ -194,11 +229,10 @@ const Login = () => {
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Phone Number'
+                          {...field}
                           value={field.value}
                           onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
+                          error={!!fieldState.error}
                           helperText={
                             fieldState.error &&
                             fieldState.error.message
@@ -217,22 +251,22 @@ const Login = () => {
                         pattern: {
                           value:
                             /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Invalid email address',
+                          message:
+                            '유효한 이메일 주소를 입력해주세요.',
                         },
                         minLength: {
                           value: 6,
                           message:
-                            'Email must be at least 6 characters',
+                            '이메일은 최소 6자리 이상이어야 합니다.',
                         },
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Email ID'
+                          {...field}
                           value={field.value}
                           onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
+                          error={!!fieldState.error}
                           helperText={
                             fieldState.error &&
                             fieldState.error.message
@@ -247,23 +281,23 @@ const Login = () => {
                       defaultValue={''}
                       control={control}
                       rules={{
-                        required: 'Password is required',
+                        required:
+                          '비밀번호를 입력해주세요.',
                         pattern: {
                           value:
                             /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
                           message:
-                            '영문 숫자 특수기호 조합 8자리 이상',
+                            '비밀번호는 영문 숫자 특수기호 조합 8자리 이상이어야 합니다',
                         },
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Password'
                           type='password'
+                          {...field}
                           value={field.value}
                           onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
+                          error={!!fieldState.error}
                           helperText={
                             fieldState.error &&
                             fieldState.error.message
@@ -279,20 +313,19 @@ const Login = () => {
                       control={control}
                       rules={{
                         required:
-                          'Password confirmation is required',
+                          '비밀번호 확인을 입력해주세요.',
                         validate: (value) =>
                           value === passwordValue ||
-                          'Passwords do not match',
+                          '비밀번호가 일치하지 않습니다.',
                       }}
                       render={({ field, fieldState }) => (
                         <TextField
                           label='Confirm Password'
                           type='password'
+                          {...field}
                           value={field.value}
                           onChange={field.onChange}
-                          error={
-                            fieldState.error !== undefined
-                          }
+                          error={!!fieldState.error}
                           helperText={
                             fieldState.error &&
                             fieldState.error.message
@@ -306,11 +339,17 @@ const Login = () => {
                       type='submit'
                       variant='contained'
                     >
-                      Submit
+                      가입하기
                     </Button>
                   </Grid>
                 </Grid>
               </Grid>
+              {isSubmitSuccessful && (
+                <p>Form submit successful.</p>
+              )}
+              {errors?.root?.server && (
+                <p>Form submit failed.</p>
+              )}
             </form>
           </div>
           {/* 로그인 화면 */}
@@ -415,5 +454,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
