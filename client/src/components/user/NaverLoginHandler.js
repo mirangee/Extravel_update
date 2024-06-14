@@ -15,6 +15,7 @@ const NaverLoginHandler = () => {
   //
   useEffect(() => {
     const NaverLogin = async () => {
+      console.log('code: ', code);
       const res = await fetch(
         REQUEST_URI + '/NaverLogin?code=' + code,
       );
