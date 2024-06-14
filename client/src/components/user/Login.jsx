@@ -18,7 +18,6 @@ import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
 import GoogleLogin from './GoogleLogin';
 
-
 const Login = () => {
   // const { register, handleSubmit } = useForm();
   const { control, handleSubmit, watch } = useForm({

@@ -34,7 +34,7 @@ private final MemberService memberService;
    
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
-        log.info("/api/auth/kakaoLogin - GET! code: {}", code);
+        log.info("/user/auth/kakaoLogin - GET! code: {}", code);
         memberService.kakaoService(code);
         return ResponseEntity.ok().body("ok");
     }

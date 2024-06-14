@@ -15,15 +15,14 @@ import NaverLoginHandler from './components/user/NaverLoginHandler';
 const App = () => {
   return (
     <>
-
       <AuthContextProvider>
         <Header />
         <Routes>
           <Route path='/' element={<MainIntro />} />
           <Route path='/login' element={<Login />} />
           <Route
-          path='/user/auth/naver'
-          element={<NaverLoginHandler />}
+            path='/user/auth/naver'
+            element={<NaverLoginHandler />}
           />
           <Route
             path='/oauth/kakao'
@@ -33,7 +32,6 @@ const App = () => {
         <Footer />
         <ScrollToTopButton />
       </AuthContextProvider>
-
     </>
   );
 };
