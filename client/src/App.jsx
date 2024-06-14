@@ -15,7 +15,7 @@ const App = () => {
         <Route path='/' element={<MainIntro />} />
         <Route path='/login' element={<Login />} />
         <Route
-          path='/oauth/naver'
+          path='/user/auth/naver'
           element={<NaverLoginHandler />}
         />
       </Routes>

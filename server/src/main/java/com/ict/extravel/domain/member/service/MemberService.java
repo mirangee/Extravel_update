@@ -2,6 +2,7 @@ package com.ict.extravel.domain.member.service;
 
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -14,26 +15,29 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Objects;
+
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
-    @Value("{NaverLogin.grant_type}")
-   private String grant_type;
-    @Value("{NaverLogin.client_id}")
-   private String client_id;
-    @Value("{NaverLogin.client_secret}")
-   private String client_secret;
-    @Value("{NaverLogin.client_state}")
+    @Value("${NaverLogin.client_id}")
+    private String client_id;
+    @Value("${NaverLogin.client_secret}")
+    private String client_secret;
+    @Value("${NaverLogin.state}")
     private String state;
 
 
 
   public void NaverLoginService(String code) {
-      String AccessToken = getNaverAccessToken(code);
-      log.info("token: {}", AccessToken);
+      String accessToken = getNaverAccessToken(code);
+      log.info("token: {}", accessToken);
 
-      NaverUserDTO naverUserInfo = getNaverUserInfo(AccessToken);
+      NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+
+
   }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -41,8 +45,8 @@ public class MemberService {
       String requestURI = "https://openapi.naver.com/v1/nid/me";
 
       HttpHeaders headers = new HttpHeaders();
-      headers.add("Authorization", "Bearer" + accessToken);
-      log.info("accessToken :{}",accessToken);
+      headers.add("Authorization", "Bearer " + accessToken);
+      log.info("accessToken: {}",accessToken);
 
       //요청보내기
       RestTemplate template = new RestTemplate();
@@ -61,14 +65,12 @@ public class MemberService {
 
         HttpHeaders headers = new HttpHeaders();
 
-
-
         MultiValueMap<String ,String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type","authorization_code");
-        params.add("client_id",client_id);
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
         params.add("client_secret", client_secret);
-        params.add("code",code);
-        params.add("state",state);
+        params.add("code", code);
+        params.add("state", state);
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(params,headers);
 
@@ -77,9 +79,9 @@ public class MemberService {
         ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
 
 
-        Map<String , Object> responseData =(Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터 :", responseData);
+        Map<String, Object> responseData =(Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
 
-        return (String) responseData.get("access_token");
+        return (String) Objects.requireNonNull(responseData).get("access_token");
     }
 }

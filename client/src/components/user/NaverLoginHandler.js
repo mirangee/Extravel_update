@@ -17,7 +17,7 @@ const NaverLoginHandler = () => {
     const NaverLogin = async () => {
       console.log('code: ', code);
       const res = await fetch(
-        REQUEST_URI + '/NaverLogin?code=' + code,
+        REQUEST_URI + '/naverlogin?code=' + code,
       );
     };
 
