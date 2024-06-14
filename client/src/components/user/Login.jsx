@@ -6,6 +6,7 @@ import kakaoCircle from '../../assets/img/kakao_circle.png';
 import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
+import GoogleLoginHandler from './GoogleLoginHandler';
 
 const Login = () => {
   // const { register, handleSubmit } = useForm();
@@ -57,7 +58,10 @@ const Login = () => {
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
+                <a
+                  className={styles.social}
+                  onClick={GoogleLoginHandler}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'
