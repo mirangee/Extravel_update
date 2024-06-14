@@ -14,11 +14,11 @@ import {
 
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
-import googleCircle from '../../assets/img/google_circle.png';
 
 import styles from '../../scss/Login.module.scss';
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+
+import { KAKAO_AUTH_URL } from '../../config/kakao-config';
+import GoogleLogin from './GoogleLogin';
 
 const Login = () => {
   const {
@@ -155,13 +155,7 @@ const Login = () => {
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
-                  <img
-                    className={styles.naverImg}
-                    alt='naverImg'
-                    src={googleCircle}
-                  />
-                </a>
+                <GoogleLogin />
               </div>
               <span className={styles.span}>
                 혹은 이메일을 사용하여 회원가입 하기
@@ -370,20 +364,17 @@ const Login = () => {
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
+                <a
+                  href={KAKAO_AUTH_URL}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'
                     src={kakaoCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
-                  <img
-                    className={styles.naverImg}
-                    alt='naverImg'
-                    src={googleCircle}
-                  />
-                </a>
+                <GoogleLogin />
               </div>
               <span className={styles.span}>
                 혹은 이메일로 로그인하기

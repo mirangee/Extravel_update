@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Builder
 @Table(name = "member")
@@ -53,5 +54,6 @@ public class Member {
     @Size(max = 50)
     @Column(name = "grade", length = 50)
     private String grade;
+
 
 }
