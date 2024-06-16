@@ -4,6 +4,7 @@ import com.ict.extravel.domain.nation.entity.Nation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "member")
 public class Member {
@@ -51,5 +53,6 @@ public class Member {
     @Size(max = 50)
     @Column(name = "grade", length = 50)
     private String grade;
+
 
 }

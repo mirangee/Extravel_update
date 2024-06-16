@@ -153,3 +153,5 @@ sketch
 
 # Spring boot
 application.yml
+
+.env
