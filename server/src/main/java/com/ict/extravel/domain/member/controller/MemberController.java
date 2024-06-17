@@ -1,11 +1,6 @@
 package com.ict.extravel.domain.member.controller;
 
-
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
-import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.service.MemberService;
 
 
 @RestController
-@Slf4j
-
 @RequestMapping("/user/auth")
 @RequiredArgsConstructor
 @Slf4j
