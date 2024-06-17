@@ -59,6 +59,9 @@ const Login = () => {
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
 
+  const sleep = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   // 회원가입 데이터 전송을 위한 핸들러
   const onSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
@@ -127,10 +130,10 @@ const Login = () => {
               action='/user/auth/Login'
               className={styles.form}
               onSubmit={handleSubmit(onSubmit)}
-              //handleSubmit 메서드를 사용하여 폼 제출을 처리
-              //handleSubmit은 React Hook Form에서 제공하는 함수
-              //폼 제출 시 실행되어야 하는 함수를 감싸주는 역할
             >
+              {/*handleSubmit 메서드를 사용하여 폼 제출을 처리
+              handleSubmit은 React Hook Form에서 제공하는 함수
+              폼 제출 시 실행되어야 하는 함수를 감싸주는 역할 */}
               <button
                 className={styles.backButton}
                 onClick={onClickBtn}
@@ -140,17 +143,23 @@ const Login = () => {
               <h1>회원가입 하기</h1>
               <div className={styles['social-container']}>
                 {/* 소셜 아이콘 (네이버, 카카오, 구글) */}
-                <a href='#' className={styles.social}>
+                <a
+                  href={NAVER_AUTH_URI}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
+                <a
+                  href={KAKAO_AUTH_URL}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
-                    alt='naverImg'
+                    alt='kakaoImg'
                     src={kakaoCircle}
                   />
                 </a>
@@ -372,7 +381,7 @@ const Login = () => {
                 >
                   <img
                     className={styles.naverImg}
-                    alt='naverImg'
+                    alt='kakaoImg'
                     src={kakaoCircle}
                   />
                 </a>
