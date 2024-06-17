@@ -1,0 +1,23 @@
+.scrollToTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 1000;
+}
+
+.topButton {
+  width: 60px;
+  height: 60px;
+  background-color: #ffffff; /* 갈색 배경색 */
+  color: #000000; /* 흰색 아이콘색 */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.topButton:hover {
+  opacity: 0.8;
+}

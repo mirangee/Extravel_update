@@ -1,0 +1,38 @@
+
+
+.section2 body {
+  position: relative;
+  height: 100%;
+}
+
+.section2 {
+  background: #275963;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding-top: 250px;
+}
+
+
+.section2Container {
+  padding-bottom: 300px;
+  // margin-bottom: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.countryCard {
+  border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 260px;
+}
+
+.flag {
+  width: 100px;
+  height: auto;
+}
