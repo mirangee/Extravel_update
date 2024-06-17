@@ -9,23 +9,105 @@ import {
   Container,
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const ExRateCard = ({ exChanges, type }) => {
+  const title = () => {
+    if (type === 'cur') {
+      return <div>현재 환율</div>;
+    } else if (type === 'week') {
+      return <div>일주일 환율 증감율</div>;
+    } else if (type === 'month') {
+      return <div>한달 환율 증감율</div>;
+    }
+  };
+  const exRate = () => {
+    if (type === 'cur') {
+      let cal =
+        exChanges.lastestCurEx - exChanges.lastestPreCurEx;
+      let percent = 0;
+      if (cal > 0) {
+        percent = (cal / exChanges.lastestPreCurEx) * 100;
 
-const ExRateCard = () => {
-  const [currentTime, setCurrentTime] = useState(
-    new Date(),
-  );
-  const [exchangeRate, setExchangeRate] = useState({
-    country: '한국',
-    rate: '1,200 원',
-  });
+        return (
+          <div style={{ color: 'red', marginTop: '5px' }}>
+            ▲ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else if (cal < 0) {
+        percent = (cal / exChanges.lastestCurEx) * 100;
+        return (
+          <div style={{ color: 'blue', marginTop: '5px' }}>
+            ▼ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else {
+        return (
+          <div style={{ color: 'gray', marginTop: '5px' }}>
+            -- 0.0 {percent}%
+          </div>
+        );
+      }
+    } else if (type === 'week') {
+      let cal =
+        exChanges.lastestCurEx -
+        exChanges.lastestWeekAverEx;
+      let percent = 0;
+      if (cal > 0) {
+        percent = (cal / exChanges.lastestCurEx) * 100;
+        return (
+          <div style={{ color: 'red' }}>
+            ▲ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else if (cal < 0) {
+        percent = (cal / exChanges.lastestWeekAverEx) * 100;
+        return (
+          <div style={{ color: 'blue' }}>
+            ▼ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else {
+        return (
+          <div style={{ color: 'gray' }}>
+            -- 0.0 {percent}%
+          </div>
+        );
+      }
+    } else if (type === 'month') {
+      let cal =
+        exChanges.lastestCurEx -
+        exChanges.lastestMonthAverEx;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+      let percent = 0;
+      if (cal > 0) {
+        percent = (cal / exChanges.lastestCurEx) * 100;
+        return (
+          <div style={{ color: 'red' }}>
+            ▲ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else if (cal < 0) {
+        percent =
+          (cal / exChanges.lastestMonthAverEx) * 100;
+        return (
+          <div style={{ color: 'blue' }}>
+            ▼ {Math.abs(cal).toFixed(2)}{' '}
+            {percent.toFixed(2)}%
+          </div>
+        );
+      } else {
+        return (
+          <div style={{ color: 'gray' }}>
+            -- 0.0 {percent}%
+          </div>
+        );
+      }
+    }
+  };
 
   const containerStyle = {
     boxShadow:
@@ -33,6 +115,8 @@ const ExRateCard = () => {
     width: '400px',
     marginTop: '70px',
     borderRadius: '10px',
+    display: 'flex',
+    flexDirection: 'column',
   };
 
   const noBorderStyle = {
@@ -46,23 +130,24 @@ const ExRateCard = () => {
 
   const textCenterStyle = {};
 
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(
-      2,
-      '0',
-    );
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(
-      2,
-      '0',
-    );
-    const seconds = String(date.getSeconds()).padStart(
-      2,
-      '0',
-    );
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  const formatDate = () => {
+    let date = '';
+    if (type === 'cur') {
+      date = exChanges.lastestCurDate;
+      return <div>{date} 기준 </div>;
+    } else if (type === 'week') {
+      date =
+        exChanges.lastestWeekDate +
+        ' ~ ' +
+        exChanges.lastestWeekEndDate;
+      return <div>{date}</div>;
+    } else if (type === 'month') {
+      date =
+        exChanges.lastestMonthDate +
+        ' ~ ' +
+        exChanges.lastestMonthEndDate;
+      return <div>{date}</div>;
+    }
   };
 
   return (
@@ -77,7 +162,7 @@ const ExRateCard = () => {
               fontSize: '19px',
             }}
           >
-            현재 환율
+            {title()}
           </h2>
         </Col>
       </Row>
@@ -89,12 +174,26 @@ const ExRateCard = () => {
                 tag='h5'
                 style={{
                   fontWeight: 'bold',
-                  fontSize: '36px',
+                  fontSize:
+                    type === 'cur' ? '19px' : '30px',
                   width: '600px',
                   height: '20px',
+                  display: 'flex',
                 }}
               >
-                {exchangeRate.rate}
+                {type === 'cur' ? (
+                  <div
+                    style={{
+                      marginRight: '20px',
+                      fontSize: '30px',
+                    }}
+                  >
+                    {exChanges.lastestCurEx} 원
+                  </div>
+                ) : (
+                  ''
+                )}
+                {exRate()}
               </CardTitle>
             </CardBody>
           </Card>
@@ -107,9 +206,10 @@ const ExRateCard = () => {
               style={{
                 paddingRight: '20px',
                 width: '600px',
+                color: 'gray',
               }}
             >
-              <CardText>{formatDate(currentTime)}</CardText>
+              <CardText>{formatDate()}</CardText>
             </CardBody>
           </Card>
         </Col>
