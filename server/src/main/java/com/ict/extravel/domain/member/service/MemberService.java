@@ -36,8 +36,6 @@ public class MemberService {
     private final NationRepository nationRepository;
     private final PasswordEncoder passwordEncoder;
 
-    
-
     // naver login
     @Value("${NaverLogin.client_id}")
     private String client_id;
@@ -46,8 +44,6 @@ public class MemberService {
     @Value("${NaverLogin.state}")
     private String state;
 
-    private final MemberRepository memberRepository;
-    private final TokenProvider tokenProvider;
 
     // kakao login
     @Value("${kakao.client_id}")
