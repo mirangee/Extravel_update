@@ -1,21 +1,20 @@
 package com.ict.extravel.domain.member.controller;
 
-import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
-import com.ict.extravel.domain.member.service.MemberService;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-import com.ict.extravel.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +29,6 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-
-
-
-
 
     //자체 회원가입 처리
     @PostMapping("/signup")
@@ -56,24 +51,19 @@ public class MemberController {
         }
     }
 
-//    @PostMapping("/siginin")
-//    public ResponseEntity<?> signIn(
-//            @Validated @RequestBody LoginRequestDTO dto,
-//            BindingResult result
-//    ) {
-//        log.info("/api/auth/signin - POST - {}", dto);
-//
-//
-//    }
 
-
+    @GetMapping("/naverlogin")
+    public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
+          log.info("/user/auth/naver- Get code : {}", code);
+          memberService.NaverLoginService(code);
+        return null;
+    }
 
    
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
-        log.info("/api/auth/kakaoLogin - GET! code: {}", code);
+        log.info("/user/auth/kakaoLogin - GET! code: {}", code);
         memberService.kakaoService(code);
-
         return ResponseEntity.ok().body("ok");
     }
 
