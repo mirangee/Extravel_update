@@ -11,6 +11,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.entity.Member;
+import com.ict.extravel.domain.member.repository.MemberRepository;
+import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.nation.repository.NationRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -22,6 +32,11 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+    private final MemberRepository memberRepository;
+    private final NationRepository nationRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -72,6 +87,20 @@ public class MemberService {
         return responseData;
     }
 
+
+    public MemberSignUpResponseDTO create(final MemberSignUpRequestDTO dto) throws Exception {
+
+        String encoded = passwordEncoder.encode(dto.getPassword());
+        dto.setPassword(encoded);
+        Nation us = nationRepository.findById("US").orElseThrow();
+        Member saved = memberRepository.save(dto.toEntity(us));
+        log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
+
+        return new MemberSignUpResponseDTO(saved);
+
+    }
+
+    
 
     public boolean isDuplicate(String email) {
         if(memberRepository.existsByEmail(email)) {
