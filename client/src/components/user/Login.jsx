@@ -74,9 +74,6 @@ const Login = () => {
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
 
-  const sleep = (ms) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   //setTimeout 함수를 사용하여 일정 시간(ms) 동안 대기한 후, resolve 콜백을 호출하여 Promise 처리
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));

@@ -36,10 +36,6 @@ import com.ict.extravel.domain.member.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
-private final MemberService memberService;
-
-
-
 
 
 

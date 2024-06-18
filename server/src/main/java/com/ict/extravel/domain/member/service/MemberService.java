@@ -217,31 +217,6 @@ public class MemberService {
 
     }
 
-    private String getNaverAccessToken(String code) {
-
-        String requestURI = "https://nid.naver.com/oauth2.0/token";
-
-        HttpHeaders headers = new HttpHeaders();
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("client_secret", client_secret);
-        params.add("code", code);
-        params.add("state", state);
-
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
-
-        RestTemplate template = new RestTemplate();
-
-        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-
-
-        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터: {}", responseData);
-
-        return (String) Objects.requireNonNull(responseData).get("access_token");
-    }
 
     public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
 
