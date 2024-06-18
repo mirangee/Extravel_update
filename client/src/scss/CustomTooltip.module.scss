@@ -1,0 +1,33 @@
+.toolBox {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+.tooltip {
+  padding: 10px;
+}
+.tooltipDate {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 2px;
+}
+.tooltipRate {
+  font-size: 12px;
+  margin: 2px;
+}
+
+:root {
+  --color: gray;
+}
+.diff {
+  color: var(--color);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.diffBox {
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  margin: 2px;
+}

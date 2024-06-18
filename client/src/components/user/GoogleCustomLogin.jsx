@@ -40,7 +40,6 @@ const GoogleCustomLogin = () => {
           width: '40px',
           height: '40px',
           borderRadius: '100%',
-          display: 'inline',
           margin: '0 5px',
           cursor: 'pointer',
         }}

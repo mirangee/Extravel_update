@@ -224,6 +224,7 @@
 
 .social-container {
   margin: 20px 0;
+  display: flex;
 }
 
 .social-container a img {
@@ -251,6 +252,24 @@ footer {
   right: 0;
 }
 
-.backButton {
-
+.login .backButton {
+  position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #333;
+    z-index: 10; /* 다른 요소들보다 위에 표시되도록 설정 */
+    width: 40px; /* 버튼의 너비 */
+    height: 40px; /* 버튼의 높이 */
+    display: flex; /* 내부 아이콘을 중앙에 정렬하기 위해 */
+    justify-content: center; /* 내부 아이콘을 중앙에 정렬하기 위해 */
+    align-items: center; /* 내부 아이콘을 중앙에 정렬하기 위해 */
+    border-radius: 10%; /* 버튼을 동그랗게 만드는 속성 */
+    transition: background-color 0.3s ease; /* 배경색 변화에 애니메이션 적용 */
+}
+.backButton:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* 마우스 호버 시 배경색 변경 */
 }
