@@ -82,47 +82,47 @@ const Login = () => {
   const handleSignUpSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
     const { passwordConfirm, ...submitData } = data;
-    console.log(submitData);
-    await sleep(2000);
+    console.log(
+      'handleSignUpSubmit data 넘어옴: ',
+      submitData,
+    );
 
     try {
+      // 중복이 아니면 회원가입 요청 보내기
+      await sleep(2000); // 임시 대기
+
       // 서버에 회원가입 요청을 보내는 fetch API 호출
       const response = await fetch(
         'http://localhost:8181/user/auth/signup',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(submitData), // 폼에서 수집한 데이터를 JSON 형태로 변환(passwordConfirm 제외)
+          body: JSON.stringify(submitData), // 회원가입 데이터 전송
         },
       );
 
       if (!response.ok) {
-        // 서버가 2xx 외의 상태 코드를 반환하면 오류 처리
         throw new Error(
           '서버가 올바르게 응답하지 않았습니다.',
         );
       }
 
-      // 서버에서 받은 응답을 JSON 형태로 파싱
       const result = await response.json();
 
-      response.url.includes('signup');
-      // 회원가입 성공 시 사용자에게 알림 및 페이지 이동
+      // 회원가입 성공 처리
       alert(
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
       navigate('/'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
-      console.error(
-        '회원가입 또는 로그인 요청 중 오류 발생:',
-        error,
-      );
+      console.error('회원가입 중 오류 발생:', error);
       alert(
-        '회원가입 또는 로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
+        '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.',
       );
     }
   };
 
+  //로그인 데이터 전송
   const fetchLogin = async (data) => {
     try {
       console.log('fetchLogin data = ', data);
@@ -145,6 +145,7 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
+  //로그인 핸들러
   const handleLoginSubmit = async () => {
     try {
       // const { passwordConfirm, ...submitData } = data;
@@ -168,6 +169,36 @@ const Login = () => {
         error,
       );
       alert(error.message); // 오류 메시지를 사용자에게 알림
+    }
+  };
+
+  const fetchDuplicateCheck = async (email) => {
+    try {
+      if (!email || email.trim() === '') {
+        alert('이메일을 입력해주세요.');
+        return false; // 이메일이 비어 있으면 false 반환
+      }
+
+      console.log('axios fetchDuplicateChec 시작한다!', {
+        email,
+      });
+      const res = await axios.post(
+        'http://localhost:8181/user/auth/check',
+        { email },
+      );
+
+      console.log('check로 데이터 전송');
+      if (res.data) {
+        alert('이미 등록된 이메일입니다.');
+        return true; // 중복된 이메일이면 true 반환
+      } else {
+        alert('사용가능한 이메일 입니다.');
+        return false; // 중복되지 않은 이메일이면 false 반환
+      }
+    } catch (error) {
+      console.error('fetchDuplicateCheck 오류:', error);
+      // 에러 처리 - 필요에 따라 추가
+      throw error; // 상위 호출자에게 에러를 전파
     }
   };
 
@@ -236,7 +267,7 @@ const Login = () => {
                       name='name' // 컨트롤러의 이름
                       control={signUpControl} // useForm에서 제공하는 컨트롤 객체
                       defaultValue={''} // 초기 값
-                      {...signUpRegister('name')}
+                      {...signUpRegister('name')} //@@@
                       rules={{
                         required: '이름은 필수값 입니다.', // 필수 입력 필드
                         maxLength: {
@@ -320,20 +351,34 @@ const Login = () => {
                         },
                       }}
                       render={({ field, fieldState }) => (
-                        <TextField
-                          label='Email ID'
-                          {...field}
-                          value={field.value}
-                          onChange={field.onChange}
-                          error={!!fieldState.error}
-                          helperText={
-                            fieldState.error &&
-                            fieldState.error.message
-                          }
-                        />
+                        <>
+                          <TextField
+                            label='Email ID'
+                            {...field}
+                            value={field.value}
+                            onChange={field.onChange}
+                            error={!!fieldState.error}
+                            helperText={
+                              fieldState.error &&
+                              fieldState.error.message
+                            }
+                          />
+                          <button
+                            className={styles.CheckButton}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              fetchDuplicateCheck(
+                                field.value,
+                              );
+                            }}
+                          >
+                            버튼1
+                          </button>
+                        </>
                       )}
                     />
                   </Grid>
+
                   <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='password'

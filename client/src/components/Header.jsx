@@ -87,6 +87,7 @@ const Header = () => {
         alt='Logo'
         className={styles.logo}
       />
+      <div>~님 환영합니다</div>
       <nav className={styles.nav}>
         <ul className={styles.menu}>
           <li>

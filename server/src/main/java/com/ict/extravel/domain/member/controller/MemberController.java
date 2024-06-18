@@ -28,6 +28,8 @@ import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.service.MemberService;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/user/auth")
@@ -38,6 +40,19 @@ public class MemberController {
     private final MemberService memberService;
 
 
+    //자체 회원가입 이메일 중복체크
+    @PostMapping("/check")
+    public ResponseEntity<?> check(@RequestBody Map<String, String> data){
+        String email = data.get("email");
+        log.info("이메일 값 받아옴: {}", email);
+        if (email.trim().isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body("존재하지 않는 이메일입니다.");
+        }
+        boolean resultFlag = memberService.isDuplicate(email);
+        log.info("이 이메일은 {} 합니다",resultFlag);
+        return ResponseEntity.ok().body(resultFlag);
+    }
 
     //자체 회원가입 처리
     @PostMapping("/signup")

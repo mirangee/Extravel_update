@@ -56,10 +56,45 @@ public class MemberService {
     @Value("${kakao.client_secret}")
     private String KAKAO_CLIENT_SECRET;
 
+
+
+    //자체 로그인
+    public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
+
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
+        //RuntimeException 발생시 GlobalExceptionHandler가 처리
+
+        // 패스워드 검증
+        String rawPassword = dto.getPassword(); // 입력한 비번
+        String encodedPassword = member.getPassword(); // DB에 저장된 암호화된 비번
+
+        //암호화된 비밀번호, 生비번 비교
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new RuntimeException("비밀번호가 틀렸습니다.");
+        }
+
+        log.info("{}님 로그인 성공!", member.getName());
+
+        memberRepository.save(member);
+
+        return new LoginResponseDTO(member);
+    }
+
+    //자체 회원가입
     public MemberSignUpResponseDTO create(final MemberSignUpRequestDTO dto) throws Exception {
 
+        String email = dto.getEmail();
+
+        if (isDuplicate(email)) {
+            throw new RuntimeException("중복된 이메일 입니다.");
+        }
+
+        // 패스워드 인코딩
         String encoded = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encoded);
+
+        // dto를 Entity로 변환해서 저장.
         Nation us = nationRepository.findById("US").orElseThrow();
         Member saved = memberRepository.save(dto.toEntity(us));
         log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
@@ -69,8 +104,10 @@ public class MemberService {
     }
 
 
+    //이메일 중복검사
     public boolean isDuplicate(String email) {
         if(memberRepository.existsByEmail(email)) {
+            log.warn("이메일이 중복되었습니다. - {}", email);
             return true;
         }   else return false;
     }
@@ -218,27 +255,6 @@ public class MemberService {
     }
 
 
-    public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
-
-        Member member = memberRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
-        //RuntimeException 발생시 GlobalExceptionHandler가 처리
-
-        // 패스워드 검증
-        String rawPassword = dto.getPassword(); // 입력한 비번
-        String encodedPassword = member.getPassword(); // DB에 저장된 암호화된 비번
-
-        //암호화된 비밀번호, 生비번 비교
-        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new RuntimeException("비밀번호가 틀렸습니다.");
-        }
-
-        log.info("{}님 로그인 성공!", member.getName());
-
-        memberRepository.save(member);
-
-        return new LoginResponseDTO(member);
-    }
 }
 
 
