@@ -155,6 +155,3 @@ sketch
 application.yml
 
 .env
-
-# Ignore .idea folder in branch folder
-Extravel/**/.idea/
