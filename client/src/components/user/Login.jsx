@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Button,
-  Grid,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
@@ -18,15 +14,37 @@ import styles from '../../scss/Login.module.scss';
 import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
 import GoogleLogin from './GoogleLogin';
+import axios from 'axios';
+import AuthContext from '../../utils/AuthContext';
+
+import {
+  API_BASE_URL as BASE,
+  USER,
+} from '../../config/host-config';
 
 const Login = () => {
+  const REQUEST_URL = BASE + USER + '/signin';
+
   const {
-    control,
-    handleSubmit,
+    control: signUpControl,
+    handleSubmit: onSubmitSignUp,
     watch,
-    formState: { isSubmitSuccessful, errors },
-    formState,
-    register,
+    formState: {
+      isSubmitSuccessful: isSignUpSuccessful,
+      errors: signUpErrors,
+    },
+    register: signUpRegister,
+  } = useForm({
+    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
+  });
+
+  const {
+    handleSubmit: onSubmitLogin,
+    formState: {
+      isSubmitSuccessful: isLoginSuccessful,
+      errors: loginErrors,
+    },
+    register: loginRegister,
   } = useForm({
     mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
   });
@@ -39,9 +57,6 @@ const Login = () => {
   const onClickBtn = () => {
     navigate(-1); // 바로 이전 페이지로 이동, '/main' 등 직접 지정도 당연히 가능
   };
-
-  // 폼이 제출되었을 때 호출되는 함수
-  // const onSubmit = (data) => console.log(data);
 
   // 'isRightPanelActive' 상태는 패널이 활성화되어 있는지 체크
   const [isRightPanelActive, setIsRightPanelActive] =
@@ -59,11 +74,12 @@ const Login = () => {
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
 
+  //setTimeout 함수를 사용하여 일정 시간(ms) 동안 대기한 후, resolve 콜백을 호출하여 Promise 처리
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
   // 회원가입 데이터 전송을 위한 핸들러
-  const onSubmit = async (data) => {
+  const handleSignUpSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
     const { passwordConfirm, ...submitData } = data;
     console.log(submitData);
@@ -90,19 +106,12 @@ const Login = () => {
       // 서버에서 받은 응답을 JSON 형태로 파싱
       const result = await response.json();
 
-      if (response.url.includes('signup')) {
-        // 회원가입 성공 시 사용자에게 알림 및 페이지 이동
-        alert(
-          `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
-        );
-        navigate('/'); // 회원가입 후 메인 페이지로 이동
-      } else if (response.url.includes('login')) {
-        // 로그인 성공 시 사용자에게 알림 및 페이지 이동
-        alert(
-          `${result.name}님 로그인이 성공적으로 완료되었습니다.`,
-        );
-        navigate('/main'); // 로그인 후 메인 페이지로 이동
-      }
+      response.url.includes('signup');
+      // 회원가입 성공 시 사용자에게 알림 및 페이지 이동
+      alert(
+        `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
+      );
+      navigate('/'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error(
         '회원가입 또는 로그인 요청 중 오류 발생:',
@@ -111,6 +120,54 @@ const Login = () => {
       alert(
         '회원가입 또는 로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
       );
+    }
+  };
+
+  const fetchLogin = async (data) => {
+    try {
+      console.log('fetchLogin data = ', data);
+      const res = await axios.post(REQUEST_URL, data);
+      return res.data; // 서버 응답 데이터 반환
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생:', error);
+      throw new Error(
+        '로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
+      );
+    }
+  };
+
+  const onChangeEmailHandler = (e) => {
+    // console.log(e.target.value);
+    setEmail(e.target.value);
+  };
+
+  const onChangePasswordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleLoginSubmit = async () => {
+    try {
+      // const { passwordConfirm, ...submitData } = data;
+      console.log('로그인 데이터 넘어옴', email, password);
+      const data = {
+        email,
+        password,
+      };
+
+      // 서버로 로그인 요청
+      const response = await fetchLogin(data);
+      console.log(response);
+
+      // 성공적으로 로그인된 경우 처리
+      alert(`${response.name}님 환영합니다!!! ^^`);
+
+      // 필요에 따라 로그인 후 처리할 로직 추가
+    } catch (error) {
+      console.error(
+        '로그인 요청 처리 중 오류 발생:',
+        error,
+      );
+      alert(error.message); // 오류 메시지를 사용자에게 알림
     }
   };
 
@@ -129,7 +186,7 @@ const Login = () => {
             <form
               action='/user/auth/Login'
               className={styles.form}
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={onSubmitSignUp(handleSignUpSubmit)}
             >
               {/*handleSubmit 메서드를 사용하여 폼 제출을 처리
               handleSubmit은 React Hook Form에서 제공하는 함수
@@ -177,9 +234,9 @@ const Login = () => {
                   <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='name' // 컨트롤러의 이름
-                      control={control} // useForm에서 제공하는 컨트롤 객체
+                      control={signUpControl} // useForm에서 제공하는 컨트롤 객체
                       defaultValue={''} // 초기 값
-                      {...register('name')}
+                      {...signUpRegister('name')}
                       rules={{
                         required: '이름은 필수값 입니다.', // 필수 입력 필드
                         maxLength: {
@@ -214,7 +271,7 @@ const Login = () => {
                     <Controller
                       name='phoneNumber'
                       defaultValue={''}
-                      control={control}
+                      control={signUpControl}
                       rules={{
                         required:
                           '전화번호를 입력해주세요.',
@@ -246,7 +303,7 @@ const Login = () => {
                   <Grid item style={{ width: '100%' }}>
                     <Controller
                       name='email'
-                      control={control}
+                      control={signUpControl}
                       defaultValue={''}
                       rules={{
                         required: '이메일을 입력해주세요.',
@@ -281,7 +338,7 @@ const Login = () => {
                     <Controller
                       name='password'
                       defaultValue={''}
-                      control={control}
+                      control={signUpControl}
                       rules={{
                         required:
                           '비밀번호를 입력해주세요.',
@@ -312,7 +369,7 @@ const Login = () => {
                     <Controller
                       name='passwordConfirm'
                       defaultValue={''}
-                      control={control}
+                      control={signUpControl}
                       rules={{
                         required:
                           '비밀번호 확인을 입력해주세요.',
@@ -341,15 +398,15 @@ const Login = () => {
                       type='submit'
                       variant='contained'
                     >
-                      가입하기
+                      가입하기1
                     </Button>
                   </Grid>
                 </Grid>
               </Grid>
-              {isSubmitSuccessful && (
+              {isSignUpSuccessful && (
                 <p>Form submit successful.</p>
               )}
-              {errors?.root?.server && (
+              {signUpErrors?.root?.server && (
                 <p>Form submit failed.</p>
               )}
             </form>
@@ -359,8 +416,8 @@ const Login = () => {
             className={`${styles['form-container']} ${styles['sign-in-container']}`}
           >
             <form
-              action='#'
-              onSubmit={handleSubmit(onSubmit)}
+              action='/user/auth/Login'
+              onSubmit={onSubmitLogin(handleLoginSubmit)}
             >
               <h1>Sign in</h1>
               <div className={styles['social-container']}>
@@ -394,18 +451,23 @@ const Login = () => {
                 className={styles.input1}
                 type='email'
                 placeholder='Email'
+                onChange={onChangeEmailHandler}
               />
               <input
                 className={styles.input1}
                 type='password'
                 placeholder='Password'
+                onChange={onChangePasswordHandler}
               />
               <a className={styles.a} href='#'>
                 비밀번호를 잊으셨나요?
               </a>
-              <button className={styles.button}>
-                로그인
-              </button>
+              <Button
+                className={styles.button}
+                type='submit'
+              >
+                로그인1
+              </Button>
             </form>
           </div>
           <div className={styles['overlay-container']}>

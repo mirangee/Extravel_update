@@ -1,19 +1,23 @@
 package com.ict.extravel.domain.member.controller;
 
+
+import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.service.MemberService;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
-import com.ict.extravel.domain.member.service.MemberService;
 
 
 @RestController
@@ -45,6 +49,28 @@ public class MemberController {
         }
     }
 
+    //자체 로그인
+    @PostMapping("/signin")
+    public ResponseEntity<?> signIn(
+            @Validated @RequestBody LoginRequestDTO dto,
+            BindingResult result) {
+        log.info("/api/auth/signin - POST - {}", dto);
+
+        ResponseEntity<FieldError> response = getFieldErrorResponseEntity(result);
+        if (response != null) return response;
+
+        LoginResponseDTO responseDTO = memberService.authenticate(dto);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
+    private static ResponseEntity<FieldError> getFieldErrorResponseEntity(BindingResult result) {
+        if (result.hasErrors()) {
+            log.warn(result.toString());
+            return ResponseEntity.badRequest()
+                    .body(result.getFieldError());
+        }
+        return null;
+    }
 
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
@@ -52,7 +78,6 @@ public class MemberController {
           memberService.NaverLoginService(code);
         return null;
     }
-
    
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {

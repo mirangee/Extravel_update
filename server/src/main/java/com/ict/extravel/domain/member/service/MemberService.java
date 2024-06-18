@@ -1,7 +1,9 @@
 package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
+import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
+import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.global.auth.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -211,8 +213,32 @@ public class MemberService {
         // 여러가지 데이터 중 access_token이라는 이름의 데이터를 리턴
         // Object를 String으로 형 변환해서 리턴.
         return (String) responseData.get("access_token");
+
+
     }
 
+
+    public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
+
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
+        //RuntimeException 발생시 GlobalExceptionHandler가 처리
+
+        // 패스워드 검증
+        String rawPassword = dto.getPassword(); // 입력한 비번
+        String encodedPassword = member.getPassword(); // DB에 저장된 암호화된 비번
+
+        //암호화된 비밀번호, 生비번 비교
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new RuntimeException("비밀번호가 틀렸습니다.");
+        }
+
+        log.info("{}님 로그인 성공!", member.getName());
+
+        memberRepository.save(member);
+
+        return new LoginResponseDTO(member);
+    }
 }
 
 
