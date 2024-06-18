@@ -20,28 +20,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.service.MemberService;
 
 
 @RestController
-
 @RequestMapping("/user/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
 
-
+    private final MemberService memberService;
 private final MemberService memberService;
 
-    @GetMapping("/naverlogin")
-    public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
-          log.info("/user/auth/naver- Get code : {}", code);
-          memberService.NaverLoginService(code);
-        return null;
-    }
+
 
 
 
@@ -90,6 +87,12 @@ private final MemberService memberService;
         return null;
     }
 
+    @GetMapping("/naverlogin")
+    public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
+          log.info("/user/auth/naver- Get code : {}", code);
+          memberService.NaverLoginService(code);
+        return null;
+    }
    
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {

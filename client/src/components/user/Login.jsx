@@ -10,7 +10,6 @@ import { Button, Grid, TextField } from '@mui/material';
 
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
-
 import styles from '../../scss/Login.module.scss';
 import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
@@ -74,6 +73,9 @@ const Login = () => {
 
   // watch를 사용해 password 필드의 값을 추적
   const passwordValue = watch('password');
+
+  const sleep = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   //setTimeout 함수를 사용하여 일정 시간(ms) 동안 대기한 후, resolve 콜백을 호출하여 Promise 처리
   const sleep = (ms) =>
@@ -188,10 +190,10 @@ const Login = () => {
               action='/user/auth/Login'
               className={styles.form}
               onSubmit={onSubmitSignUp(handleSignUpSubmit)}
-              //handleSubmit 메서드를 사용하여 폼 제출을 처리
-              //handleSubmit은 React Hook Form에서 제공하는 함수
-              //폼 제출 시 실행되어야 하는 함수를 감싸주는 역할
             >
+              {/*handleSubmit 메서드를 사용하여 폼 제출을 처리
+              handleSubmit은 React Hook Form에서 제공하는 함수
+              폼 제출 시 실행되어야 하는 함수를 감싸주는 역할 */}
               <button
                 className={styles.backButton}
                 onClick={onClickBtn}
@@ -201,17 +203,23 @@ const Login = () => {
               <h1>회원가입 하기</h1>
               <div className={styles['social-container']}>
                 {/* 소셜 아이콘 (네이버, 카카오, 구글) */}
-                <a href='#' className={styles.social}>
+                <a
+                  href={NAVER_AUTH_URI}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
                     alt='naverImg'
                     src={naverCircle}
                   />
                 </a>
-                <a href='#' className={styles.social}>
+                <a
+                  href={KAKAO_AUTH_URL}
+                  className={styles.social}
+                >
                   <img
                     className={styles.naverImg}
-                    alt='naverImg'
+                    alt='kakaoImg'
                     src={kakaoCircle}
                   />
                 </a>
@@ -433,7 +441,7 @@ const Login = () => {
                 >
                   <img
                     className={styles.naverImg}
-                    alt='naverImg'
+                    alt='kakaoImg'
                     src={kakaoCircle}
                   />
                 </a>

@@ -11,10 +11,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Entity
 @Table(name = "member")
 public class Member {
     @Id
