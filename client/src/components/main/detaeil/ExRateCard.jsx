@@ -111,7 +111,7 @@ const ExRateCard = ({ exChanges, type }) => {
 
   const containerStyle = {
     boxShadow:
-      '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+      '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
     width: '400px',
     marginTop: '70px',
     borderRadius: '10px',

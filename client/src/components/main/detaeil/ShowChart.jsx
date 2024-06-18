@@ -13,10 +13,12 @@ import Styles from '../../../scss/ShowChart.module.scss';
 
 const ShowChart = () => {
   const [data, setData] = useState({});
-
+  const [curRate, setCurRate] = useState(0);
+  const nation = 'HK';
   const axiosInstance = axios.create({
     baseURL:
-      'http://localhost:8181/api/rate/week/showchart',
+      'http://localhost:8181/api/rate/week/showchart?nation=' +
+      nation,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -24,6 +26,7 @@ const ShowChart = () => {
   useEffect(() => {
     axiosInstance.get().then((res) => {
       setData(res.data);
+      setCurRate(res.data[0].curRate);
     });
   }, []);
 
@@ -77,7 +80,7 @@ const ShowChart = () => {
             fontSize: '12px',
             fontWeight: 'bold',
           }}
-          content={<CustomTooltip curRate={1300} />}
+          content={<CustomTooltip curRate={curRate} />}
         />
       </AreaChart>
     </div>

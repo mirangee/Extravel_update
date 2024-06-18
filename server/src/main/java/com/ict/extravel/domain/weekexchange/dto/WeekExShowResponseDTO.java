@@ -22,4 +22,5 @@ public class WeekExShowResponseDTO {
     private LocalDate endDate;
     private String calDate;
     private BigDecimal averRate;
+    private BigDecimal curRate;
 }

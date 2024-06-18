@@ -51,12 +51,13 @@
 
   .countrySelect {
     padding: 5px;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
     color: black;
     border-radius: 4px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
   }
 
@@ -66,14 +67,16 @@
   }
 
   .flag {
-    width: 10px;
+    width: 25px;
     height: auto;
     margin-right: 10px;
+    text-align: center;
   }
 }
 
 // src/scss/Header.scss
 .countrySelect {
+  width: 200px;
   .reactSelect__control {
     border: none;
     box-shadow: none;

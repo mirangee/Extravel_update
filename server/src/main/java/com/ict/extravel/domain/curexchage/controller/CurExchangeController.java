@@ -20,7 +20,6 @@ public class CurExchangeController {
 
     @GetMapping
     public ResponseEntity<?> nationDateExchangeData(String nation) {
-        System.out.println("ㅎㅇ");
         NationDateExchangeDataResponseDTO nationDateExchangeData = curExchangeService.getNationDateExchangeData(nation);
         return ResponseEntity.ok(nationDateExchangeData);
 
