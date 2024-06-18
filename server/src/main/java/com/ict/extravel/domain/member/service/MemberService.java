@@ -16,12 +16,8 @@ import org.springframework.http.ResponseEntity;
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.entity.Member;
-import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -37,8 +33,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-    
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -47,6 +41,7 @@ public class MemberService {
     private String client_secret;
     @Value("${NaverLogin.state}")
     private String state;
+
 
     // kakao login
     @Value("${kakao.client_id}")
@@ -117,6 +112,8 @@ public class MemberService {
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+
+
     }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -138,33 +135,26 @@ public class MemberService {
         return responseData;
     }
 
-    private String getNaverAccessToken(String code) {
 
-        String requestURI = "https://nid.naver.com/oauth2.0/token";
+    public MemberSignUpResponseDTO create(final MemberSignUpRequestDTO dto) throws Exception {
 
-        HttpHeaders headers = new HttpHeaders();
+        String encoded = passwordEncoder.encode(dto.getPassword());
+        dto.setPassword(encoded);
+        Nation us = nationRepository.findById("US").orElseThrow();
+        Member saved = memberRepository.save(dto.toEntity(us));
+        log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("client_secret", client_secret);
-        params.add("code", code);
-        params.add("state", state);
+        return new MemberSignUpResponseDTO(saved);
 
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
-
-        RestTemplate template = new RestTemplate();
-
-        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-
-
-        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터: {}", responseData);
-
-        return (String) Objects.requireNonNull(responseData).get("access_token");
     }
 
 
+
+    public boolean isDuplicate(String email) {
+        if(memberRepository.existsByEmail(email)) {
+            return true;
+        }   else return false;
+    }
 
     public void kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
@@ -178,7 +168,9 @@ public class MemberService {
 
         System.out.println(userDTO);
 
+
     }
+
 
     private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
         // 요청 uri
@@ -252,6 +244,32 @@ public class MemberService {
         return (String) responseData.get("access_token");
 
 
+    }
+
+    private String getNaverAccessToken(String code) {
+
+        String requestURI = "https://nid.naver.com/oauth2.0/token";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
+        params.add("client_secret", client_secret);
+        params.add("code", code);
+        params.add("state", state);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
+
+
+        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
+
+        return (String) Objects.requireNonNull(responseData).get("access_token");
     }
 
 

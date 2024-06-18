@@ -3,14 +3,17 @@ package com.ict.extravel.domain.curexchage.entity;
 import com.ict.extravel.domain.currency.entity.Currency;
 import com.ict.extravel.domain.nation.entity.Nation;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "current_exchange_rate")
 public class CurrentExchangeRate {

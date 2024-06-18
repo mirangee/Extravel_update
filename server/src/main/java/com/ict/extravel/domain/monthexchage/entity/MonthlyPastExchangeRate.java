@@ -23,11 +23,11 @@ public class MonthlyPastExchangeRate {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "nation_code")
     private Nation nationCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "currency_code")
     private Currency currencyCode;
 
