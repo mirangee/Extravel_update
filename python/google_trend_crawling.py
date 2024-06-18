@@ -38,8 +38,8 @@ for name, code  in zip(nation_name, nation_code):
         total_searches = 0
 
     # sql을 문자열로 작성하고 변수가 들어갈 위치를 %s, %d 등으로 표현
-    query = 'INSERT INTO search_trend (nation_code, nation_name, total_searches) VALUES(%s, %s, %s)' #정수는 %d로 세팅
-    values = (code, name, str(total_searches))
+    query = 'UPDATE search_trend SET total_searches = %s WHERE nation_code = %s' 
+    values = (str(total_searches), code)
 
     # 쿼리 실행
     mycursor.execute(query, values)
