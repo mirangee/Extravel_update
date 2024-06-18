@@ -53,7 +53,7 @@ public class YoutubeController {
         String part = "snippet";
         String type = "video";
         String maxResult = "3";
-        String q = "에스파";
+        String q = "japan";
 
 
         UriComponentsBuilder search = UriComponentsBuilder.fromHttpUrl(apiUrl)
