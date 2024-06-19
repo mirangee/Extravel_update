@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = React.createContext({
   inLoggedIn: false,
@@ -14,6 +16,7 @@ export const AuthContextProvider = (props) => {
   const [userName, setUserName] = useState('');
   const [nation, setNation] = useState('');
   const [email, setEmail] = useState('');
+  const navi = useNavigate();
 
   const loginHandler = (res) => {
     // localStorage.setItem('ACCESS_TOKEN', token);
@@ -27,8 +30,24 @@ export const AuthContextProvider = (props) => {
     setNation(res.nationCode);
   };
   const nationHandler = (nationCode) => {
-    localStorage.getItem('EMAIl');
-    setNation(nationCode);
+    if (email === '') {
+      alert('로그인을 먼저 해주세요.');
+      navi('/login');
+    } else {
+      const userInfo = {
+        email,
+        nationCode,
+      };
+      axios
+        .put(
+          'http://localhost:8181/user/auth/nation',
+          userInfo,
+        )
+        .then((res) => {
+          setNation(res.data);
+          localStorage.setItem('NATION', res.data);
+        });
+    }
   };
 
   const logoutHandler = () => {
@@ -47,6 +66,7 @@ export const AuthContextProvider = (props) => {
       setIsLoggedIn(true);
       setUserName(localStorage.getItem('NAME'));
       setNation(localStorage.getItem('NATION'));
+      setEmail(localStorage.getItem('EMAIL'));
     }
   }, []);
 
@@ -58,6 +78,7 @@ export const AuthContextProvider = (props) => {
         nation,
         onLogout: logoutHandler,
         onLogin: loginHandler,
+        onChangeNation: nationHandler,
       }}
     >
       {props.children}

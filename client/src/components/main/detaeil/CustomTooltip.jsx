@@ -11,7 +11,7 @@ const CustomTooltip = ({ active, payload, curRate }) => {
       averRate,
     } = payload[0].payload;
     const date = `${startDate.replaceAll('-', '/')}~${endDate.replaceAll('-', '/')} (${calDate})`;
-    const rate = `평균 환율 : ${currencySymbol}${averRate.toFixed(2)}`;
+    const rate = `평균 환율 : ${averRate.toFixed(2)} 원`;
     const diffRate = curRate - averRate;
     let diff = '';
     const customStyles = {

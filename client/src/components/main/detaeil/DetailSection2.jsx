@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import ExRateCard from './ExRateCard';
 import Styles from '../../../scss/DetailSection2.module.scss';
 import axios from 'axios';
+import AuthContext from '../../../utils/AuthContext';
 const DetailSection2 = () => {
-  const nation = 'US'; // useContext()로 설정국가 가져올거;
   const [exChanges, setExChanges] = useState('');
+  const { nation } = useContext(AuthContext);
   useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get(
-        `http://localhost:8181/api/rate/currency?nation=${nation}`,
-      );
-      setExChanges(response.data);
-    };
-    getData();
-  }, []);
+    if (nation) {
+      const getData = async () => {
+        const response = await axios.get(
+          `http://localhost:8181/api/rate/currency?nation=${nation}`,
+        );
+        setExChanges(response.data);
+      };
+      getData();
+    }
+  }, [nation]);
 
   return (
     <div className={Styles.box}>

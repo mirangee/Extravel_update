@@ -13,9 +13,9 @@ import AuthContext from '../utils/AuthContext';
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
-  const [country, setCountry] = useState('US');
   const navigate = useNavigate();
-  const { inLoggedIn, name } = useContext(AuthContext);
+  const { inLoggedIn, name, onChangeNation, nation } =
+    useContext(AuthContext);
 
   useEffect(() => {
     const getNationData = () => {
@@ -62,10 +62,7 @@ const Header = () => {
   }, []);
 
   const handleCountryChange = (selectedOption) => {
-    setCountry(selectedOption.value);
-    if (selectedOption) {
-      navigate(`/${selectedOption.value}`);
-    }
+    onChangeNation(selectedOption.value);
   };
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
@@ -99,15 +96,17 @@ const Header = () => {
               <Link to='/contact'>Places</Link>
             </li>
             <li>
-              <Select
-                value={countryOptions.find(
-                  (option) => option.value === country,
-                )}
-                onChange={handleCountryChange}
-                options={countryOptions}
-                className={styles.countrySelect}
-                classNamePrefix={styles.reactSelect}
-              />
+              {inLoggedIn && (
+                <Select
+                  value={countryOptions.find(
+                    (option) => option.value === nation,
+                  )}
+                  onChange={handleCountryChange}
+                  options={countryOptions}
+                  className={styles.countrySelect}
+                  classNamePrefix={styles.reactSelect}
+                />
+              )}
             </li>
           </ul>
         </nav>
