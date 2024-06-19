@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
 import {
   CartesianGrid,
   AreaChart,
@@ -14,30 +18,34 @@ import {
 import axios from 'axios';
 import CustomTooltip from './CustomTooltip';
 import Styles from '../../../scss/ShowChart.module.scss';
+import AuthContext from '../../../utils/AuthContext';
 
 const ShowChart = () => {
   const [data, setData] = useState({});
   const [curRate, setCurRate] = useState(0);
   const [date, setDate] = useState('week');
-  const nation = 'US';
-  const axiosInstance = axios.create({
-    baseURL: `http://localhost:8181/api/rate/${date}/showchart?nation=${nation}`,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const { nation } = useContext(AuthContext);
+
   useEffect(() => {
-    axiosInstance.get().then((res) => {
-      setData(res.data);
-      setCurRate(res.data[0].curRate);
-    });
-  }, [date]);
+    if (nation) {
+      const axiosInstance = axios.create({
+        baseURL: `http://localhost:8181/api/rate/${date}/showchart?nation=${nation}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      axiosInstance.get().then((res) => {
+        setData(res.data);
+        setCurRate(res.data[0].curRate);
+      });
+    }
+  }, [date, nation]);
 
   const formatXAxis = (tickItem) => {
     return `${tickItem.substring(5).replace('-', '/')}`;
   };
   const formatYAxis = (tickItem) => {
-    return `${data[0].currencySymbol}${tickItem}`;
+    return `${tickItem}원`;
   };
   const labelFormatter = (tickItem) => {
     return `${tickItem.substring(0, 4)}년 ${tickItem.substring(5, 7)}월 ${tickItem.substring(8)}일`;

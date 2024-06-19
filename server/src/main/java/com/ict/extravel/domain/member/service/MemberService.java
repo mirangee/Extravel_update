@@ -2,10 +2,11 @@ package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.repository.MemberRepository;
-import com.ict.extravel.global.auth.TokenProvider;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -255,8 +256,14 @@ public class MemberService {
     }
 
 
+    public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(()->new IllegalArgumentException("존재하지않는멤버"));
+        Nation nation = nationRepository.findById(dto.getNationCode()).orElseThrow(() -> new IllegalArgumentException("존재하지않는국가"));
+        member.setNationCode(nation);
+        Member save = memberRepository.save(member);
+        return save.getNationCode().getNationCode();
 
-
+    }
 }
 
 

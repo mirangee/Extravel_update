@@ -17,7 +17,6 @@ import NaverNews from './components/main/detaeil/NaverNews';
 const App = () => {
   return (
     <>
-      <NaverNews />
       <AuthContextProvider>
         <Header />
         <Routes>
