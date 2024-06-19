@@ -63,7 +63,7 @@ const ShowChart = () => {
           }}
         >
           <ToggleButton value='week'>1주일</ToggleButton>
-          <ToggleButton value='month'>1계월</ToggleButton>
+          <ToggleButton value='month'>1개월</ToggleButton>
         </ToggleButtonGroup>
       </div>
       <AreaChart
