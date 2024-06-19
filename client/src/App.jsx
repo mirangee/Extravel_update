@@ -12,6 +12,7 @@ import Login from './components/user/Login';
 import MainIntro from './components/main/intro/MainIntro';
 import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
+import NaverNews from './components/user/NaverNews';
 
 const App = () => {
   return (
@@ -30,6 +31,10 @@ const App = () => {
             path='/oauth/kakao'
             element={<KakaoLoginHandler />}
           />
+          <Route
+            path='/main/news'
+            element={<NaverNews />}
+          ></Route>
         </Routes>
         <Footer />
         <ScrollToTopButton />
