@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.pointexchange.controller;
 
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
+import com.ict.extravel.domain.pointexchange.dto.PaymentDto;
 import com.ict.extravel.domain.pointexchange.service.KakaoPayService;
 import lombok.RequiredArgsConstructor;
 import com.ict.extravel.domain.pointexchange.dto.response.PayApproveResDto;
@@ -37,7 +38,8 @@ public class KakaoPayController {
                                                  @RequestParam("pg_token") String pgToken) {
         try {
             log.info("/payment/ready 요청 들어 옴! {}", pgToken);
-            PayApproveResDto kakaoApprove = kakaoPayService.getApprove(pgToken,id);
+//            PayApproveResDto kakaoApprove = kakaoPayService.getApprove(pgToken,id);
+            PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
 
             log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
             return ResponseEntity.status(HttpStatus.OK)

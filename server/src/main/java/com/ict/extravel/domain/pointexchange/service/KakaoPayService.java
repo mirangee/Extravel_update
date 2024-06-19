@@ -4,8 +4,8 @@ import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.MakePayRequest;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
+import com.ict.extravel.domain.pointexchange.dto.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
-import com.ict.extravel.domain.pointexchange.dto.response.PayApproveResDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class KakaoPayService {
     }
 
     @Transactional
-    public PayApproveResDto getApprove(String pgToken, Integer id)throws Exception{
+    public PaymentDto getApprove(String pgToken, Integer id)throws Exception{
 
 
         Member member=memberRepository.findById(id)
@@ -86,6 +86,7 @@ public class KakaoPayService {
         /** 요청 Body */
         PayRequest payRequest=makePayRequest.getApproveRequest(tid,id,pgToken);
 
+        log.info("kakaoPayService에서 승인 요청을 위한 body {}", payRequest.toString());
 
         /** Header와 Body 합쳐서 RestTemplate로 보내기 위한 밑작업 */
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(payRequest.getMap(), headers);
@@ -94,10 +95,13 @@ public class KakaoPayService {
 
         // 요청 보내기
         RestTemplate rt = new RestTemplate();
-        PayApproveResDto payApproveResDto = rt.postForObject(payRequest.getUrl(), requestEntity, PayApproveResDto.class);
+//        PayApproveResDto payApproveResDto = rt.postForObject(payRequest.getUrl(), requestEntity, PayApproveResDto.class);
+        PaymentDto paymentDto = rt.postForObject(payRequest.getUrl(), requestEntity, PaymentDto.class);
 
-        log.info("승인 요청의 결과 {}", payApproveResDto);
-        return payApproveResDto;
+//        log.info("승인 요청의 결과 {}", payApproveResDto);
+//        return payApproveResDto;
+        log.info("승인 요청의 결과 {}", paymentDto);
+        return paymentDto;
     }
 
 
