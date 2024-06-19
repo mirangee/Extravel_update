@@ -7,6 +7,10 @@ import {
   Tooltip,
   Area,
 } from 'recharts';
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+} from '@mui/material';
 import axios from 'axios';
 import CustomTooltip from './CustomTooltip';
 import Styles from '../../../scss/ShowChart.module.scss';
@@ -14,11 +18,10 @@ import Styles from '../../../scss/ShowChart.module.scss';
 const ShowChart = () => {
   const [data, setData] = useState({});
   const [curRate, setCurRate] = useState(0);
-  const nation = 'HK';
+  const [date, setDate] = useState('week');
+  const nation = 'US';
   const axiosInstance = axios.create({
-    baseURL:
-      'http://localhost:8181/api/rate/week/showchart?nation=' +
-      nation,
+    baseURL: `http://localhost:8181/api/rate/${date}/showchart?nation=${nation}`,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -28,7 +31,7 @@ const ShowChart = () => {
       setData(res.data);
       setCurRate(res.data[0].curRate);
     });
-  }, []);
+  }, [date]);
 
   const formatXAxis = (tickItem) => {
     return `${tickItem.substring(5).replace('-', '/')}`;
@@ -39,9 +42,30 @@ const ShowChart = () => {
   const labelFormatter = (tickItem) => {
     return `${tickItem.substring(0, 4)}년 ${tickItem.substring(5, 7)}월 ${tickItem.substring(8)}일`;
   };
-
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
   return (
     <div className={Styles.chartBox}>
+      <div className={Styles.date}>
+        <ToggleButtonGroup
+          color='primary'
+          value={date}
+          exclusive
+          onChange={handleDateChange}
+          aria-label='Platform'
+          style={{
+            position: 'absolute',
+            height: '35px',
+            marginRight: '50px',
+            marginTop: '10px',
+            zIndex: '100',
+          }}
+        >
+          <ToggleButton value='week'>1주일</ToggleButton>
+          <ToggleButton value='month'>1개월</ToggleButton>
+        </ToggleButtonGroup>
+      </div>
       <AreaChart
         width={700}
         height={400}

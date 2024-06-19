@@ -2,34 +2,51 @@ import React, { useEffect, useState } from 'react';
 
 export const AuthContext = React.createContext({
   inLoggedIn: false,
-  userName: '',
+  name: '',
+  nation: '',
   onLogout: () => {},
-  onLogin: (email, password) => {},
+  onLogin: () => {},
+  onChangeNation: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [nation, setNation] = useState('');
+  const [email, setEmail] = useState('');
 
-  const loginHandler = (token, userName, role) => {
-    localStorage.setItem('ACCESS_TOKEN', token);
-    localStorage.setItem('USER_NAME', userName);
-    localStorage.setItem('ROLE', role);
+  const loginHandler = (res) => {
+    // localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('NAME', res.name);
+    localStorage.setItem('NATION', res.nationCode);
+    localStorage.setItem('EMAIL', res.email);
+    // localStorage.setItem('ROLE', role);
     setIsLoggedIn(true);
-    setUserName(userName);
+    setUserName(res.name);
+    setEmail(res.email);
+    setNation(res.nationCode);
+  };
+  const nationHandler = (nationCode) => {
+    localStorage.getItem('EMAIl');
+    setNation(nationCode);
   };
 
   const logoutHandler = () => {
     localStorage.removeItem('ACCESS_TOKEN');
-    localStorage.removeItem('USER_NAME');
+    localStorage.removeItem('NAME');
+    localStorage.removeItem('NATION');
+    localStorage.removeItem('EMAIL');
     localStorage.removeItem('ROLE');
-    setIsLoggedIn(false);
+    setIsLoggedIn(true);
     setUserName('');
+    setEmail('');
+    setNation('');
   };
   useEffect(() => {
-    if (localStorage.getItem('ACCESS_TOKEN')) {
+    if (localStorage.getItem('NAME')) {
       setIsLoggedIn(true);
-      setUserName(localStorage.getItem('USER_NAME'));
+      setUserName(localStorage.getItem('NAME'));
+      setNation(localStorage.getItem('NATION'));
     }
   }, []);
 
@@ -37,7 +54,8 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         inLoggedIn: isLoggedIn,
-        userName,
+        name: userName,
+        nation,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}

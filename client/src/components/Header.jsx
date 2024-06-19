@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
 import axios from 'axios';
+import AuthContext from '../utils/AuthContext';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
   const [country, setCountry] = useState('US');
   const navigate = useNavigate();
+  const { inLoggedIn, name } = useContext(AuthContext);
 
   useEffect(() => {
     const getNationData = () => {
@@ -21,7 +27,9 @@ const Header = () => {
             label: (
               <>
                 <img
-                  src={atob(element.flag)}
+                  src={removeInvalidChars(
+                    atob(element.flag),
+                  )}
                   className={styles.flag}
                 />{' '}
                 {element.name}
@@ -59,6 +67,9 @@ const Header = () => {
       navigate(`/${selectedOption.value}`);
     }
   };
+  function removeInvalidChars(str) {
+    return str.replace(/ï»¿/g, '');
+  }
 
   return (
     <>
@@ -72,6 +83,9 @@ const Header = () => {
         />
         <nav className={styles.nav}>
           <ul className={styles.menu}>
+            <li>
+              {inLoggedIn ? name + '님' : '오늘'}의 할일
+            </li>
             <li>
               <Link to='/home'>패키지</Link>
             </li>

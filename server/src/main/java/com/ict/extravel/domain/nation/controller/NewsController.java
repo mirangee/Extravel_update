@@ -1,4 +1,4 @@
-package com.ict.extravel.domain.member.controller;
+package com.ict.extravel.domain.nation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,18 +8,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
-@Controller
-@RequestMapping("/main")
+@RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Slf4j
 public class NewsController {
@@ -33,32 +35,17 @@ public class NewsController {
     @GetMapping("/news")
     public ResponseEntity<String> getYouTubeVideos() {
         String reqUrl = "https://openapi.naver.com/v1/search/news.json";
-        String query = "주식";
+
         int display = 5;
-
-
-        RestTemplate restTemplate = new RestTemplate();
-        String encodedQuery = "";
-        try {
-            encodedQuery = URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(reqUrl)
-//                .queryParam("query", encodedQuery) //query
-//                .queryParam("display", display)
-//                .queryParam("start", 1)
-//                .queryParam("sort", "sim");
-//        log.info("builder 요청보냄 {}", builder);
-        URI uri = UriComponentsBuilder.fromHttpUrl(reqUrl)
-                .queryParam("query", encodedQuery)
+        URI uri = UriComponentsBuilder.fromUriString(reqUrl)
+                .queryParam("query", "주식")
                 .queryParam("display", display)
                 .queryParam("start", 1)
+                .encode()
                 .build()
                 .toUri();
 
-        log.info("Request URI: {}", uri);
+        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
 //        headers.set("Host", "openapi.naver.com");
@@ -77,11 +64,12 @@ public class NewsController {
             entity,
             String.class
     );
-    log.info("리턴: response : {}" , response);
 
+        log.info("리턴: response : {}" , response);
         return response;
 
     }
+
 
 
 }

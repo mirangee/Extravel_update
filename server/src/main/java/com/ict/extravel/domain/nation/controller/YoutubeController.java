@@ -1,4 +1,4 @@
-package com.ict.extravel.domain.member.controller;
+package com.ict.extravel.domain.nation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
