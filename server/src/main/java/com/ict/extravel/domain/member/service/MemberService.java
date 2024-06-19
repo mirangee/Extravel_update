@@ -71,7 +71,6 @@ public class MemberService {
 
         log.info("{}님 로그인 성공!", member.getName());
 
-        memberRepository.save(member);
 
         return new LoginResponseDTO(member);
     }
@@ -136,25 +135,8 @@ public class MemberService {
     }
 
 
-    public MemberSignUpResponseDTO create(final MemberSignUpRequestDTO dto) throws Exception {
-
-        String encoded = passwordEncoder.encode(dto.getPassword());
-        dto.setPassword(encoded);
-        Nation us = nationRepository.findById("US").orElseThrow();
-        Member saved = memberRepository.save(dto.toEntity(us));
-        log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
-
-        return new MemberSignUpResponseDTO(saved);
-
-    }
 
 
-
-    public boolean isDuplicate(String email) {
-        if(memberRepository.existsByEmail(email)) {
-            return true;
-        }   else return false;
-    }
 
     public void kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
@@ -271,6 +253,8 @@ public class MemberService {
 
         return (String) Objects.requireNonNull(responseData).get("access_token");
     }
+
+
 
 
 }
