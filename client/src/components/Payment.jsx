@@ -1,9 +1,5 @@
-import PortOne from '@portone/browser-sdk/v2';
+import * as PortOne from '@portone/browser-sdk/v2';
 import React from 'react';
-import {
-  STORE_ID,
-  CHANNEL_KEY,
-} from '../config/pay-config';
 
 const Payment = () => {
   const payHandler = async () => {
