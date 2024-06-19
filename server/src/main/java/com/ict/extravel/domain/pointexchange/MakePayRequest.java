@@ -50,7 +50,7 @@ public class MakePayRequest {
         return new PayRequest("https://kapi.kakao.com/v1/payment/ready",map);
     }
 
-    public PayRequest getApproveRequest(String tid, Long id, String pgToken){
+    public PayRequest getApproveRequest(String tid, Integer id, String pgToken){
         LinkedMultiValueMap<String,String> map=new LinkedMultiValueMap<>();
 
         String orderId="point"+id;
@@ -60,7 +60,7 @@ public class MakePayRequest {
         // getReadyRequest 에서 받아온 tid
         map.add("tid", tid);
         map.add("partner_order_id", orderId); // 주문명
-        map.add("partner_user_id", "본인의 서비스명");
+        map.add("partner_user_id", "Extravel");
 
         // getReadyRequest에서 받아온 redirect url에 클라이언트가
         // 접속하여 결제를 성공시키면 아래의 url로 redirect 되는데
