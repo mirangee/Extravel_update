@@ -2,34 +2,40 @@ import React, { useEffect, useState } from 'react';
 
 export const AuthContext = React.createContext({
   inLoggedIn: false,
-  userName: '',
+  name: '',
+  nation: '',
   onLogout: () => {},
-  onLogin: (email, password) => {},
+  onLogin: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [nation, setNation] = useState('');
 
-  const loginHandler = (token, userName, role) => {
-    localStorage.setItem('ACCESS_TOKEN', token);
-    localStorage.setItem('USER_NAME', userName);
-    localStorage.setItem('ROLE', role);
+  const loginHandler = (res) => {
+    // localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('NAME', res.name);
+    localStorage.setItem('NATION', res.nationCode);
+    // localStorage.setItem('ROLE', role);
     setIsLoggedIn(true);
-    setUserName(userName);
+    setUserName(res.name);
+    setNation(res.nationCode);
   };
 
   const logoutHandler = () => {
     localStorage.removeItem('ACCESS_TOKEN');
-    localStorage.removeItem('USER_NAME');
+    localStorage.removeItem('NAME');
+    localStorage.getItem('NATION');
     localStorage.removeItem('ROLE');
     setIsLoggedIn(false);
     setUserName('');
   };
   useEffect(() => {
-    if (localStorage.getItem('ACCESS_TOKEN')) {
+    if (localStorage.getItem('NAME')) {
       setIsLoggedIn(true);
-      setUserName(localStorage.getItem('USER_NAME'));
+      setUserName(localStorage.getItem('NAME'));
+      setNation(localStorage.getItem('NATION'));
     }
   }, []);
 
@@ -37,7 +43,8 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         inLoggedIn: isLoggedIn,
-        userName,
+        name: userName,
+        nation,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}
