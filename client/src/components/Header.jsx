@@ -81,7 +81,8 @@ const Header = () => {
         <nav className={styles.nav}>
           <ul className={styles.menu}>
             <li>
-              {inLoggedIn ? name + '님' : '오늘'}의 할일
+              {inLoggedIn ? name + '님' : '안녕하세요!'},
+              즐거운 하루 되세요.
             </li>
             <li>
               <Link to='/home'>패키지</Link>
@@ -108,6 +109,7 @@ const Header = () => {
                 />
               )}
             </li>
+            <li>로그아웃</li>
           </ul>
         </nav>
       </header>
