@@ -1,10 +1,9 @@
 package com.ict.extravel.domain.pointexchange.controller;
 
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
-import com.ict.extravel.domain.pointexchange.dto.response.PayApproveResDto;
 import com.ict.extravel.domain.pointexchange.service.KakaoPayService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.ict.extravel.domain.pointexchange.dto.response.PayApproveResDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +36,15 @@ public class KakaoPayController {
     public ResponseEntity<?> afterGetRedirectUrl(@PathVariable("id")Integer id,
                                                  @RequestParam("pg_token") String pgToken) {
         try {
+            log.info("/payment/ready 요청 들어 옴! {}", pgToken);
             PayApproveResDto kakaoApprove = kakaoPayService.getApprove(pgToken,id);
 
+            log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(kakaoApprove);
         }
         catch(Exception e){
+            log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

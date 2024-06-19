@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class KakaoPayService {
     private final MakePayRequest makePayRequest;
     private final MemberRepository memberRepository;
@@ -61,6 +61,7 @@ public class KakaoPayService {
         PayReadyResDto payReadyResDto = rt.postForObject(payRequest.getUrl(), urlRequest, PayReadyResDto.class);
 
         member.updateTid(payReadyResDto.getTid());
+        log.info("member tid update 완료! {}", payReadyResDto.toString());
 
         return payReadyResDto;
     }
@@ -89,15 +90,14 @@ public class KakaoPayService {
         /** Header와 Body 합쳐서 RestTemplate로 보내기 위한 밑작업 */
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(payRequest.getMap(), headers);
 
+        log.info("kakaoPayService에서  승인 요청을 보내기 직전입니다");
+
         // 요청 보내기
         RestTemplate rt = new RestTemplate();
         PayApproveResDto payApproveResDto = rt.postForObject(payRequest.getUrl(), requestEntity, PayApproveResDto.class);
 
-
-
+        log.info("승인 요청의 결과 {}", payApproveResDto);
         return payApproveResDto;
-
-
     }
 
 
