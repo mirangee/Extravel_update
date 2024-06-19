@@ -14,6 +14,7 @@ public class NationService {
     private final NationRepository nationRepository;
 
     public List<Nation> getNationData() {
+        System.out.println(nationRepository.findById("EU"));
         return nationRepository.findAll();
     }
 }
