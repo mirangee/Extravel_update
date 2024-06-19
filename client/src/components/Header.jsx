@@ -21,7 +21,9 @@ const Header = () => {
             label: (
               <>
                 <img
-                  src={atob(element.flag)}
+                  src={removeInvalidChars(
+                    atob(element.flag),
+                  )}
                   className={styles.flag}
                 />{' '}
                 {element.name}
@@ -59,6 +61,9 @@ const Header = () => {
       navigate(`/${selectedOption.value}`);
     }
   };
+  function removeInvalidChars(str) {
+    return str.replace(/ï»¿/g, '');
+  }
 
   return (
     <>
