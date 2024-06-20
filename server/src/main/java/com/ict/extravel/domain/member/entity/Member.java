@@ -12,9 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "member")
 public class Member {
@@ -55,7 +53,15 @@ public class Member {
     @Column(name = "grade", length = 50)
     private String grade;
 
-    private String tid; // 결제 고유 id
+    @Size(max = 255)
+    @Column(name = "tid")
+    private String tid;
+
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "path", nullable = false, length = 30)
+    private String path;
+
     public void updateTid(String tid) {
         this.tid = tid;
     }
