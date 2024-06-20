@@ -10,6 +10,7 @@ import { Button, Grid, TextField } from '@mui/material';
 
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
+import a7 from '../../assets/img/a7.jpg';
 import styles from '../../scss/Login.module.scss';
 import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
@@ -139,6 +140,7 @@ const Login = () => {
   const fetchLogin = async (data) => {
     try {
       console.log('fetchLogin data = ', data);
+      // console.log('REQUEST_URL = ', REQUEST_URL);
       const res = await axios.post(REQUEST_URL, data);
       return res.data; // 서버 응답 데이터 반환
     } catch (error) {
@@ -172,7 +174,7 @@ const Login = () => {
     onLogin(response);
     // 성공적으로 로그인된 경우 처리
     alert(`${response.name}님 환영합니다!!! ^^`);
-    navigate('/'); //메인 페이지로 이동
+    window.location.replace('/'); //메인 페이지로 이동
   };
 
   const fetchDuplicateCheck = async (email) => {
@@ -208,7 +210,7 @@ const Login = () => {
   return (
     <>
       <div className={styles.login}>
-        <h2>EXTRAVEL LOGIN</h2>
+        <h2 className={styles.toplogo}>EXTRAVEL</h2>
 
         <div
           className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
@@ -323,17 +325,20 @@ const Login = () => {
                           },
                         }}
                         render={({ field, fieldState }) => (
-                          <TextField
-                            label='Phone Number'
-                            {...field}
-                            value={field.value}
-                            onChange={field.onChange}
-                            error={!!fieldState.error}
-                            helperText={
-                              fieldState.error &&
-                              fieldState.error.message
-                            }
-                          />
+                          <>
+                            <TextField
+                              label='Phone Number'
+                              {...field}
+                              value={field.value}
+                              onChange={field.onChange}
+                              error={!!fieldState.error}
+                              helperText={
+                                fieldState.error &&
+                                fieldState.error.message
+                              }
+                            />
+                            <button>전화번호 인증</button>
+                          </>
                         )}
                       />
                     </Grid>
@@ -379,7 +384,7 @@ const Login = () => {
                                 );
                               }}
                             >
-                              버튼1
+                              중복체크
                             </button>
                           </>
                         )}
@@ -527,7 +532,11 @@ const Login = () => {
                 <div
                   className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
                 >
-                  <h1>EXTRAVEL 회원가입 하기</h1>
+                  <h1>
+                    EXTRAVEL
+                    <br />
+                    Sign Up
+                  </h1>
                   <p>
                     To keep connected with us please login
                     with your personal info
@@ -550,7 +559,11 @@ const Login = () => {
                   >
                     X
                   </button>
-                  <h1>EXTRAVEL 로그인 하기</h1>
+                  <h1>
+                    EXTRAVEL
+                    <br />
+                    Login
+                  </h1>
                   <p>
                     Enter your personal details and start
                     journey with us
