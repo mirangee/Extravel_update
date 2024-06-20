@@ -1,5 +1,6 @@
 package com.ict.extravel.domain.member.dto.request;
 
+import com.ict.extravel.domain.nation.entity.Nation;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -19,4 +20,6 @@ public class LoginRequestDTO {
 
     @NotBlank
     private String password;
+
+
 }

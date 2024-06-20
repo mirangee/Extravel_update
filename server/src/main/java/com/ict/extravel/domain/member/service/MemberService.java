@@ -2,10 +2,11 @@ package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.repository.MemberRepository;
-import com.ict.extravel.global.auth.TokenProvider;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +17,8 @@ import org.springframework.http.ResponseEntity;
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.entity.Member;
-import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -37,8 +34,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-    
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -48,6 +43,7 @@ public class MemberService {
     @Value("${NaverLogin.state}")
     private String state;
 
+
     // kakao login
     @Value("${kakao.client_id}")
     private String KAKAO_CLIENT_ID;
@@ -56,10 +52,44 @@ public class MemberService {
     @Value("${kakao.client_secret}")
     private String KAKAO_CLIENT_SECRET;
 
+
+
+    //자체 로그인
+    public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
+
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
+        //RuntimeException 발생시 GlobalExceptionHandler가 처리
+
+        // 패스워드 검증
+        String rawPassword = dto.getPassword(); // 입력한 비번
+        String encodedPassword = member.getPassword(); // DB에 저장된 암호화된 비번
+
+        //암호화된 비밀번호, 生비번 비교
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new RuntimeException("비밀번호가 틀렸습니다.");
+        }
+
+        log.info("{}님 로그인 성공!", member.getName());
+
+
+        return new LoginResponseDTO(member);
+    }
+
+    //자체 회원가입
     public MemberSignUpResponseDTO create(final MemberSignUpRequestDTO dto) throws Exception {
 
+        String email = dto.getEmail();
+
+        if (isDuplicate(email)) {
+            throw new RuntimeException("중복된 이메일 입니다.");
+        }
+
+        // 패스워드 인코딩
         String encoded = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encoded);
+
+        // dto를 Entity로 변환해서 저장.
         Nation us = nationRepository.findById("US").orElseThrow();
         Member saved = memberRepository.save(dto.toEntity(us));
         log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
@@ -69,8 +99,10 @@ public class MemberService {
     }
 
 
+    //이메일 중복검사
     public boolean isDuplicate(String email) {
         if(memberRepository.existsByEmail(email)) {
+            log.warn("이메일이 중복되었습니다. - {}", email);
             return true;
         }   else return false;
     }
@@ -80,6 +112,8 @@ public class MemberService {
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+
+
     }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -101,31 +135,7 @@ public class MemberService {
         return responseData;
     }
 
-    private String getNaverAccessToken(String code) {
 
-        String requestURI = "https://nid.naver.com/oauth2.0/token";
-
-        HttpHeaders headers = new HttpHeaders();
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("client_secret", client_secret);
-        params.add("code", code);
-        params.add("state", state);
-
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
-
-        RestTemplate template = new RestTemplate();
-
-        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-
-
-        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터: {}", responseData);
-
-        return (String) Objects.requireNonNull(responseData).get("access_token");
-    }
 
 
 
@@ -141,7 +151,9 @@ public class MemberService {
 
         System.out.println(userDTO);
 
+
     }
+
 
     private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
         // 요청 uri
@@ -217,27 +229,40 @@ public class MemberService {
 
     }
 
+    private String getNaverAccessToken(String code) {
 
-    public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
+        String requestURI = "https://nid.naver.com/oauth2.0/token";
 
-        Member member = memberRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
-        //RuntimeException 발생시 GlobalExceptionHandler가 처리
+        HttpHeaders headers = new HttpHeaders();
 
-        // 패스워드 검증
-        String rawPassword = dto.getPassword(); // 입력한 비번
-        String encodedPassword = member.getPassword(); // DB에 저장된 암호화된 비번
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
+        params.add("client_secret", client_secret);
+        params.add("code", code);
+        params.add("state", state);
 
-        //암호화된 비밀번호, 生비번 비교
-        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new RuntimeException("비밀번호가 틀렸습니다.");
-        }
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
 
-        log.info("{}님 로그인 성공!", member.getName());
+        RestTemplate template = new RestTemplate();
 
-        memberRepository.save(member);
+        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
 
-        return new LoginResponseDTO(member);
+
+        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
+
+        return (String) Objects.requireNonNull(responseData).get("access_token");
+    }
+
+
+    public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(()->new IllegalArgumentException("존재하지않는멤버"));
+        Nation nation = nationRepository.findById(dto.getNationCode()).orElseThrow(() -> new IllegalArgumentException("존재하지않는국가"));
+        member.setNationCode(nation);
+        Member save = memberRepository.save(member);
+        return save.getNationCode().getNationCode();
+
     }
 }
 

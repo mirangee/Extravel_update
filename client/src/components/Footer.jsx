@@ -28,14 +28,14 @@ const Footer = () => {
               <li>이용약관</li>
             </ul>
             <div className={styles.description}>
-              <p>
-                대표 : 김상진 &nbsp;&nbsp;&nbsp;사업자
+              <div>
+                대표 : 김태훈 &nbsp;&nbsp;&nbsp;사업자
                 등록번호 : 000-00-0000
-              </p>
-              <p>
+              </div>
+              <div>
                 사업장 소재지 : 서울 마포구 백범로 23
-                케이터틀 3층.
-              </p>
+                케이터틀 3층
+              </div>
             </div>
           </div>
           <div className={styles.logo}>

@@ -1,7 +1,11 @@
 package com.ict.extravel.domain.member.controller;
 
 
-import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+
+import com.ict.extravel.domain.member.dto.request.*;
+import com.ict.extravel.domain.member.service.MemberService;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.service.MemberService;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
@@ -18,6 +22,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.service.MemberService;
+
+import java.util.Map;
 
 
 @RestController
@@ -28,11 +37,26 @@ public class MemberController {
 
     private final MemberService memberService;
 
+
+    //자체 회원가입 이메일 중복체크
+    @PostMapping("/check")
+    public ResponseEntity<?> check(@RequestBody Map<String, String> data){
+        String email = data.get("email");
+        log.info("이메일 값 받아옴: {}", email);
+        if (email.trim().isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body("존재하지 않는 이메일입니다.");
+        }
+        boolean resultFlag = memberService.isDuplicate(email);
+        log.info("이 이메일은 {} 합니다",resultFlag);
+        return ResponseEntity.ok().body(resultFlag);
+    }
+
     //자체 회원가입 처리
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(
             @Validated @RequestBody MemberSignUpRequestDTO dto, BindingResult result
-            ){
+    ){
         log.info("/api/auth POST! = {}", dto);
 
         if(result.hasErrors()) {
@@ -74,11 +98,11 @@ public class MemberController {
 
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
-          log.info("/user/auth/naver- Get code : {}", code);
-          memberService.NaverLoginService(code);
+        log.info("/user/auth/naver- Get code : {}", code);
+        memberService.NaverLoginService(code);
         return null;
     }
-   
+
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
         log.info("/user/auth/kakaoLogin - GET! code: {}", code);
@@ -91,6 +115,11 @@ public class MemberController {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
         return ResponseEntity.ok().body("SUCCESS");
+    }
+    @PutMapping("/nation")
+    public ResponseEntity<?> updateNation(@RequestBody UpdateMemberNationRequestDTO dto) {
+        String s = memberService.UpdateNation(dto);
+        return ResponseEntity.ok(s);
     }
 }
 
