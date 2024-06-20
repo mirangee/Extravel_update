@@ -1,4 +1,4 @@
-package com.ict.extravel.domain.pointexchange.dto;
+package com.ict.extravel.domain.pointexchange.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

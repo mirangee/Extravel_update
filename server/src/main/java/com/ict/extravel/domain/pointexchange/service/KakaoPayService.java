@@ -4,7 +4,7 @@ import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.MakePayRequest;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
-import com.ict.extravel.domain.pointexchange.dto.PaymentDto;
+import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import lombok.RequiredArgsConstructor;
@@ -95,11 +95,8 @@ public class KakaoPayService {
 
         // 요청 보내기
         RestTemplate rt = new RestTemplate();
-//        PayApproveResDto payApproveResDto = rt.postForObject(payRequest.getUrl(), requestEntity, PayApproveResDto.class);
         PaymentDto paymentDto = rt.postForObject(payRequest.getUrl(), requestEntity, PaymentDto.class);
 
-//        log.info("승인 요청의 결과 {}", payApproveResDto);
-//        return payApproveResDto;
         log.info("승인 요청의 결과 {}", paymentDto);
         return paymentDto;
     }

@@ -44,6 +44,7 @@ public class MakePayRequest {
         // redirect할 url로 위에서 설명한 동작 과정에서 5번과 6번 사이 과정에서
         // 나온 결과로 이동할 url을 설정해 주는 것입니다.
         map.add("approval_url", "http://localhost:8181/payment/success"+"/"+id); // 성공 시 redirect url
+//        map.add("approval_url", "http://localhost:3000"); // 성공 시 redirect url
         map.add("cancel_url", "http://localhost:8181/payment/cancel"); // 취소 시 redirect url
         map.add("fail_url", "http://localhost:8181/payment/fail"); // 실패 시 redirect url
 
