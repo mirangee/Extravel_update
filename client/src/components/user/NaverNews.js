@@ -7,7 +7,6 @@ function NaverNews() {
     fetch('http://localhost:8181/main/news')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.total);
         const items = data.items;
         const transformArticle = items.map((item) => ({
           title: item.title,
