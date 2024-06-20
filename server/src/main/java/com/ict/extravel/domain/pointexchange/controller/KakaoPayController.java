@@ -35,57 +35,57 @@ public class KakaoPayController {
     /**
      * 결제 성공 pid 를  받기 위해 request를 받고 pgToken은 rediret url에 뒤에 붙어오는걸 떼서 쓰기 위함
      */
-//    @GetMapping("/success/{id}")
-//    public ResponseEntity<?> afterGetRedirectUrl(@PathVariable("id")Integer id,
-//                                                 @RequestParam("pg_token") String pgToken) {
-//        try {
-//            log.info("/payment/success/id 요청 들어 옴! {}", pgToken);
-//            PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
-//
-//            log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
-////            return ResponseEntity.status(HttpStatus.OK).body(kakaoApprove);
-//            return ResponseEntity.status(HttpStatus.OK).body("결제가 완료되었습니다! 결제 페이지로 돌아가주세요.");
-//        }
-//        catch(Exception e){
-//            log.info(e.getMessage());
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
-
     @GetMapping("/success/{id}")
-    public void afterGetRedirectUrl(HttpServletResponse response, @PathVariable("id")Integer id,
-                                    @RequestParam("pg_token") String pgToken) {
+    public ResponseEntity<?> afterGetRedirectUrl(@PathVariable("id")Integer id,
+                                                 @RequestParam("pg_token") String pgToken) {
         try {
             log.info("/payment/success/id 요청 들어 옴! {}", pgToken);
             PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
 
             log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
-
-//            response.sendRedirect("http://localhost:3000/myPage/:"+id);
-//            response.sendRedirect("http://localhost:3000");
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Payment Success</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>ET 포인트 결제가 성공적으로 완료되었습니다");
-            out.println("<script type=\"text/javascript\">");
-            out.println("window.onload = function() {");
-            out.println("    window.close();");
-            out.println("};");
-            out.println("</script>");
-            out.println("</body>");
-            out.println("</html>");
-
-            out.close();
+//            return ResponseEntity.status(HttpStatus.OK).body(kakaoApprove);
+            return ResponseEntity.status(HttpStatus.OK).body("결제가 완료되었습니다! 결제 페이지로 돌아가주세요.");
         }
         catch(Exception e){
             log.info(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+//    @GetMapping("/success/{id}")
+//    public void afterGetRedirectUrl(HttpServletResponse response, @PathVariable("id")Integer id,
+//                                    @RequestParam("pg_token") String pgToken) {
+//        try {
+//            log.info("/payment/success/id 요청 들어 옴! {}", pgToken);
+//            PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
+//
+//            log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
+//
+////            response.sendRedirect("http://localhost:3000/myPage/:"+id);
+////            response.sendRedirect("http://localhost:3000");
+//            response.setContentType("text/html; charset=UTF-8");
+//            PrintWriter out = response.getWriter();
+//
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Payment Success</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>ET 포인트 결제가 성공적으로 완료되었습니다");
+//            out.println("<script type=\"text/javascript\">");
+//            out.println("window.onload = function() {");
+//            out.println("    window.close();");
+//            out.println("};");
+//            out.println("</script>");
+//            out.println("</body>");
+//            out.println("</html>");
+//
+//            out.close();
+//        }
+//        catch(Exception e){
+//            log.info(e.getMessage());
+//        }
+//    }
 
     /**
      * 결제 진행 중 취소

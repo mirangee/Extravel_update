@@ -6,13 +6,34 @@ import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import axios from 'axios';
 
-const ChargeModal = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+const ChargeModal = ({ setModalOpen }) => {
   const modalBackground = useRef();
+  const [text, setText] = useState('');
 
-  const [text, setText] = useState(true);
-  function handleChange(e) {
-    setText(e.target.value);
+  const handleChange = (e) => {
+    const { value } = e.target;
+
+    const numberValue = Number(value.replace(/,/g, ''));
+
+    if (!isNaN(numberValue)) {
+      if (numberValue >= 0 && numberValue <= 100000000) {
+        const formattedNumber =
+          numberValue.toLocaleString();
+        setText(formattedNumber);
+      } else {
+        alert('1억 원 이하만 충전 가능합니다.');
+        setText('');
+      }
+    } else {
+      alert('숫자와 쉼표(,)만 입력 가능합니다.');
+      setText('');
+    }
+  };
+
+  function handleClose(e) {
+    if (e.target === modalBackground.current) {
+      setModalOpen(false);
+    }
   }
 
   const confirmPayment = async () => {
@@ -49,7 +70,7 @@ const ChargeModal = () => {
       if (popup.closed) {
         clearInterval(paymentCheck);
         // confirmPayment();
-        alert('ET 포인트 충전이 완료되었습니다.');
+        // alert('ET 포인트 충전이 완료되었습니다.');
         // 필요한 후속 작업 수행
       }
     }, 1000);
@@ -79,11 +100,7 @@ const ChargeModal = () => {
     <div
       className={styles.modalContainer}
       ref={modalBackground}
-      onClick={(e) => {
-        if (e.target === modalBackground.current) {
-          setModalOpen(false);
-        }
-      }}
+      onClick={handleClose}
     >
       <div className={styles.modalContent}>
         <BsXLg
@@ -91,10 +108,8 @@ const ChargeModal = () => {
           onClick={() => setModalOpen(false)}
         />
 
-        <h1>
-          ETP 충전하기
-          <h5>ExTravel Point</h5>
-        </h1>
+        <h1>ETP 충전하기</h1>
+        <h5>ExTravel Point</h5>
 
         <div className={styles.chargeTable}>
           <div className={styles.tableHeader}>
@@ -104,7 +119,7 @@ const ChargeModal = () => {
           </div>
           <div className={styles.goldGrade}>
             <div>
-              <img src={goldMedal} />
+              <img src={goldMedal} alt='Gold Medal' />
             </div>
             <div className={styles.money}>
               포인트 충전 누적 금액
@@ -119,70 +134,81 @@ const ChargeModal = () => {
           </div>
           <div className={styles.silverGrade}>
             <div>
-              <img src={silverMedal} />
+              <img src={silverMedal} alt='Silver Medal' />
             </div>
             <div className={styles.money}>
-              포인트 충전 누적 금액 <br />
+              포인트 충전 누적 금액
+              <br />
               <strong>5백만 원 </strong>이상
             </div>
             <div>
-              포인트 충전 금액의 <br />
+              포인트 충전 금액의
+              <br />
               <strong>1.0% </strong>적립
             </div>
           </div>
           <div className={styles.bronzeGrade}>
             <div>
-              <img src={bronzeMedal} />
+              <img src={bronzeMedal} alt='Bronze Medal' />
             </div>
             <div className={styles.money}>
               <strong>회원가입한 모든 회원</strong>
             </div>
             <div>
-              포인트 충전 금액의 <br />
+              포인트 충전 금액의
+              <br />
               <strong>0.5%</strong> 적립
             </div>
           </div>
         </div>
+
         <div className={styles.currentMoney}>
           보유 포인트
-          <input
-            className={styles.currentMoneyInput}
-            type='number'
-          />{' '}
-          P
+          <div className={styles.currentMoneyInput}>
+            {Number(text) +
+              Number(text.replace(/,/g, '') * 0.005)}{' '}
+            P
+          </div>
         </div>
+
         <div className={styles.bottom}>
           <div className={styles.chargeAmount}>
             <div className={styles.chargeAmountTitle}>
               충전 금액
             </div>
             <div className={styles.chargeInput}>
-              <div>충전할 금액을 입력하세요.</div>
-              <input
-                type='number'
-                value={text}
-                onChange={handleChange}
-              />{' '}
-              원 <br />
-            </div>
-            <div className={styles.pointContainer}>
-              <div className={styles.upPoint}>
-                + 적립 포인트
+              <div>
+                충전할 금액을 입력하세요.(1000원 이상 충전
+                가능)
               </div>
               <input
-                type='number'
-                value={text * 0.005}
+                type='text'
+                value={text}
                 onChange={handleChange}
-                disabled
-              />{' '}
-              P <br />
+              />
+              원 <br />
             </div>
+
+            <div className={styles.upPoint}>
+              + 적립 포인트
+            </div>
+            <div className={styles.pointContainer}>
+              <div className={styles.plusPoint}>
+                {Number(text.replace(/,/g, '') * 0.005)}{' '}
+              </div>{' '}
+              P
+            </div>
+
             <div className={styles.explain}>
-              홍길동 님의 등급은 브론즈입니다. <br />
-              포인트 충전 금액의 0.5%가 적립됩니다.{' '}
+              홍길동 님의 등급은 브론즈입니다.
+              <br />
+              포인트 충전 금액의 0.5%가 적립됩니다.
             </div>
             <div className={styles.total}>
-              = {Number(text) + Number(text * 0.005)} P
+              ={' '}
+              {Number(text.replace(/,/g, '')) +
+                Number(text.replace(/,/g, '') * 0.005)}{' '}
+              P
             </div>
           </div>
 
@@ -190,11 +216,10 @@ const ChargeModal = () => {
             <div className={styles.totalAmountTitle}>
               충전 후 예상 포인트
             </div>
-            <div
-              className={styles.totalAmountInput}
-              type='text'
-            >
-              {Number(text) + Number(text * 0.005)} P{' '}
+            <div className={styles.totalAmountInput}>
+              {Number(text.replace(/,/g, '')) +
+                Number(text.replace(/,/g, '') * 0.005)}{' '}
+              P
             </div>
             <button
               className={styles.chargeBtn}

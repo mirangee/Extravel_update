@@ -14,10 +14,8 @@
   .modalCloseBtn {
     cursor: pointer;
     color: #14505c;
-    border: none;
     width: 100px;
     height: 40px;
-    border-radius: 10px;
     margin-left: 500px;
     margin-top: 20px;
 
@@ -136,7 +134,8 @@
     font-size: 20px;
     font-weight: bold;
     margin-left: 50px;
-    margin-top: 20px;
+    margin-top: 10px;
+    display: flex;
 
     .currentMoneyInput {
       width: 200px;
@@ -181,12 +180,14 @@
           margin-bottom: 5px;
         }
         input {
-          width: 200px;
+          width: 250px;
           max-width: fit-content;
           border: 2px solid #14505c;
           border-radius: 5px;
           font-size: 20px;
           padding: 2px;
+          font-weight: bold;
+          padding: 0 10px;
 
           text-align: right;
 
@@ -200,16 +201,24 @@
           -webkit-appearance: none;
         }
       }
+
+      .upPoint {
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+
       .pointContainer {
-        input {
-          width: 200px;
-          max-width: fit-content;
+        display: flex;
+
+        .plusPoint {
+          width: 250px;
           border: 2px solid #14505c;
           border-radius: 5px;
           font-size: 20px;
           padding: 2px;
-
           text-align: right;
+          padding: 0 10px;
 
           &:hover {
             background: rgba($color: #14505c, $alpha: 0.2);
@@ -219,10 +228,6 @@
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
           -webkit-appearance: none;
-        }
-        .upPoint {
-          font-size: 12px;
-          margin-top: 10px;
         }
 
         .point {
@@ -236,13 +241,13 @@
       }
 
       .total {
-        width: 200px;
+        width: 250px;
         height: 40px;
         text-align: right;
         margin-top: 10px;
         margin-left: 12px;
-        max-width: 200px;
-        min-width: 200px;
+        max-width: 250px;
+        min-width: 250px;
       }
     }
   }
