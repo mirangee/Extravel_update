@@ -15,44 +15,15 @@ const ChargeModal = () => {
     setText(e.target.value);
   }
 
-  const payHandler = async () => {
-    console.log('충전하기 버튼이 클릭됨!');
-    try {
-      const res = await axios.post(
-        'http://localhost:8181/payment/ready',
-        {
-          price: 1000,
-          itemName: 'ET 포인트',
-        },
-      );
-      console.log(res.data.next_redirect_pc_url);
-      // 브라우저에서 응답 받은 URL로 이동
-      // window.location.href = res.data.next_redirect_pc_url;
-      // 새 창을 열어 응답 받은 URL로 이동
-      window.open(res.data.next_redirect_pc_url, '_blank');
-      // confirmPayment(res.data.next_redirect_pc_url);
-    } catch {
-      console.log('결제 진행 중 오류가 발생했습니다');
-    }
-  };
-
-  const confirmPayment = async (redirectUrl) => {
+  const confirmPayment = async () => {
     try {
       const res = await axios.get(
         'http://localhost:8181/payment/confirm',
       );
       if (res.status === 200) {
         // 결제 성공 시 새로운 페이지로 이동하며 상태 전달
-        history.push({
-          pathname: '/new-page',
-          state: { success: true, redirectUrl },
-        });
       } else {
         // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
-        history.push({
-          pathname: '/new-page',
-          state: { success: false },
-        });
       }
     } catch (error) {
       console.error(
@@ -64,6 +35,43 @@ const ChargeModal = () => {
         pathname: '/new-page',
         state: { success: false },
       });
+    }
+  };
+
+  const openPaymentPopup = (popUrl) => {
+    const popup = window.open(
+      popUrl,
+      '카카오페이 결제',
+      'width=500,height=600',
+    );
+
+    const paymentCheck = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(paymentCheck);
+        // confirmPayment();
+        alert('ET 포인트 충전이 완료되었습니다.');
+        // 필요한 후속 작업 수행
+      }
+    }, 1000);
+  };
+
+  const payHandler = async () => {
+    console.log('충전하기 버튼이 클릭됨!');
+    try {
+      const res = await axios.post(
+        'http://localhost:8181/payment/ready',
+        {
+          price: 1000,
+          itemName: 'ET 포인트',
+        },
+      );
+      console.log(res);
+      console.log(res.data.next_redirect_pc_url);
+      if (res.status === 200) {
+        openPaymentPopup(res.data.next_redirect_pc_url);
+      }
+    } catch {
+      console.log('결제 진행 중 오류가 발생했습니다');
     }
   };
 

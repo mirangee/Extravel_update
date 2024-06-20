@@ -71,7 +71,7 @@ public class KakaoPayController {
             out.println("<title>Payment Success</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>결제가 성공적으로 완료되었습니다. 조금만 기다려 봐유~</h1>");
+            out.println("<h1>ET 포인트 결제가 성공적으로 완료되었습니다");
             out.println("<script type=\"text/javascript\">");
             out.println("window.onload = function() {");
             out.println("    window.close();");
@@ -92,7 +92,7 @@ public class KakaoPayController {
      */
     @GetMapping("/cancel")
     public ResponseEntity<?> cancel() {
-        return ResponseEntity.badRequest().body("사용자가 결제를 취소하였습니다.");
+        return ResponseEntity.badRequest().body("결제가 취소되었습니다.");
     }
 
     /**
