@@ -3,19 +3,38 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+
 import Select from 'react-select';
 import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
 import axios from 'axios';
 import AuthContext from '../utils/AuthContext';
+import { API_BASE_URL, USER } from '../config/host-config';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
-  const [country, setCountry] = useState('US');
   const navigate = useNavigate();
-  const { inLoggedIn, name } = useContext(AuthContext);
+  const {
+    inLoggedIn,
+    name,
+    onChangeNation,
+    nation,
+    onLogout,
+  } = useContext(AuthContext);
+
+  const redirection = useNavigate();
+
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //로그아웃 핸들러
+  const clickLogoutHandler = () => {
+    onLogout();
+    // inLoggedIn(false);
+    redirection('/');
+    alert('로그아웃 되었습니다.');
+  };
 
   useEffect(() => {
     const getNationData = () => {
@@ -62,10 +81,7 @@ const Header = () => {
   }, []);
 
   const handleCountryChange = (selectedOption) => {
-    setCountry(selectedOption.value);
-    if (selectedOption) {
-      navigate(`/${selectedOption.value}`);
-    }
+    onChangeNation(selectedOption.value);
   };
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
@@ -83,8 +99,10 @@ const Header = () => {
         />
         <nav className={styles.nav}>
           <ul className={styles.menu}>
-            <li>
-              {inLoggedIn ? name + '님' : '오늘'}의 할일
+            <li className={styles.login}>
+              {inLoggedIn
+                ? name + '님 좋은 하루 되세요.'
+                : ''}
             </li>
             <li>
               <Link to='/home'>패키지</Link>
@@ -98,17 +116,35 @@ const Header = () => {
             <li>
               <Link to='/contact'>Places</Link>
             </li>
+
             <li>
-              <Select
-                value={countryOptions.find(
-                  (option) => option.value === country,
-                )}
-                onChange={handleCountryChange}
-                options={countryOptions}
-                className={styles.countrySelect}
-                classNamePrefix={styles.reactSelect}
-              />
+              {inLoggedIn && (
+                <Select
+                  value={countryOptions.find(
+                    (option) => option.value === nation,
+                  )}
+                  onChange={handleCountryChange}
+                  options={countryOptions}
+                  className={styles.countrySelect}
+                  classNamePrefix={styles.reactSelect}
+                />
+              )}
             </li>
+            <ul>
+              {inLoggedIn ? (
+                <li
+                  type='button'
+                  className={styles.logout}
+                  onClick={clickLogoutHandler}
+                >
+                  로그아웃
+                </li>
+              ) : (
+                <>
+                  <Link to='/login'>로그인</Link>
+                </>
+              )}
+            </ul>
           </ul>
         </nav>
       </header>
