@@ -4,6 +4,7 @@ import DetailSection1 from './DetailSection1';
 import DetailSection2 from './DetailSection2';
 import DetailSection3 from './DetailSection3';
 import YoutubeList from './YoutubeList';
+
 const MainDetail = () => {
   return (
     <div className={Styles.mainBox}>

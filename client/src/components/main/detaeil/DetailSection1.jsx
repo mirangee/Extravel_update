@@ -1,13 +1,12 @@
 import React from 'react';
 import Styles from '../../../scss/DetailSection1.module.scss';
 import ShowChart from './ShowChart';
-import News from './News';
+import NaverNews from '../../user/NaverNews';
 const DetailSection1 = () => {
   return (
     <div className={Styles.box}>
       <ShowChart />
-      <News />
-      <News />
+      <NaverNews />
     </div>
   );
 };

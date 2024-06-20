@@ -21,23 +21,14 @@ function NaverNews() {
   }, []);
 
   return (
-    <div>
-      <h1>네이버 뉴스</h1>
-      <ul>
-        {article.map((article, index) => (
-          <li key={index}>
-            <h2>{article.title}</h2>
-            <p>{article.description}</p>
-            <a
-              href={article.link}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              기사 보기
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div className='box' style={{ background: 'red' }}>
+      <h1 style={({ background: 'red' }, { color: 'red' })}>
+        뉴스
+      </h1>
+      <h2
+        className='h'
+        style={{ background: 'green' }}
+      ></h2>
     </div>
   );
 }

@@ -7,7 +7,6 @@ import {
   CardText,
   Row,
   Col,
-  Container,
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
