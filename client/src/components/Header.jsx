@@ -16,8 +16,13 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
   const navigate = useNavigate();
-  const { inLoggedIn, name, onChangeNation, nation } =
-    useContext(AuthContext);
+  const {
+    inLoggedIn,
+    name,
+    onChangeNation,
+    nation,
+    onLogout,
+  } = useContext(AuthContext);
 
   const redirection = useNavigate();
 
