@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+//컨텍스트 생성
 export const AuthContext = React.createContext({
   inLoggedIn: false,
   name: '',
@@ -11,6 +12,7 @@ export const AuthContext = React.createContext({
   onChangeNation: () => {},
 });
 
+//컨텍스트 프로바이더
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
@@ -56,11 +58,13 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem('NATION');
     localStorage.removeItem('EMAIL');
     localStorage.removeItem('ROLE');
-    setIsLoggedIn(true);
+    setIsLoggedIn(false);
     setUserName('');
     setEmail('');
     setNation('');
   };
+
+  //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
   useEffect(() => {
     if (localStorage.getItem('NAME')) {
       setIsLoggedIn(true);
@@ -71,6 +75,7 @@ export const AuthContextProvider = (props) => {
   }, []);
 
   return (
+    //컨텍스트 값 -> 하위 컴포넌트에 제공
     <AuthContext.Provider
       value={{
         inLoggedIn: isLoggedIn,
