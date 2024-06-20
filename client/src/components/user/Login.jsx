@@ -10,6 +10,7 @@ import { Button, Grid, TextField } from '@mui/material';
 
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
+import a7 from '../../assets/img/a7.jpg';
 import styles from '../../scss/Login.module.scss';
 import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
@@ -139,6 +140,7 @@ const Login = () => {
   const fetchLogin = async (data) => {
     try {
       console.log('fetchLogin data = ', data);
+      // console.log('REQUEST_URL = ', REQUEST_URL);
       const res = await axios.post(REQUEST_URL, data);
       return res.data; // 서버 응답 데이터 반환
     } catch (error) {
@@ -146,6 +148,39 @@ const Login = () => {
       throw new Error(
         '로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
       );
+    }
+  };
+
+  //번호 인증
+  const checkNumber = async (phoneNumber) => {
+    try {
+      console.log('회원가입 전화번호 : ', phoneNumber);
+      const response = await axios.post(
+        'https://api.coolsms.co.kr/send-one',
+        { phoneNumber },
+      );
+
+      if (response.data && response.data.phoneNumber) {
+        // 서버가 정상적으로 응답하고 필요한 데이터가 있는 경우
+        console.log(
+          '인증 요청 성공:',
+          response.data.phoneNumber,
+        );
+        return response.data.phoneNumber;
+      } else {
+        // 서버 응답이 예상과 다를 때
+        console.log(
+          '인증 요청 실패: 서버 응답에 phoneNumber가 없음',
+        );
+        return null; // 또는 적절한 기본값 반환
+      }
+    } catch (error) {
+      console.log(
+        '전화번호 인증 요청 중 오류 발생:',
+        error,
+      );
+      // 필요한 경우 사용자에게 오류 메시지를 표시하는 추가 로직
+      return null; // 또는 적절한 기본값 반환
     }
   };
 
@@ -166,13 +201,18 @@ const Login = () => {
       email,
       password,
     };
-    // 서버로 로그인 요청
-    const response = await fetchLogin(data);
-    console.log(response);
-    onLogin(response);
-    // 성공적으로 로그인된 경우 처리
-    alert(`${response.name}님 환영합니다!!! ^^`);
-    navigate('/'); //메인 페이지로 이동
+    try {
+      //서버로 로그인 요청
+      const response = await fetchLogin(data);
+
+      //로그인 성공
+      onLogin(response);
+      alert(`${response.name}님 환영합니다!!! ^^`);
+      window.location.replace('/');
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생', error);
+      alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
+    }
   };
 
   const fetchDuplicateCheck = async (email) => {
@@ -208,7 +248,7 @@ const Login = () => {
   return (
     <>
       <div className={styles.login}>
-        <h2>EXTRAVEL LOGIN</h2>
+        <h2 className={styles.toplogo}>EXTRAVEL</h2>
 
         <div
           className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
@@ -323,17 +363,27 @@ const Login = () => {
                           },
                         }}
                         render={({ field, fieldState }) => (
-                          <TextField
-                            label='Phone Number'
-                            {...field}
-                            value={field.value}
-                            onChange={field.onChange}
-                            error={!!fieldState.error}
-                            helperText={
-                              fieldState.error &&
-                              fieldState.error.message
-                            }
-                          />
+                          <>
+                            <TextField
+                              label='Phone Number'
+                              {...field}
+                              value={field.value}
+                              onChange={field.onChange}
+                              error={!!fieldState.error}
+                              helperText={
+                                fieldState.error &&
+                                fieldState.error.message
+                              }
+                            />
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                checkNumber(field.value);
+                              }}
+                            >
+                              전화번호 인증
+                            </button>
+                          </>
                         )}
                       />
                     </Grid>
@@ -379,7 +429,7 @@ const Login = () => {
                                 );
                               }}
                             >
-                              버튼1
+                              중복체크
                             </button>
                           </>
                         )}
@@ -527,7 +577,11 @@ const Login = () => {
                 <div
                   className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
                 >
-                  <h1>EXTRAVEL 회원가입 하기</h1>
+                  <h1>
+                    EXTRAVEL
+                    <br />
+                    Sign Up
+                  </h1>
                   <p>
                     To keep connected with us please login
                     with your personal info
@@ -550,7 +604,11 @@ const Login = () => {
                   >
                     X
                   </button>
-                  <h1>EXTRAVEL 로그인 하기</h1>
+                  <h1>
+                    EXTRAVEL
+                    <br />
+                    Login
+                  </h1>
                   <p>
                     Enter your personal details and start
                     journey with us

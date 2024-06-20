@@ -59,6 +59,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    //cool SMS 서비스
+    implementation 'net.nurigo:sdk:4.3.0'
+
 }
 
 
@@ -66,3 +70,5 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
