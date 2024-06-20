@@ -4,13 +4,14 @@ function NaverNews() {
   const [article, setArticle] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8181/main/news')
+    fetch('http://localhost:8181/api/v1/news')
       .then((response) => response.json())
       .then((data) => {
         const items = data.items;
+
         const transformArticle = items.map((item) => ({
           title: item.title,
-          description: item.descriptions,
+          description: item.description,
           link: item.link,
         }));
         setArticle(transformArticle);
@@ -21,14 +22,22 @@ function NaverNews() {
   }, []);
 
   return (
-    <div className='box' style={{ background: 'red' }}>
-      <h1 style={({ background: 'red' }, { color: 'red' })}>
-        뉴스
-      </h1>
-      <h2
-        className='h'
-        style={{ background: 'green' }}
-      ></h2>
+    <div>
+      <h2>Naver News Articles</h2>
+      <ul>
+        {article.map((item, index) => (
+          <li key={index}>
+            <a
+              href={item.link}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <h3>{item.title}</h3>
+            </a>
+            <p>{item.description}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
