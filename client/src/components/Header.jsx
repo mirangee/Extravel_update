@@ -3,12 +3,14 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+
 import Select from 'react-select';
 import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
 import axios from 'axios';
 import AuthContext from '../utils/AuthContext';
+import { API_BASE_URL, USER } from '../config/host-config';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -16,6 +18,18 @@ const Header = () => {
   const navigate = useNavigate();
   const { inLoggedIn, name, onChangeNation, nation } =
     useContext(AuthContext);
+
+  const redirection = useNavigate();
+
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //로그아웃 핸들러
+  const clickLogoutHandler = () => {
+    onLogout();
+    // inLoggedIn(false);
+    redirection('/');
+    alert('로그아웃 되었습니다.');
+  };
 
   useEffect(() => {
     const getNationData = () => {
@@ -80,9 +94,9 @@ const Header = () => {
         />
         <nav className={styles.nav}>
           <ul className={styles.menu}>
-            <li>
-              {inLoggedIn ? name + '님' : '안녕하세요!'},
-              즐거운 하루 되세요.
+            <li className={styles.login}>
+              {inLoggedIn ? name + '님' : '안녕하세요'},
+              좋은 하루 되세요.
             </li>
             <li>
               <Link to='/home'>패키지</Link>
@@ -96,6 +110,7 @@ const Header = () => {
             <li>
               <Link to='/contact'>Places</Link>
             </li>
+
             <li>
               {inLoggedIn && (
                 <Select
@@ -109,7 +124,21 @@ const Header = () => {
                 />
               )}
             </li>
-            <li>로그아웃</li>
+            <ul>
+              {inLoggedIn ? (
+                <li
+                  type='button'
+                  className={styles.logout}
+                  onClick={clickLogoutHandler}
+                >
+                  로그아웃
+                </li>
+              ) : (
+                <>
+                  <Link to='/login'>로그인</Link>
+                </>
+              )}
+            </ul>
           </ul>
         </nav>
       </header>

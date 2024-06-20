@@ -140,6 +140,7 @@ const Login = () => {
   const fetchLogin = async (data) => {
     try {
       console.log('fetchLogin data = ', data);
+      // console.log('REQUEST_URL = ', REQUEST_URL);
       const res = await axios.post(REQUEST_URL, data);
       return res.data; // 서버 응답 데이터 반환
     } catch (error) {
@@ -173,7 +174,7 @@ const Login = () => {
     onLogin(response);
     // 성공적으로 로그인된 경우 처리
     alert(`${response.name}님 환영합니다!!! ^^`);
-    navigate('/'); //메인 페이지로 이동
+    window.location.replace('/'); //메인 페이지로 이동
   };
 
   const fetchDuplicateCheck = async (email) => {
@@ -324,17 +325,20 @@ const Login = () => {
                           },
                         }}
                         render={({ field, fieldState }) => (
-                          <TextField
-                            label='Phone Number'
-                            {...field}
-                            value={field.value}
-                            onChange={field.onChange}
-                            error={!!fieldState.error}
-                            helperText={
-                              fieldState.error &&
-                              fieldState.error.message
-                            }
-                          />
+                          <>
+                            <TextField
+                              label='Phone Number'
+                              {...field}
+                              value={field.value}
+                              onChange={field.onChange}
+                              error={!!fieldState.error}
+                              helperText={
+                                fieldState.error &&
+                                fieldState.error.message
+                              }
+                            />
+                            <button>전화번호 인증</button>
+                          </>
                         )}
                       />
                     </Grid>
@@ -380,7 +384,7 @@ const Login = () => {
                                 );
                               }}
                             >
-                              버튼1
+                              중복체크
                             </button>
                           </>
                         )}
