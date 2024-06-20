@@ -38,7 +38,7 @@ public class NewsController {
 
         int display = 5;
         URI uri = UriComponentsBuilder.fromUriString(reqUrl)
-                .queryParam("query", "주식")
+                .queryParam("query", "환율")
                 .queryParam("display", display)
                 .queryParam("start", 1)
                 .encode()
