@@ -151,6 +151,39 @@ const Login = () => {
     }
   };
 
+  //번호 인증
+  const checkNumber = async (phoneNumber) => {
+    try {
+      console.log('회원가입 전화번호 : ', phoneNumber);
+      const response = await axios.post(
+        'https://api.coolsms.co.kr/send-one',
+        { phoneNumber },
+      );
+
+      if (response.data && response.data.phoneNumber) {
+        // 서버가 정상적으로 응답하고 필요한 데이터가 있는 경우
+        console.log(
+          '인증 요청 성공:',
+          response.data.phoneNumber,
+        );
+        return response.data.phoneNumber;
+      } else {
+        // 서버 응답이 예상과 다를 때
+        console.log(
+          '인증 요청 실패: 서버 응답에 phoneNumber가 없음',
+        );
+        return null; // 또는 적절한 기본값 반환
+      }
+    } catch (error) {
+      console.log(
+        '전화번호 인증 요청 중 오류 발생:',
+        error,
+      );
+      // 필요한 경우 사용자에게 오류 메시지를 표시하는 추가 로직
+      return null; // 또는 적절한 기본값 반환
+    }
+  };
+
   const onChangeEmailHandler = (e) => {
     // console.log(e.target.value);
     setEmail(e.target.value);
@@ -168,13 +201,18 @@ const Login = () => {
       email,
       password,
     };
-    // 서버로 로그인 요청
-    const response = await fetchLogin(data);
-    console.log(response);
-    onLogin(response);
-    // 성공적으로 로그인된 경우 처리
-    alert(`${response.name}님 환영합니다!!! ^^`);
-    window.location.replace('/'); //메인 페이지로 이동
+    try {
+      //서버로 로그인 요청
+      const response = await fetchLogin(data);
+
+      //로그인 성공
+      onLogin(response);
+      alert(`${response.name}님 환영합니다!!! ^^`);
+      window.location.replace('/');
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생', error);
+      alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
+    }
   };
 
   const fetchDuplicateCheck = async (email) => {
@@ -337,7 +375,14 @@ const Login = () => {
                                 fieldState.error.message
                               }
                             />
-                            <button>전화번호 인증</button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                checkNumber(field.value);
+                              }}
+                            >
+                              전화번호 인증
+                            </button>
                           </>
                         )}
                       />

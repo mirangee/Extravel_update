@@ -100,8 +100,9 @@ const Header = () => {
         <nav className={styles.nav}>
           <ul className={styles.menu}>
             <li className={styles.login}>
-              {inLoggedIn ? name + '님' : '안녕하세요'},
-              좋은 하루 되세요.
+              {inLoggedIn
+                ? name + '님 좋은 하루 되세요.'
+                : ''}
             </li>
             <li>
               <Link to='/home'>패키지</Link>
