@@ -111,7 +111,6 @@ const Header = () => {
           </ul>
         </nav>
       </header>
-      <div className={styles.fake}></div>
     </>
   );
 };

@@ -1,0 +1,9 @@
+.swiper-slide {
+  width: 300px !important;
+  height: 160px;
+  margin-top: 7px;
+  transition: transform 0.6s ease-in-out !important;
+}
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}

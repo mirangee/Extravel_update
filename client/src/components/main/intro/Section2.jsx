@@ -1,129 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 import styles from '../../../scss/Section2.module.scss'; // 스타일을 위한 SCSS 파일 import
-
-const countries = [
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  // 여기에 20개 나라 더 추가
-];
+import axios from 'axios';
+import LiveRankExRateCard from './LiveRankExRateCard';
+import '../../../scss/SwiperCustom.css';
 
 const Section2 = () => {
+  const [liveData, setLiveData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    const getLiveData = async () => {
+      await axios
+        .get('http://localhost:8181/api/rate/currency/live')
+        .then((res) => {
+          setLiveData(res.data);
+          setLoading(true);
+          if (
+            swiperRef.current &&
+            swiperRef.current.swiper
+          ) {
+            swiperRef.current.swiper.autoplay.start();
+          }
+        });
+    };
+
+    getLiveData();
+  }, []);
+
   return (
     <>
       <div className={styles.section2}>
-        {/* <h3 className='title'>각 나라의 환율 정보</h3> */}
-        <div className={styles.section2Container}>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={50}
-            slidesPerView={5}
-            navigation
-            pagination={{ clickable: true }}
-            freeMode={true}
-            style={{ width: '1800px', height: '500px' }} // Swiper 컨테이너 크기 설정
-          >
-            {countries.map((country, index) => (
-              <SwiperSlide
-                key={index}
-                style={{
-                  textAlign: 'center',
-                  fontSize: '18px',
-                  background: '#fff',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <div className={styles.countryCard}>
-                  <img
-                    src={country.flag}
-                    alt={`${country.name} flag`}
-                    className={styles.flag}
-                  />
-                  <h3>{country.name}</h3>
-                  <p>{country.description}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        <div className={styles.section2Box}>
+          <div className={styles.section2Wrapper}>
+            <div className={styles.section2Title}>
+              <h1>실시간 환율 정보를 확인하세요</h1>
+            </div>
+            <div className={styles.section2Container}>
+              {loading && (
+                <Swiper
+                  ref={swiperRef}
+                  modules={[Autoplay]}
+                  autoplay={{
+                    delay: 0,
+                    disableOnInteraction: false, // 사용자 상호작용 후에도 autoplay 유지
+                  }}
+                  loop={true}
+                  speed={6000}
+                  spaceBetween={50}
+                  slidesPerView={'auto'}
+                  observer={true}
+                  style={{ width: '100%', height: '170px' }} // Swiper 컨테이너 크기 설정
+                >
+                  {liveData.map((item) => (
+                    <SwiperSlide
+                      key={item.id}
+                      style={{
+                        backgroundColor: 'white',
+                        borderRadius: '10px',
+                        boxShadow:
+                          '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
+                      }}
+                    >
+                      <LiveRankExRateCard item={item} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+            </div>
+          </div>
+          <div className={styles.section2Box2}>
+            <div className={styles.searchTableBox}></div>
+            <div className={styles.searchTextBox}></div>
+          </div>
         </div>
       </div>
     </>
