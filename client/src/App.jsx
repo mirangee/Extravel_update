@@ -16,7 +16,6 @@ import { Switch } from '@mui/material';
 const App = () => {
   return (
     <>
-      {/* <NaverNews /> */}
       <AuthContextProvider>
         <Header />
         <Routes>

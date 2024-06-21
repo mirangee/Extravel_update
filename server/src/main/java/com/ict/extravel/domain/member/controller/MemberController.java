@@ -2,11 +2,10 @@ package com.ict.extravel.domain.member.controller;
 
 
 
+import com.ict.extravel.domain.member.dto.request.*;
 import com.ict.extravel.domain.member.service.MemberService;
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 
-import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.service.MemberService;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
@@ -116,6 +115,11 @@ public class MemberController {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
         return ResponseEntity.ok().body("SUCCESS");
+    }
+    @PutMapping("/nation")
+    public ResponseEntity<?> updateNation(@RequestBody UpdateMemberNationRequestDTO dto) {
+        String s = memberService.UpdateNation(dto);
+        return ResponseEntity.ok(s);
     }
 }
 
