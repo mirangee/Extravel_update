@@ -13,10 +13,12 @@ import MainIntro from './components/main/intro/MainIntro';
 import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
 import NaverNews from './components/main/detaeil/NaverNews';
+import NaverShopping from './components/user/NaverShopping';
 
 const App = () => {
   return (
     <>
+      <NaverShopping />
       <AuthContextProvider>
         <Header />
         <Routes>
