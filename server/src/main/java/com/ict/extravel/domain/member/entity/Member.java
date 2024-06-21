@@ -53,15 +53,12 @@ public class Member {
     @Column(name = "grade", length = 50)
     private String grade;
 
-    @Size(max = 255)
-    @Column(name = "tid")
-    private String tid;
-
     @Size(max = 30)
     @NotNull
     @Column(name = "path", nullable = false, length = 30)
     private String path;
 
+    private String tid; // 결제 고유 id
     public void updateTid(String tid) {
         this.tid = tid;
     }

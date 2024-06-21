@@ -1,11 +1,17 @@
 package com.ict.extravel.domain.pointexchange.controller;
 
+import com.ict.extravel.domain.member.entity.Member;
+import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
+import com.ict.extravel.domain.pointexchange.entity.PointCharge;
+import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
 import com.ict.extravel.domain.pointexchange.service.KakaoPayService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +25,8 @@ import java.io.PrintWriter;
 public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
+    private final PointChargeRepository pointChargeRepository;
+    private final MemberRepository memberRepository;
 
     /** 결제 준비 redirect url 받기 --> 상품명과 가격을 같이 보내줘야함 */
     @PostMapping("/ready")
@@ -29,6 +37,7 @@ public class KakaoPayController {
                     .body(kakaoPayService.getRedirectUrl(payInfoDto));
         }
         catch(Exception e){
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -41,9 +50,7 @@ public class KakaoPayController {
         try {
             log.info("/payment/success/id 요청 들어 옴! {}", pgToken);
             PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
-
             log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
-//            return ResponseEntity.status(HttpStatus.OK).body(kakaoApprove);
             return ResponseEntity.status(HttpStatus.OK).body("결제가 완료되었습니다! 결제 페이지로 돌아가주세요.");
         }
         catch(Exception e){
@@ -90,18 +97,42 @@ public class KakaoPayController {
     /**
      * 결제 진행 중 취소
      */
-    @GetMapping("/cancel")
-    public ResponseEntity<?> cancel() {
-        return ResponseEntity.badRequest().body("결제가 취소되었습니다.");
+    @GetMapping("/cancel/{id}")
+    public ResponseEntity<?> cancel(@PathVariable("id") Integer id) {
+
+        try {
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new Exception("해당 유저가 존재하지 않습니다."));
+            String tid = member.getTid();
+            pointChargeRepository.updatePointChargeBy(tid, null, PointCharge.Status.CANCELED);
+            return ResponseEntity.badRequest().body("결제가 취소되었습니다.");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     /**
      * 결제 실패
      */
-    @GetMapping("/fail")
-    public ResponseEntity<?> fail() {
+    @GetMapping("/fail/{id}")
+    public ResponseEntity<?> fail(@PathVariable("id")Integer id) {
+        try {
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new Exception("해당 유저가 존재하지 않습니다."));
+            String tid = member.getTid();
+            pointChargeRepository.updatePointChargeBy(tid, null, PointCharge.Status.FAILED);
+            return ResponseEntity.badRequest().body("결제가 실패하였습니다.");
 
-        return ResponseEntity.badRequest().body("결제가 실패하였습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
-
+    /** 결제창 닫은 후 결제 완료 상태 확인하는 요청 --> DB에서 결제 status 정보 조회 결과를 보내줘야함 */
+    @GetMapping("/confirm")
+    public ResponseEntity<?> confirm() {
+        return null;
+    }
 }

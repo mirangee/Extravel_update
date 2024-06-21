@@ -7,6 +7,8 @@ import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
+import com.ict.extravel.domain.pointexchange.entity.PointCharge;
+import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.time.Instant;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +31,8 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoPayService {
     private final MakePayRequest makePayRequest;
     private final MemberRepository memberRepository;
+    private final PointChargeRepository payChargeRepository;
+    private final PointChargeRepository pointChargeRepository;
 
     @Value("${pay.admin-key}")
     private String adminKey;
@@ -42,7 +52,6 @@ public class KakaoPayService {
 
         Integer id = member.getId();
 
-
         HttpHeaders headers=new HttpHeaders();
 
         /** 요청 헤더 */
@@ -60,9 +69,32 @@ public class KakaoPayService {
         RestTemplate rt = new RestTemplate();
         PayReadyResDto payReadyResDto = rt.postForObject(payRequest.getUrl(), urlRequest, PayReadyResDto.class);
 
-        member.updateTid(payReadyResDto.getTid());
-        log.info("member tid update 완료! {}", payReadyResDto.toString());
+        log.info("payReadyResDto 응답옴! {}", payReadyResDto);
 
+        // String으로 받은 create_at을 LocalDateTime으로 변환
+        String createdAtStr = payReadyResDto.getCreated_at();  // "2023-06-21T15:30:00" 같은 형식의 문자열
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime createdAt = LocalDateTime.parse(createdAtStr, formatter);
+
+        // member 테이블 tid 컬럼에 최신 tid update
+        member.updateTid(payReadyResDto.getTid());
+
+        // 여기서 tbl_charge_history에 데이터 추가
+        PointCharge pointCharge = PointCharge.builder()
+                .tid(payReadyResDto.getTid())
+                .member(member)
+                .amount(payInfoDto.getPrice())
+                .plusPoint(payInfoDto.getPlusPoint())
+                .createdAt(createdAt)
+                .approvedAt(null)
+                .status(PointCharge.Status.PENDING)
+//                .status("PENDING")
+                .build();
+        System.out.println("pointCharge = " + pointCharge);
+
+        PointCharge save = pointChargeRepository.save(pointCharge);
+        System.out.println(save);
+        log.info("DB에 1차 저장 완료!");
         return payReadyResDto;
     }
 
@@ -73,8 +105,12 @@ public class KakaoPayService {
         Member member=memberRepository.findById(id)
                 .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
 
-        String tid=member.getTid();
+        String tid = member.getTid();
 
+//        PointCharge pointCharge = pointChargeRepository.findByMemberId(id)
+//                .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
+//        String tid=pointCharge.getTid();
+        log.info("tid 확인! {}", tid);
 
         HttpHeaders headers=new HttpHeaders();
         String auth = "KakaoAK " + adminKey;
@@ -97,9 +133,12 @@ public class KakaoPayService {
         RestTemplate rt = new RestTemplate();
         PaymentDto paymentDto = rt.postForObject(payRequest.getUrl(), requestEntity, PaymentDto.class);
 
+        // DB에 승인 결과 저장
+
         log.info("승인 요청의 결과 {}", paymentDto);
+
+        pointChargeRepository.updatePointChargeBy(paymentDto.getTid(), paymentDto.getApprovedAt(), PointCharge.Status.SUCCESS);
         return paymentDto;
     }
-
 
 }

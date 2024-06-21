@@ -8,4 +8,5 @@ import lombok.ToString;
 public class PayInfoDto {
     private int price;
     private String itemName;
+    private float plusPoint;
 }

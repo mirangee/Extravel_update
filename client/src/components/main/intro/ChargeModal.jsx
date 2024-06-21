@@ -43,8 +43,10 @@ const ChargeModal = ({ setModalOpen }) => {
       );
       if (res.status === 200) {
         // 결제 성공 시 새로운 페이지로 이동하며 상태 전달
+        alert('ET 포인트 충전이 완료되었습니다.');
       } else {
         // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
+        alert('실패했습니다.');
       }
     } catch (error) {
       console.error(
@@ -69,8 +71,8 @@ const ChargeModal = ({ setModalOpen }) => {
     const paymentCheck = setInterval(() => {
       if (popup.closed) {
         clearInterval(paymentCheck);
-        // confirmPayment();
-        // alert('ET 포인트 충전이 완료되었습니다.');
+        confirmPayment();
+
         // 필요한 후속 작업 수행
       }
     }, 1000);
@@ -84,6 +86,7 @@ const ChargeModal = ({ setModalOpen }) => {
         {
           price: 1000,
           itemName: 'ET 포인트',
+          plusPoint: 1000 * 0.001,
         },
       );
       console.log(res);
