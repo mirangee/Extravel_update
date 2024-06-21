@@ -36,7 +36,7 @@ public class NewsController {
     public ResponseEntity<String> getYouTubeVideos() {
         String reqUrl = "https://openapi.naver.com/v1/search/news.json";
 
-        int display = 5;
+        int display = 10;
         URI uri = UriComponentsBuilder.fromUriString(reqUrl)
                 .queryParam("query", "환율")
                 .queryParam("display", display)

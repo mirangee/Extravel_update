@@ -10,8 +10,11 @@ function NaverNews() {
         const items = data.items;
 
         const transformArticle = items.map((item) => ({
-          title: item.title,
-          description: item.description,
+          title: item.title.replace(/(<([^>]+)>)/gi, ''),
+          description: item.description.replace(
+            /(<([^>]+)>)/gi,
+            '',
+          ),
           link: item.link,
         }));
         setArticle(transformArticle);
@@ -22,8 +25,21 @@ function NaverNews() {
   }, []);
 
   return (
-    <div>
-      <h2>Naver News Articles</h2>
+    <div
+      className='scrollable-div'
+      style={{
+        width: '680px',
+        height: '362px',
+        overflow: 'auto',
+        border: '1px solid #ccc',
+        padding: '10px',
+        borderRadius: '10px',
+        marginLeft: '10px',
+      }}
+    >
+      <h2 style={{ textAlign: 'center' }}>
+        환율 실시간 뉴스
+      </h2>
       <ul>
         {article.map((item, index) => (
           <li key={index}>
