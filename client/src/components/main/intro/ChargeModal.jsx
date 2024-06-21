@@ -61,17 +61,18 @@ const ChargeModal = ({ setModalOpen }) => {
     }
   };
 
-  const openPaymentPopup = (popUrl) => {
+  const openPaymentPopup = (popUrl, tid) => {
     const popup = window.open(
       popUrl,
       '카카오페이 결제',
       'width=500,height=600',
     );
 
-    const paymentCheck = setInterval(() => {
+    const paymentCheck = setInterval((tid) => {
       if (popup.closed) {
         clearInterval(paymentCheck);
-        confirmPayment();
+        console.log('tid 남아있는지 확인!: ', tid);
+        confirmPayment(tid);
 
         // 필요한 후속 작업 수행
       }
@@ -90,9 +91,14 @@ const ChargeModal = ({ setModalOpen }) => {
         },
       );
       console.log(res);
+      console.log(res.data.tid);
+      const tid = res.data.tid;
       console.log(res.data.next_redirect_pc_url);
       if (res.status === 200) {
-        openPaymentPopup(res.data.next_redirect_pc_url);
+        openPaymentPopup(
+          res.data.next_redirect_pc_url,
+          tid,
+        );
       }
     } catch {
       console.log('결제 진행 중 오류가 발생했습니다');
