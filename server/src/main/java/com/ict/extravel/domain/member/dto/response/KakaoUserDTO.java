@@ -1,11 +1,9 @@
 package com.ict.extravel.domain.member.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ict.extravel.domain.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
 
