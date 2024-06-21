@@ -1,0 +1,107 @@
+.PageBox{
+  // background-color: red;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 200px;
+  padding-left: 250px;
+}
+.PageHeader{
+  // background: violet;
+  // text-align: center;
+  font-size: 64px;
+  font-weight: bold;
+  background: linear-gradient(to right top, #a6d2df, #0a4a58);
+  color: transparent;
+  -webkit-background-clip: text;
+  // padding-left: 300px;
+  height: 130px;
+}
+
+.ProfileHeader {
+  // background: green;
+  // padding-left: 300px;
+
+}
+
+.ProfileHeader img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.ProfileHeader span {
+  padding-left: 30px;
+  
+  font-size: 26px;
+  font-weight: 700;
+
+}
+
+.EmailBox {
+  // background-color: pink;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  color: #14505c;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.EmailBox span {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 10px;
+  
+}
+
+.EmailBox input {
+  // padding-top: 30px;
+  font-size: 26px;
+  font-weight: bold;
+  // margin-top: 50px;
+}
+
+.PhoneBox {
+  // margin-top: 40px;
+  margin-bottom: 40px;
+  color: #14505c;
+  display: flex;
+  flex-direction: column;
+}
+
+.PhoneBox span {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 10px;
+  // margin-bottom: 50px;
+}
+
+.PhoneBox input {
+  // padding-top: 30px;
+  font-size: 26px;
+  font-weight: bold;
+  // margin-top: 50px;
+}
+
+.NationBox {
+  margin-bottom: 40px;
+  color: #14505c;
+  display: flex;
+  flex-direction: column;
+}
+
+.NationBox span {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 10px;
+  // margin-bottom: 50px;
+}
+
+.NationBox input {
+  // padding-top: 30px;
+  font-size: 26px;
+  font-weight: bold;
+  // margin-top: 50px;
+}
+

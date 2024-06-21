@@ -1,9 +1,10 @@
 .header {
+  
   display: flex;
   height: 80px;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  // padding: 10px 20px;
   position: fixed;
   top: 0;
   left: 0;
@@ -12,15 +13,28 @@
   background-color: transparent;
   transition: background-color 0.3s ease;
   z-index: 1000;
+  animation: fadeIn 0.8s ease-in forwards;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
 
   &.scrolled {
     background-color: #14505c; /* 스크롤 시 배경 색상 변경 */
   }
 
   .logo {
-    width: 250px;
+    width: 350px;
     height: auto;
     padding-left: 150px;
+    cursor: pointer;
   }
 
   .nav ul {
