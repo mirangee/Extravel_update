@@ -40,7 +40,7 @@ public class NaverShoppingController {
                 .encode()
                 .build()
                 .toUri();
-      log.info("build 한 uri값: {}" ,uri);
+        log.info("build 한 uri값: {}" ,uri);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", CLIENT_ID);

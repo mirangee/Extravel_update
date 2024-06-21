@@ -56,14 +56,14 @@ public class NewsController {
 
         log.info("요청 headers {}", headers);
 
-    HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-    ResponseEntity<String> response = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            entity,
-            String.class
-    );
+        ResponseEntity<String> response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
 
         log.info("리턴: response : {}" , response);
         return response;
