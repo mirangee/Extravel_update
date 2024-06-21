@@ -1,14 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 .section2 {
-  font-family:
-    Helvetica Neue,
-    Helvetica,
-    Arial,
-    sans-serif;
   font-size: 14px;
   color: #000;
-  margin: 0;
+  margin: 100px 0;
   width: 100%;
 }
 .section2Wrapper {
@@ -22,15 +17,28 @@
 }
 
 .section2Container {
-  width: 110%;
+  width: 100%;
 }
 .section2Box {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
 }
 
-.section2Title {
+.titleBox {
+  width: 50%;
   color: #275963;
   padding: 70px 0;
-  font-family: 'Black Han Sans';
+  h1 {
+    font-family: 'Black Han Sans';
+    font-size: 50px;
+  }
+  span {
+    font-family: 'Noto sans KR';
+    font-size: 20px;
+  }
 }
 .countryCard {
   border: 1px solid #ccc;
@@ -40,24 +48,50 @@
   height: 200px;
   margin-bottom: 260px;
 }
+.titleBt {
+  margin-top: 30px;
+}
 
 .flag {
   width: 100px;
   height: auto;
 }
 
+.downRate {
+  width: 340px;
+  border-radius: 10px;
+  box-shadow: 20px 10px lightgray;
+  border: 1px solid lightgray;
+}
+.rateContent {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+.upRate {
+  width: 340px;
+  border-radius: 10px;
+  box-shadow: 20px 10px lightgray;
+  border: 1px solid lightgray;
+  margin-left: 30px;
+}
+
 .section2Box2 {
   width: 100%;
-  height: 300px;
+  height: 100%px;
   border: 1px solid black;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .searchTableBox {
-  width: 40%;
+  width: 50%;
   background-color: #275963;
+  height: 100%;
+}
+.searchTextBox {
+  width: 50%;
+  background-color: blueviolet;
   height: 100%;
 }

@@ -55,8 +55,4 @@ public class Member {
     @Column(name = "grade", length = 50)
     private String grade;
 
-    private String tid; // 결제 고유 id
-    public void updateTid(String tid) {
-        this.tid = tid;
-    }
 }

@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -9,6 +7,10 @@ import styles from '../../../scss/Section2.module.scss'; // 스타일을 위한 
 import axios from 'axios';
 import LiveRankExRateCard from './LiveRankExRateCard';
 import '../../../scss/SwiperCustom.css';
+import Button from '@mui/material/Button';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { createTheme } from '@mui/material/styles';
+import VirualEx from './VirualEx';
 
 const Section2 = () => {
   const [liveData, setLiveData] = useState([]);
@@ -22,12 +24,6 @@ const Section2 = () => {
         .then((res) => {
           setLiveData(res.data);
           setLoading(true);
-          if (
-            swiperRef.current &&
-            swiperRef.current.swiper
-          ) {
-            swiperRef.current.swiper.autoplay.start();
-          }
         });
     };
 
@@ -38,47 +34,53 @@ const Section2 = () => {
     <>
       <div className={styles.section2}>
         <div className={styles.section2Box}>
-          <div className={styles.section2Wrapper}>
-            <div className={styles.section2Title}>
-              <h1>실시간 환율 정보를 확인하세요</h1>
-            </div>
-            <div className={styles.section2Container}>
-              {loading && (
-                <Swiper
-                  ref={swiperRef}
-                  modules={[Autoplay]}
-                  autoplay={{
-                    delay: 0,
-                    disableOnInteraction: false, // 사용자 상호작용 후에도 autoplay 유지
-                  }}
-                  loop={true}
-                  speed={6000}
-                  spaceBetween={50}
-                  slidesPerView={'auto'}
-                  observer={true}
-                  style={{ width: '100%', height: '170px' }} // Swiper 컨테이너 크기 설정
-                >
-                  {liveData.map((item) => (
-                    <SwiperSlide
-                      key={item.id}
-                      style={{
-                        backgroundColor: 'white',
-                        borderRadius: '10px',
-                        boxShadow:
-                          '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
-                      }}
-                    >
-                      <LiveRankExRateCard item={item} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              )}
+          <div className={styles.titleBox}>
+            <h1>실시간 환율을 확인하세요</h1>
+            <span>
+              {' '}
+              22개의 국가 환율을 확인하고, 원화가 강세인
+              여행지를 추천받으세요{' '}
+            </span>
+            <div className={styles.titleBt}>
+              <Button
+                startIcon={<ArrowForwardIcon />}
+                variant='contained'
+                style={{
+                  backgroundColor: '#275963',
+                  borderRadius: '10px',
+                }}
+              >
+                더 많은 국가 보기
+              </Button>
             </div>
           </div>
-          <div className={styles.section2Box2}>
-            <div className={styles.searchTableBox}></div>
-            <div className={styles.searchTextBox}></div>
+          <div className={styles.rateContent}>
+            <div className={styles.downRate}>
+              {liveData.splice(0, 3).map((data) => (
+                <LiveRankExRateCard
+                  item={data}
+                  key={data.id}
+                />
+              ))}
+            </div>
+            <div className={styles.upRate}>
+              {liveData
+                .reverse()
+                .splice(0, 3)
+                .map((data) => (
+                  <LiveRankExRateCard
+                    item={data}
+                    key={data.id}
+                  />
+                ))}
+            </div>
           </div>
+        </div>
+        <div className={styles.section2Box2}>
+          <div className={styles.searchTableBox}>
+            <VirualEx />
+          </div>
+          <div className={styles.searchTextBox}></div>
         </div>
       </div>
     </>

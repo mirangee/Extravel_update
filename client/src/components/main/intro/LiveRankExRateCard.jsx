@@ -36,6 +36,7 @@ const LiveRankExRateCard = (item) => {
     width: '100%',
     height: '100%',
     display: 'flex',
+    padding: '15px',
   };
 
   function removeInvalidChars(str) {
@@ -48,7 +49,7 @@ const LiveRankExRateCard = (item) => {
         <h6>
           {nationName} {currencyCode}
         </h6>
-        <h4>{exchangeRate}</h4>
+        <h4>{exchangeRate} 원</h4>
         <h5>{exRate(changeRate)}</h5>
       </div>
       <div className={Styles.box2}>
