@@ -66,9 +66,9 @@ const Section1 = () => {
       >
         {/* 이 요소는 스크롤할 목표 요소입니다 */}
       </div>
-      {modalOpen && (
+      {/* {modalOpen && (
         <ChargeModal setModalOpen={setModalOpen} />
-      )}
+      )} */}
     </>
   );
 };
