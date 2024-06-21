@@ -18,7 +18,6 @@ import NaverShopping from './components/user/NaverShopping';
 const App = () => {
   return (
     <>
-      <NaverShopping />
       <AuthContextProvider>
         <Header />
         <Routes>
