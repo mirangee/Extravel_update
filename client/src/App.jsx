@@ -36,6 +36,10 @@ const App = () => {
             path='/main/news'
             element={<NaverNews />}
           ></Route>
+          <Route
+            path='api/v1/shopping'
+            element={<NaverShopping />}
+          ></Route>
         </Routes>
         <Footer />
         <ScrollToTopButton />
