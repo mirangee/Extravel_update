@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function AuthNumTimer() {
   // 초기 타이머 시간 (초)을 정의함. 180초, 3분.
-  const initialTime = 60;
+  const initialTime = 5;
   // 남은 시간을 상태로 관리함.
   const [remainingTime, setRemainingTime] =
     useState(initialTime);

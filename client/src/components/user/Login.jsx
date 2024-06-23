@@ -31,6 +31,8 @@ const Login = () => {
   const CHECK_EMAIL_URL = BASE + USER + '/check';
   const SIGNUP_URL = BASE + USER + '/signup';
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { onLogin, isLoggedIn } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [randomCode, setRandomCode] = useState('');
@@ -38,6 +40,12 @@ const Login = () => {
   const [showAuthNumTimer, setShowAuthNumTimer] =
     useState(false);
   const [resultMsg, setResultMsg] = useState('');
+  const [isAuthCompleted, setIsAuthCompleted] =
+    useState(false);
+  const [isEmailChecked, setIsEmailChecked] =
+    useState(false);
+
+  const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
 
   const redirection = useNavigate();
 
@@ -74,11 +82,6 @@ const Login = () => {
   } = useForm({
     mode: 'onChange',
   });
-
-  const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const onClickBtn = () => {
     navigate(-1); // 바로 이전 페이지로 이동, '/main' 등 직접 지정도 당연히 가능
@@ -190,6 +193,7 @@ const Login = () => {
     }
     if (+checkCodeStr === +randomCode) {
       msg = '휴대폰 인증이 정상적으로 완료되었습니다.';
+      setIsAuthCompleted(true);
     } else {
       msg = '인증번호가 올바르지 않습니다.';
     }
@@ -199,6 +203,7 @@ const Login = () => {
   const onChangeEmailHandler = (e) => {
     // console.log(e.target.value);
     setEmail(e.target.value);
+    setIsEmailChecked(false);
   };
 
   const onChangePasswordHandler = (e) => {
@@ -209,6 +214,12 @@ const Login = () => {
   const handleLoginSubmit = async () => {
     // const { passwordConfirm, ...submitData } = data;
     console.log('로그인 데이터 넘어옴', email, password);
+
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 모두 입력해주세요.');
+      return;
+    }
+
     const data = {
       email,
       password,
@@ -247,6 +258,8 @@ const Login = () => {
         return true; // 중복된 이메일이면 true 반환
       } else {
         alert('사용 가능한 이메일 입니다.');
+        setIsEmailChecked(true);
+
         return false; // 중복되지 않은 이메일이면 false 반환
       }
     } catch (error) {
@@ -387,6 +400,7 @@ const Login = () => {
                                 fieldState.error.message
                               }
                             />
+
                             <Button
                               onClick={(e) => {
                                 e.preventDefault();
@@ -395,54 +409,74 @@ const Login = () => {
                               }}
                               variant='contained'
                               color='primary'
-                              style={{ marginTop: 10 }}
+                              style={{
+                                marginTop: 10,
+                                display: !isAuthCompleted
+                                  ? 'block'
+                                  : 'none',
+                              }}
                             >
                               전화번호 인증
                             </Button>
-                            {showAuthNumTimer && (
-                              <AuthNumTimer />
-                            )}
                           </>
                         )}
                       />
-
-                      {/* 인증번호 입력 및 확인 */}
-                      <>
-                        <TextField
-                          type={'text'}
-                          label='인증코드'
-                          value={checkCode}
-                          onChange={(e) =>
-                            setCheckCode(e.target.value)
-                          }
-                          fullWidth
-                          style={{ marginTop: 20 }}
-                        />
-                        <div
-                          style={{
-                            color: resultMsg.includes(
-                              '올바르지 않습니다.',
-                            )
-                              ? 'red'
-                              : 'green',
-                          }}
-                        >
-                          {resultMsg}
-                        </div>
-                        <Button
-                          onClick={(e) => {
-                            e.preventDefault();
-
-                            checkSMS(checkCode); // 입력된 인증코드 검증
-                          }}
-                          variant='contained'
-                          color='success'
-                          style={{ marginTop: 10 }}
-                        >
-                          인증번호 확인
-                        </Button>
-                      </>
                     </Grid>
+
+                    {/* 인증번호 입력 및 확인 */}
+                    {showAuthNumTimer && (
+                      <>
+                        <Grid
+                          item
+                          style={{ width: '100%' }}
+                        >
+                          <TextField
+                            fullWidth
+                            variant='outlined'
+                            label='인증번호'
+                            value={checkCode}
+                            onChange={(e) =>
+                              setCheckCode(e.target.value)
+                            }
+                            disabled={isAuthCompleted} // @@@ 인증 완료 시 비활성화
+                          />
+
+                          {showAuthNumTimer &&
+                            !isAuthCompleted && (
+                              <AuthNumTimer />
+                            )}
+
+                          <Button
+                            onClick={(e) => {
+                              e.preventDefault();
+
+                              checkSMS(checkCode); // 입력된 인증코드 검증
+                            }}
+                            variant='contained'
+                            color='success'
+                            style={{
+                              marginTop: 10,
+                              display: !isAuthCompleted
+                                ? 'block'
+                                : 'none',
+                            }}
+                          >
+                            인증번호 확인
+                          </Button>
+                          <div
+                            style={{
+                              color: resultMsg.includes(
+                                '올바르지 않습니다.',
+                              )
+                                ? 'red'
+                                : 'green',
+                            }}
+                          >
+                            {resultMsg}
+                          </div>
+                        </Grid>
+                      </>
+                    )}
 
                     <Grid item style={{ width: '100%' }}>
                       <Controller
@@ -556,6 +590,10 @@ const Login = () => {
                       <Button
                         type='submit'
                         variant='contained'
+                        disabled={
+                          !isAuthCompleted ||
+                          !isEmailChecked
+                        }
                       >
                         가입하기1
                       </Button>
