@@ -2,6 +2,7 @@ import React, {
   useState,
   useContext,
   useEffect,
+  input,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ import { KAKAO_AUTH_URL } from '../../config/kakao-config';
 import GoogleLogin from './GoogleLogin';
 import axios from 'axios';
 import AuthContext from '../../utils/AuthContext';
+import AuthNumTimer from './AuthNumTimer';
 
 import {
   API_BASE_URL as BASE,
@@ -25,9 +27,18 @@ import {
 
 const Login = () => {
   const REQUEST_URL = BASE + USER + '/signin';
+  const SEND_ONE_URL = BASE + USER + '/send-one';
+  const CHECK_EMAIL_URL = BASE + USER + '/check';
+  const SIGNUP_URL = BASE + USER + '/signup';
 
   const { onLogin, isLoggedIn } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [randomCode, setRandomCode] = useState('');
+  const [checkCode, setCheckCode] = useState('');
+  const [showAuthNumTimer, setShowAuthNumTimer] =
+    useState(false);
+  const [resultMsg, setResultMsg] = useState('');
+
   const redirection = useNavigate();
 
   useEffect(() => {
@@ -39,8 +50,9 @@ const Login = () => {
     }
   }, [isLoggedIn]);
 
+  //회원가입 signUpControl useForm
   const {
-    control: signUpControl,
+    control: signUpControl, //control 名 설정
     handleSubmit: onSubmitSignUp,
     watch,
     formState: {
@@ -49,7 +61,7 @@ const Login = () => {
     },
     register: signUpRegister,
   } = useForm({
-    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
+    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행
   });
 
   const {
@@ -60,7 +72,7 @@ const Login = () => {
     },
     register: loginRegister,
   } = useForm({
-    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행합니다.
+    mode: 'onChange',
   });
 
   const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
@@ -106,14 +118,11 @@ const Login = () => {
       await sleep(2000); // 임시 대기
 
       // 서버에 회원가입 요청을 보내는 fetch API 호출
-      const response = await fetch(
-        'http://localhost:8181/user/auth/signup',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(submitData), // 회원가입 데이터 전송
-        },
-      );
+      const response = await fetch(SIGNUP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submitData), // 회원가입 데이터 전송
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -127,7 +136,8 @@ const Login = () => {
       alert(
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
-      // navigate('/'); // 회원가입 후 메인 페이지로 이동
+
+      navigate('/'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
       alert(
@@ -140,7 +150,7 @@ const Login = () => {
   const fetchLogin = async (data) => {
     try {
       console.log('fetchLogin data = ', data);
-      // console.log('REQUEST_URL = ', REQUEST_URL);
+
       const res = await axios.post(REQUEST_URL, data);
       return res.data; // 서버 응답 데이터 반환
     } catch (error) {
@@ -151,37 +161,39 @@ const Login = () => {
     }
   };
 
-  //번호 인증
-  const checkNumber = async (phoneNumber) => {
+  // 번호 인증을 위한 SMS 전송
+  const sendSMS = async (phoneNumber) => {
+    console.log('phoneNumber : ', phoneNumber);
     try {
-      console.log('회원가입 전화번호 : ', phoneNumber);
-      const response = await axios.post(
-        'https://api.coolsms.co.kr/send-one',
-        { phoneNumber },
-      );
-
-      if (response.data && response.data.phoneNumber) {
-        // 서버가 정상적으로 응답하고 필요한 데이터가 있는 경우
-        console.log(
-          '인증 요청 성공:',
-          response.data.phoneNumber,
-        );
-        return response.data.phoneNumber;
-      } else {
-        // 서버 응답이 예상과 다를 때
-        console.log(
-          '인증 요청 실패: 서버 응답에 phoneNumber가 없음',
-        );
-        return null; // 또는 적절한 기본값 반환
-      }
+      const res = await axios.post(SEND_ONE_URL, {
+        phoneNumber,
+      });
+      console.log('발송 성공!!! : ', phoneNumber);
+      const saveRandomCode = res.data;
+      console.log('randomCode: ', saveRandomCode);
+      setRandomCode(saveRandomCode);
+      alert('인증번호가 발송되었습니다.');
     } catch (error) {
-      console.log(
-        '전화번호 인증 요청 중 오류 발생:',
-        error,
-      );
-      // 필요한 경우 사용자에게 오류 메시지를 표시하는 추가 로직
-      return null; // 또는 적절한 기본값 반환
+      console.error(error);
+      alert(error.response.data);
     }
+  };
+
+  // 인증번호 확인
+  const checkSMS = (checkCode) => {
+    const checkCodeStr = checkCode.toString();
+    console.log('checkCodeStr는???', checkCodeStr);
+    console.log('randomCode는???', randomCode);
+    let msg;
+    if (checkCodeStr === '') {
+      alert('값을 입력해주세여');
+    }
+    if (+checkCodeStr === +randomCode) {
+      msg = '휴대폰 인증이 정상적으로 완료되었습니다.';
+    } else {
+      msg = '인증번호가 올바르지 않습니다.';
+    }
+    setResultMsg(msg);
   };
 
   const onChangeEmailHandler = (e) => {
@@ -225,17 +237,16 @@ const Login = () => {
       console.log('axios fetchDuplicateChec 시작한다!', {
         email,
       });
-      const res = await axios.post(
-        'http://localhost:8181/user/auth/check',
-        { email },
-      );
+      const res = await axios.post(CHECK_EMAIL_URL, {
+        email,
+      });
 
       console.log('check로 데이터 전송');
       if (res.data) {
         alert('이미 등록된 이메일입니다.');
         return true; // 중복된 이메일이면 true 반환
       } else {
-        alert('사용가능한 이메일 입니다.');
+        alert('사용 가능한 이메일 입니다.');
         return false; // 중복되지 않은 이메일이면 false 반환
       }
     } catch (error) {
@@ -345,6 +356,7 @@ const Login = () => {
                     </Grid>
 
                     <Grid item style={{ width: '100%' }}>
+                      {/* 전화번호 입력 및 SMS 전송 */}
                       <Controller
                         name='phoneNumber'
                         defaultValue={''}
@@ -375,18 +387,63 @@ const Login = () => {
                                 fieldState.error.message
                               }
                             />
-                            <button
+                            <Button
                               onClick={(e) => {
                                 e.preventDefault();
-                                checkNumber(field.value);
+                                sendSMS(field.value); // 전화번호로 SMS 전송
+                                setShowAuthNumTimer(true);
                               }}
+                              variant='contained'
+                              color='primary'
+                              style={{ marginTop: 10 }}
                             >
                               전화번호 인증
-                            </button>
+                            </Button>
+                            {showAuthNumTimer && (
+                              <AuthNumTimer />
+                            )}
                           </>
                         )}
                       />
+
+                      {/* 인증번호 입력 및 확인 */}
+                      <>
+                        <TextField
+                          type={'text'}
+                          label='인증코드'
+                          value={checkCode}
+                          onChange={(e) =>
+                            setCheckCode(e.target.value)
+                          }
+                          fullWidth
+                          style={{ marginTop: 20 }}
+                        />
+                        <div
+                          style={{
+                            color: resultMsg.includes(
+                              '올바르지 않습니다.',
+                            )
+                              ? 'red'
+                              : 'green',
+                          }}
+                        >
+                          {resultMsg}
+                        </div>
+                        <Button
+                          onClick={(e) => {
+                            e.preventDefault();
+
+                            checkSMS(checkCode); // 입력된 인증코드 검증
+                          }}
+                          variant='contained'
+                          color='success'
+                          style={{ marginTop: 10 }}
+                        >
+                          인증번호 확인
+                        </Button>
+                      </>
                     </Grid>
+
                     <Grid item style={{ width: '100%' }}>
                       <Controller
                         name='email'

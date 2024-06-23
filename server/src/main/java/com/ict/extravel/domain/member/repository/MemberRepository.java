@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
-    boolean existsByEmail(String email); // 이메일 중복 체크
+    Optional<Member> findByPhoneNumber(String phoneNumber);
 
+
+    boolean existsByEmail(String email); // 이메일 중복 체크
+    boolean existsByPhoneNumber(String phoneNumber);
     Optional<Member> findByEmail(String email); //메서드 직접 선언
    // static Optional<Member> findByEmail(String email);
 
