@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 public interface WalletRepository extends JpaRepository<Wallet, Integer> {
     @Modifying
     @Transactional
     @Query("UPDATE Wallet w SET w.etPoint = :amount WHERE w.id = :id")
-    void updateWalletById(@Param("amount") float amount, @Param("id") Integer id);
+    void updateWalletById(@Param("amount") BigDecimal amount, @Param("id") Integer id);
 }

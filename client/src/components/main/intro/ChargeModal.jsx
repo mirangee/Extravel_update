@@ -147,7 +147,7 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          id: 21,
+          id: 27,
           price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },

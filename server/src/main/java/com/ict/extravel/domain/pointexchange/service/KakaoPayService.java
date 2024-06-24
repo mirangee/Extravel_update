@@ -9,6 +9,7 @@ import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
+import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,10 +99,6 @@ public class KakaoPayService {
     @Transactional
     public PaymentDto getApprove(String pgToken, Integer id)throws Exception{
 
-//        Member member=memberRepository.findById(id)
-//                .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
-
-
         String tid = pointChargeRepository.findCurrentTidbyId(id);
         log.info("service 안 getApprove 메서드 안에 있음. tid를 테이블에서 검색해 옴! {}", tid);
 
@@ -123,20 +124,40 @@ public class KakaoPayService {
         PaymentDto paymentDto = rt.postForObject(payRequest.getUrl(), requestEntity, PaymentDto.class);
 
         // DB에 승인 결과 저장
-
         log.info("승인 요청의 결과 {}", paymentDto);
         pointChargeRepository.updatePointChargeBy(paymentDto.getTid(), paymentDto.getApprovedAt(), PointCharge.Status.SUCCESS, false);
 
-
-        // 멤버 등급에 따라 plus point 산정해 총 적립 포인트 계산하는 메서드
-        float etPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
-
-        log.info("산정된 et point: {}", etPoint);
-
-        // DB Wallet에 보유 포인트 업데이트
-        walletRepository.updateWalletById(etPoint, id);
-
         return paymentDto;
+    }
+
+    public PayConfirmResponseDTO findTidInfo(String tid) {
+        log.info("tid로 결제 정보 가져오는 service");
+        PointCharge pointCharge = pointChargeRepository.findById(tid).orElseThrow();
+        log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
+
+
+        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge);
+        return dto;
+    }
+
+    public void calcTotalResult(Integer id, PaymentDto paymentDto) {
+        // 멤버 등급에 따라 plus point 산정해 총 적립 포인트 계산하는 메서드
+        float newEtPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
+        log.info("산정된 et point: {}", newEtPoint);
+        BigDecimal newEtiPointBD  = BigDecimal.valueOf(newEtPoint);
+
+        // 현재 가지고 있는 et point 조회
+        BigDecimal currentEtPointBD = BigDecimal.valueOf(0);
+        Optional<Wallet> wallet = walletRepository.findById(id);
+        if (wallet.isPresent()) {
+            currentEtPointBD = wallet.get().getEtPoint();
+        }
+        Member member = memberRepository.findById(id).orElseThrow();
+        log.info("member를 찾아냈단 {}", member);
+        
+        // DB Wallet에 보유 포인트 업데이트
+        Wallet wallet1 = upsertWallet(id, member, currentEtPointBD.add(newEtiPointBD));
+        log.info(wallet1.toString());
     }
 
     private float calcTotalPoint(Integer id, int amount) {
@@ -158,13 +179,16 @@ public class KakaoPayService {
         return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
     }
 
-    public PayConfirmResponseDTO findTidInfo(String tid) {
-        log.info("tid로 결제 정보 가져오는 service");
-        PointCharge pointCharge = pointChargeRepository.findById(tid).orElseThrow();
-        log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
+    public Wallet upsertWallet(Integer memberId, Member member, BigDecimal etPoint) {
+        Wallet wallet = walletRepository.findById(memberId)
+                .orElse(Wallet.builder()
+                        .id(memberId)
+                        .member(member)
+                        .build());
+        wallet.setEtPoint(etPoint);
+        wallet.setUpdatedAt(Instant.now());
+        log.info("wallet 저장합니다 {}", wallet);
 
-
-        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge);
-        return dto;
+        return walletRepository.save(wallet);
     }
 }

@@ -64,8 +64,8 @@ public class KakaoPayController {
         try {
             log.info("/payment/success/id 요청 들어 옴! {}", pgToken);
             PaymentDto kakaoApprove = kakaoPayService.getApprove(pgToken, id);
-
             log.info("controller로 getApprove 결과가 반환됨, {}", kakaoApprove);
+            kakaoPayService.calcTotalResult(id, kakaoApprove);
 
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
