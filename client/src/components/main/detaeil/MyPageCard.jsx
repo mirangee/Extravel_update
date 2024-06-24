@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardActions } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
+import { motion } from 'framer-motion';
 
 const MyPageCard = () => {
   const [currentDate, setCurrentDate] = useState('');
@@ -21,12 +22,15 @@ const MyPageCard = () => {
 
   return (
     <>
-      <div
+      <motion.div
         style={{
           width: '100%',
           marginTop: '100px',
-          paddingLeft: '340px',
+          marginBottom: '100px',
+          paddingLeft: '500px',
         }}
+        animate={{ x: 100 }}
+        transition={{ ease: 'easeOut', duration: 2 }}
       >
         <h3
           style={{
@@ -43,7 +47,7 @@ const MyPageCard = () => {
           My Exchange{' '}
           <Button
             style={{
-              marginLeft: '140px',
+              marginLeft: '220px',
               width: '150px',
               height: '50px',
               textAlign: 'center',
@@ -103,7 +107,12 @@ const MyPageCard = () => {
                 <li style={{ margin: '20px auto' }}>
                   1,381 KRW = 1 USD
                 </li>
-                <h3 style={{ margin: '20px auto' }}>
+                <h3
+                  style={{
+                    margin: '20px auto',
+                    fontWeight: 'bold',
+                  }}
+                >
                   276,200 KRW
                 </h3>
               </ul>
@@ -158,122 +167,128 @@ const MyPageCard = () => {
             </div>
           </CardActions>
         </div>
-      </div>
-      {/* 카드 2부분 */}
-      <div
-        className='card2'
-        style={{
-          width: '100%',
-          marginTop: '30px',
-          paddingLeft: '340px',
-        }}
-      >
+
+        {/* 카드 2부분 */}
         <div
+          className='card2'
           style={{
-            margin: '20px auto',
-            fontSize: '32px',
-            fontWeight: 'bold',
-            color: '#14505C',
-            // textAlign: 'center',
+            width: '100%',
+            marginTop: '30px',
+            // paddingLeft: '340px',
           }}
         >
-          {currentDate}
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            backgroundColor: 'lightgray',
-            width: '800px',
-            borderRadius: '20px',
-            boxShadow: '1px 8px 16px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <CardActions
+          <div
             style={{
-              // background: 'red',
-              width: '48%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', // 아이템들을 세로 방향으로 가운데 정렬
-              padding: '20px',
+              margin: '20px auto',
+              fontSize: '32px',
               fontWeight: 'bold',
+              color: '#14505C',
+              // textAlign: 'center',
             }}
           >
-            <div>
-              <img
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/150px-Flag_of_South_Korea.svg.png'
-                alt='KR'
-                style={{
-                  width: '150px',
-                  height: '100px',
-                  margin: '10px auto',
-                }}
-              />
-              <ul
-                style={{
-                  listStyleType: 'none',
-                  padding: 0,
-                }}
-              >
-                <li style={{ margin: '20px auto' }}>
-                  1,381 KRW = 1 USD
-                </li>
-                <h3 style={{ margin: '20px auto' }}>
-                  276,200 KRW
-                </h3>
-              </ul>
-            </div>
-          </CardActions>
-          <FontAwesomeIcon
-            icon={faArrowRight}
+            {currentDate}
+          </div>
+          <div
             style={{
-              // background: 'orange',
-              fontSize: '64px',
-              marginTop: '85px',
-            }}
-          />
-          <CardActions
-            style={{
-              // background: 'skyblue',
-              width: '48%',
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', // 아이템들을 세로 방향으로 가운데 정렬
-              padding: '20px',
-              fontWeight: 'bold',
+              backgroundColor: 'lightgray',
+              width: '800px',
+              borderRadius: '20px',
+              boxShadow: '1px 8px 16px rgba(0, 0, 0, 0.1)',
             }}
           >
-            <div>
-              <img
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/150px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png'
-                alt='US'
-                style={{
-                  width: '150px',
-                  height: '100px',
-                  margin: '10px auto',
-                }}
-              />
-              <ul
-                style={{
-                  listStyleType: 'none',
-                  padding: 0,
-                }}
-              >
-                <li
+            <CardActions
+              style={{
+                // background: 'red',
+                width: '48%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center', // 아이템들을 세로 방향으로 가운데 정렬
+                padding: '20px',
+                fontWeight: 'bold',
+              }}
+            >
+              <div>
+                <img
+                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/150px-Flag_of_South_Korea.svg.png'
+                  alt='KR'
                   style={{
-                    margin: '20px auto',
-                    textAlign: 'center',
-                    fontSize: '26px',
-                    marginTop: '50px',
+                    width: '150px',
+                    height: '100px',
+                    margin: '10px auto',
+                  }}
+                />
+                <ul
+                  style={{
+                    listStyleType: 'none',
+                    padding: 0,
                   }}
                 >
-                  200 USD
-                </li>
-              </ul>
-            </div>
-          </CardActions>
+                  <li style={{ margin: '20px auto' }}>
+                    1,381 KRW = 1 USD
+                  </li>
+                  <h3
+                    style={{
+                      margin: '20px auto',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    276,200 KRW
+                  </h3>
+                </ul>
+              </div>
+            </CardActions>
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              style={{
+                // background: 'orange',
+                fontSize: '64px',
+                marginTop: '85px',
+              }}
+            />
+            <CardActions
+              style={{
+                // background: 'skyblue',
+                width: '48%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center', // 아이템들을 세로 방향으로 가운데 정렬
+                padding: '20px',
+                fontWeight: 'bold',
+              }}
+            >
+              <div>
+                <img
+                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/150px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png'
+                  alt='US'
+                  style={{
+                    width: '150px',
+                    height: '100px',
+                    margin: '10px auto',
+                  }}
+                />
+                <ul
+                  style={{
+                    listStyleType: 'none',
+                    padding: 0,
+                  }}
+                >
+                  <li
+                    style={{
+                      margin: '20px auto',
+                      textAlign: 'center',
+                      fontSize: '26px',
+                      marginTop: '50px',
+                    }}
+                  >
+                    200 USD
+                  </li>
+                </ul>
+              </div>
+            </CardActions>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

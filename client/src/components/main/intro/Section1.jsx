@@ -48,7 +48,7 @@ const Section1 = () => {
           className={styles.section1SideRectangle}
         >
           <div>
-            5 best places <br /> to visit <br />
+            5 best world <br /> to visit <br />
             <motion.button
               className={styles.section1More}
               whileHover={{ scale: 1.2 }}

@@ -30,14 +30,11 @@ const ChargeModal = ({ setModalOpen }) => {
     }
   };
 
-  const handleClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleModalContentClick = (e) => {
-    // 모달 내부 요소 클릭 시 모달이 닫히지 않도록 처리
-    e.stopPropagation();
-  };
+  function handleClose(e) {
+    if (e.target === modalBackground.current) {
+      setModalOpen(false);
+    }
+  }
 
   const confirmPayment = async () => {
     try {
@@ -85,7 +82,7 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          price: 1000, // 임시로 1000으로 고정
+          price: 1000,
           itemName: 'ET 포인트',
         },
       );
@@ -102,16 +99,13 @@ const ChargeModal = ({ setModalOpen }) => {
   return (
     <div
       className={styles.modalContainer}
-      onClick={handleClose}
       ref={modalBackground}
+      onClick={handleClose}
     >
-      <div
-        className={styles.modalContent}
-        onClick={handleModalContentClick}
-      >
+      <div className={styles.modalContent}>
         <BsXLg
           className={styles.modalCloseBtn}
-          onClick={handleClose}
+          onClick={() => setModalOpen(false)}
         />
 
         <h1>ETP 충전하기</h1>
@@ -130,7 +124,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div className={styles.money}>
               포인트 충전 누적 금액
               <br />
-              <strong>1천만 원</strong> 이상
+              <strong> 1천만 원</strong> 이상
             </div>
             <div>
               포인트 충전 금액의
@@ -191,7 +185,6 @@ const ChargeModal = ({ setModalOpen }) => {
                 type='text'
                 value={text}
                 onChange={handleChange}
-                onClick={handleModalContentClick}
               />
               원 <br />
             </div>

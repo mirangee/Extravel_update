@@ -10,12 +10,8 @@ import logoImage from '../assets/img/logo_white.png';
 import axios from 'axios';
 import AuthContext from '../utils/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faMedal,
-  faMoneyCheckDollar,
-} from '@fortawesome/free-solid-svg-icons';
+import { faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
-
 import {
   Dropdown,
   DropdownItem,
@@ -30,16 +26,16 @@ const Header = () => {
   const [country, setCountry] = useState('US');
   const navigate = useNavigate();
   const { inLoggedIn, name } = useContext(AuthContext);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown 열림 상태 추가
-  const [direction] = useState('down'); // Dropdown 방향 설정
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
-  const navigateIntro = useNavigate();
+
   const goToIntro = () => {
-    navigateIntro('/');
+    navigate('/');
   };
-  const [isModalOpen, setModalOpen] = useState(false); // 모달 열림 상태 추가
 
   useEffect(() => {
     const getNationData = () => {
@@ -91,6 +87,7 @@ const Header = () => {
       navigate(`/${selectedOption.value}`);
     }
   };
+
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
   }
@@ -122,10 +119,10 @@ const Header = () => {
               <Link to='/home'>패키지</Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/about'>뉴스</Link>
+              <Link to='/main'>뉴스</Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/services'>내&nbsp;&nbsp;정보</Link>
+              <Link to='/mypage'>내&nbsp;&nbsp;정보</Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/contact'>Places</Link>
@@ -133,14 +130,14 @@ const Header = () => {
             <Dropdown
               isOpen={dropdownOpen}
               toggle={toggleDropdown}
-              direction={direction}
+              direction='down'
             >
               <DropdownToggle
                 caret
                 style={{ background: '#14505c' }}
               >
                 <FontAwesomeIcon
-                  icon={faMoneyCheckDollar} // 아이콘의 실제 이름을 지정
+                  icon={faMoneyCheckDollar}
                   size='xl'
                   style={{ color: '#38bc8a' }}
                 />
@@ -148,65 +145,18 @@ const Header = () => {
               <DropdownMenu
                 style={{
                   backgroundColor: 'white',
-
                   zIndex: '1500',
+                  onClick: { modalOpen },
                 }}
               >
                 {/* <DropdownItem
-                  header
-                  style={{
-                    fontWeight: 'bold',
-                    color: 'black',
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faMedal}
-                    size='2xl'
-                    style={{ color: '#c2aa4c' }}
-                  />
-                  &nbsp; 브론즈 회원: &nbsp; 회원가입한 모든
-                  회원, 포인트 충전 금액의 0.5% 적립
-                </DropdownItem>
-                <DropdownItem
-                  header
-                  style={{
-                    fontWeight: 'bold',
-                    color: 'black',
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faMedal}
-                    size='2xl'
-                    style={{ color: '#e2e6ee' }}
-                  />
-                  &nbsp; 실버 회원: &nbsp; 포인트 충전 누적
-                  금액 5백만 원 이상, 포인트 충전 금액의
-                  1.0% 적립
-                </DropdownItem>
-                <DropdownItem
-                  header
-                  style={{
-                    fontWeight: 'bold',
-                    color: 'black',
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faMedal}
-                    size='2xl'
-                    style={{ color: '#FFD43B' }}
-                  />
-                  &nbsp; 골드 회원: &nbsp; 포인트 충전 누적
-                  금액 1천만 원 이상, 포인트 충전 금액의
-                  1.5% 적립
-                </DropdownItem> */}
-                <DropdownItem
+                  style={{ padding: '0px' }}
                   onClick={() => setModalOpen(true)}
-                >
-                  <ChargeModal />
-                </DropdownItem>
+                > */}
+                <ChargeModal setModalOpen={setModalOpen} />
+                {/* </DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
-
             <li>
               <Select
                 value={countryOptions.find(
@@ -221,10 +171,6 @@ const Header = () => {
           </ul>
         </nav>
       </header>
-      {isModalOpen && (
-        <ChargeModal setModalOpen={setModalOpen} />
-      )}
-      {/* <div className={styles.fake}></div> */}
     </>
   );
 };
