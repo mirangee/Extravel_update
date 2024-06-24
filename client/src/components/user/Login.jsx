@@ -6,9 +6,7 @@ import React, {
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-
 import { Button, Grid, TextField } from '@mui/material';
-
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
 import a7 from '../../assets/img/a7.jpg';
@@ -31,30 +29,34 @@ const Login = () => {
   const CHECK_EMAIL_URL = BASE + USER + '/check';
   const SIGNUP_URL = BASE + USER + '/signup';
 
+  const { onLogin, isLoggedIn } = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { onLogin, isLoggedIn } = useContext(AuthContext);
-  const [open, setOpen] = useState(false);
-  const [randomCode, setRandomCode] = useState('');
-  const [checkCode, setCheckCode] = useState('');
+  const [open, setOpen] = useState(false); //로그인 성공 체크
+  const [randomCode, setRandomCode] = useState(''); //인증값 상태
+  const [checkCode, setCheckCode] = useState(''); //사용자 입력 인증값
   const [showAuthNumTimer, setShowAuthNumTimer] =
-    useState(false);
+    useState(false); //인증 일치 검증
   const [resultMsg, setResultMsg] = useState('');
+  const [isSignUpEnabled, setIsSignUpEnabled] =
+    useState(false); // 회원 가입 가능 여부 상태
+
   const [isAuthCompleted, setIsAuthCompleted] =
-    useState(false);
+    useState(false); // 인증 완료 여부 상태
   const [isEmailChecked, setIsEmailChecked] =
-    useState(false);
+    useState(false); // 이메일 확인 여부 상태
 
   const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
-
   const redirection = useNavigate();
 
+  //로그인 시 화면 이동
   useEffect(() => {
     if (isLoggedIn) {
       setOpen(true);
       setTimeout(() => {
         redirection('/');
-      }, 2785);
+      }, 2000);
     }
   }, [isLoggedIn]);
 
@@ -118,6 +120,17 @@ const Login = () => {
 
     try {
       // 중복이 아니면 회원가입 요청 보내기
+      // 중복 체크와 인증 완료 여부 확인
+      if (!isEmailChecked) {
+        alert('이메일 중복 확인을 해주세요.');
+        return;
+      }
+
+      if (!isAuthCompleted) {
+        alert('휴대폰 인증을 완료해주세요.');
+        return;
+      }
+
       await sleep(2000); // 임시 대기
 
       // 서버에 회원가입 요청을 보내는 fetch API 호출
@@ -140,7 +153,7 @@ const Login = () => {
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
 
-      navigate('/'); // 회원가입 후 메인 페이지로 이동
+      navigate('/login'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
       alert(
@@ -168,6 +181,19 @@ const Login = () => {
   const sendSMS = async (phoneNumber) => {
     console.log('phoneNumber : ', phoneNumber);
     try {
+      if (phoneNumber === '') {
+        // 전화번호가 비어있는지 확인
+        alert('전화번호를 입력해주세요');
+        setShowAuthNumTimer(false);
+        return;
+      }
+      if (phoneNumber.length !== 11) {
+        // 전화번호 길이가 11자리가 아닌지 확인
+        alert('유효한 전화번호를 입력해주세요. (11자리)');
+        setShowAuthNumTimer(false);
+        return;
+      }
+
       const res = await axios.post(SEND_ONE_URL, {
         phoneNumber,
       });
@@ -176,9 +202,11 @@ const Login = () => {
       console.log('randomCode: ', saveRandomCode);
       setRandomCode(saveRandomCode);
       alert('인증번호가 발송되었습니다.');
+      setShowAuthNumTimer(true);
     } catch (error) {
       console.error(error);
       alert(error.response.data);
+      setShowAuthNumTimer(false);
     }
   };
 
@@ -196,6 +224,7 @@ const Login = () => {
       setIsAuthCompleted(true);
     } else {
       msg = '인증번호가 올바르지 않습니다.';
+      setIsAuthCompleted(false);
     }
     setResultMsg(msg);
   };
@@ -245,7 +274,7 @@ const Login = () => {
         return false; // 이메일이 비어 있으면 false 반환
       }
 
-      console.log('axios fetchDuplicateChec 시작한다!', {
+      console.log('axios fetchDuplicateChec 시작!', {
         email,
       });
       const res = await axios.post(CHECK_EMAIL_URL, {
@@ -255,6 +284,7 @@ const Login = () => {
       console.log('check로 데이터 전송');
       if (res.data) {
         alert('이미 등록된 이메일입니다.');
+        setIsEmailChecked(false);
         return true; // 중복된 이메일이면 true 반환
       } else {
         alert('사용 가능한 이메일 입니다.');
@@ -337,7 +367,7 @@ const Login = () => {
                         name='name' // 컨트롤러의 이름
                         control={signUpControl} // useForm에서 제공하는 컨트롤 객체
                         defaultValue={''} // 초기 값
-                        {...signUpRegister('name')} //@@@
+                        {...signUpRegister('name')}
                         rules={{
                           required: '이름은 필수값 입니다.', // 필수 입력 필드
                           maxLength: {
@@ -405,12 +435,13 @@ const Login = () => {
                               onClick={(e) => {
                                 e.preventDefault();
                                 sendSMS(field.value); // 전화번호로 SMS 전송
-                                setShowAuthNumTimer(true);
                               }}
                               variant='contained'
-                              color='primary'
+                              className={
+                                styles.phoneNumberCheck
+                              }
                               style={{
-                                marginTop: 10,
+                                margin: 5,
                                 display: !isAuthCompleted
                                   ? 'block'
                                   : 'none',
@@ -590,7 +621,7 @@ const Login = () => {
                       <Button
                         type='submit'
                         variant='contained'
-                        disabled={
+                        hidden={
                           !isAuthCompleted ||
                           !isEmailChecked
                         }

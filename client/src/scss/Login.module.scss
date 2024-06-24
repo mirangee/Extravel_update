@@ -106,7 +106,7 @@
   overflow: hidden;
   width: 768px;
   max-width: 100%;
-  min-height: 800px;
+  min-height: 1000px;
 }
 
 .form-container {
@@ -288,10 +288,15 @@ footer {
   ); /* 마우스 호버 시 배경색 변경 */
 }
 
+.login .phoneNumberCheck {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .login .CheckButton {
   margin-top: 6px;
   width: 80%;
   flex-direction: column;
   text-align: center;
-  opacity: 0.5;
 }
