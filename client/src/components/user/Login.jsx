@@ -46,6 +46,9 @@ const Login = () => {
     useState(false); // 인증 완료 여부 상태
   const [isEmailChecked, setIsEmailChecked] =
     useState(false); // 이메일 확인 여부 상태
+  const [phoneNumber, setPhoneNumber] = useState(''); // 전화번호 상태
+
+  const [isTimeZero, setIsTimeZero] = useState(false); //시간 0초 체크
 
   const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
   const redirection = useNavigate();
@@ -179,17 +182,10 @@ const Login = () => {
 
   // 번호 인증을 위한 SMS 전송
   const sendSMS = async (phoneNumber) => {
-    console.log('phoneNumber : ', phoneNumber);
+    console.log('로그인 phoneNumber : ', phoneNumber);
     try {
-      if (phoneNumber === '') {
-        // 전화번호가 비어있는지 확인
+      if (!phoneNumber || phoneNumber.length === 0) {
         alert('전화번호를 입력해주세요');
-        setShowAuthNumTimer(false);
-        return;
-      }
-      if (phoneNumber.length !== 11) {
-        // 전화번호 길이가 11자리가 아닌지 확인
-        alert('유효한 전화번호를 입력해주세요. (11자리)');
         setShowAuthNumTimer(false);
         return;
       }
@@ -197,12 +193,21 @@ const Login = () => {
       const res = await axios.post(SEND_ONE_URL, {
         phoneNumber,
       });
-      console.log('발송 성공!!! : ', phoneNumber);
-      const saveRandomCode = res.data;
-      console.log('randomCode: ', saveRandomCode);
-      setRandomCode(saveRandomCode);
-      alert('인증번호가 발송되었습니다.');
-      setShowAuthNumTimer(true);
+      if (res && res.data) {
+        console.log('발송 성공!!! : ', phoneNumber);
+        const saveRandomCode = res.data;
+        console.log('randomCode: ', saveRandomCode);
+        setRandomCode(saveRandomCode);
+        alert('인증번호가 발송되었습니다.');
+        setShowAuthNumTimer(true);
+      } else {
+        console.error(
+          '서버 응답이 유효하지 않습니다:',
+          res,
+        );
+        alert('서버 응답이 유효하지 않습니다.');
+        setShowAuthNumTimer(false);
+      }
     } catch (error) {
       console.error(error);
       alert(error.response.data);
@@ -296,6 +301,14 @@ const Login = () => {
       console.error('fetchDuplicateCheck 오류:', error);
       // 에러 처리 - 필요에 따라 추가
       throw error; // 상위 호출자에게 에러를 전파
+    }
+  };
+
+  const handleTimeZero = (isZero) => {
+    setIsTimeZero(isZero);
+    if (isZero) {
+      setRandomCode(''); // 타이머가 0이면 인증 코드를 무효화
+      setIsSignUpEnabled(false); // 회원 가입 비활성화
     }
   };
 
@@ -430,10 +443,10 @@ const Login = () => {
                                 fieldState.error.message
                               }
                             />
-
                             <Button
                               onClick={(e) => {
                                 e.preventDefault();
+                                setPhoneNumber(field.value);
                                 sendSMS(field.value); // 전화번호로 SMS 전송
                               }}
                               variant='contained'
@@ -474,14 +487,24 @@ const Login = () => {
 
                           {showAuthNumTimer &&
                             !isAuthCompleted && (
-                              <AuthNumTimer />
+                              <AuthNumTimer
+                                onTimeZero={handleTimeZero}
+                                sendSMS={sendSMS}
+                                phoneNumber={phoneNumber}
+                              />
                             )}
 
                           <Button
                             onClick={(e) => {
                               e.preventDefault();
 
-                              checkSMS(checkCode); // 입력된 인증코드 검증
+                              if (!isTimeZero) {
+                                checkSMS(checkCode); // 입력된 인증코드 검증
+                              } else {
+                                setResultMsg(
+                                  '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
+                                );
+                              }
                             }}
                             variant='contained'
                             color='success'

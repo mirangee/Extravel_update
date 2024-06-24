@@ -9,6 +9,7 @@ import net.nurigo.sdk.message.exception.NurigoEmptyResponseException;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,8 @@ public class CoolSMSApi {
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
 
         if(!flag){
-            messageService.send(message); // SMS 발송 요청
+            MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
+            log.info("{}", messageSentResponse.toString());
             log.info("SMS sent successfully to {}", phoneNumber);
             return ResponseEntity.ok().body(verificationCode);
         }
