@@ -11,8 +11,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor @NoArgsConstructor
 @Builder
-@NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "member")
 public class Member {
@@ -53,13 +53,24 @@ public class Member {
     @Column(name = "grade", length = 50)
     private String grade;
 
-    @Size(max = 30)
-    @NotNull
-    @Column(name = "path", nullable = false, length = 30)
+    @Size(max = 255)
+    @ColumnDefault("default_value")
+    @Column(name = "path")
     private String path;
 
-    private String tid; // 결제 고유 id
-    public void updateTid(String tid) {
-        this.tid = tid;
-    }
+    @Size(max = 255)
+    @Column(name = "tid")
+    private String tid;
+
+    @Size(max = 255)
+    @Column(name = "access_token")
+    private String accessToken;
+
+    @Size(max = 255)
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_expiry_date")
+    private LocalDate refreshTokenExpiryDate;
+
 }

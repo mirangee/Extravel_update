@@ -4,6 +4,7 @@ import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.MakePayRequest;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
+import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
@@ -19,11 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
-import java.time.Instant;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,11 +43,7 @@ public class KakaoPayService {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        String name = authentication.getName();
 
-
-        Member member=memberRepository.findByEmail("testemail12@test.com")
-                .orElseThrow(()-> new Exception("해당 유저가 존재하지 않습니다."));
-
-        Integer id = member.getId();
+        Member member = memberRepository.findById(payInfoDto.getId()).orElseThrow(() -> new Exception("해당 유저가 존재하지 않습니다."));
 
         HttpHeaders headers=new HttpHeaders();
 
@@ -60,7 +53,7 @@ public class KakaoPayService {
         headers.set("Authorization",auth);
 
         /** 요청 Body */
-        PayRequest payRequest=makePayRequest.getReadyRequest(id,payInfoDto);
+        PayRequest payRequest=makePayRequest.getReadyRequest(payInfoDto);
 
         /** Header와 Body 합쳐서 RestTemplate로 보내기 위한 밑작업 */
         HttpEntity<MultiValueMap<String, String>> urlRequest = new HttpEntity<>(payRequest.getMap(), headers);
@@ -76,8 +69,6 @@ public class KakaoPayService {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime createdAt = LocalDateTime.parse(createdAtStr, formatter);
 
-        // member 테이블 tid 컬럼에 최신 tid update
-        member.updateTid(payReadyResDto.getTid());
 
         // 여기서 tbl_charge_history에 데이터 추가
         PointCharge pointCharge = PointCharge.builder()
@@ -88,29 +79,27 @@ public class KakaoPayService {
                 .createdAt(createdAt)
                 .approvedAt(null)
                 .status(PointCharge.Status.PENDING)
-//                .status("PENDING")
+                .inUse(true)
                 .build();
         System.out.println("pointCharge = " + pointCharge);
 
         PointCharge save = pointChargeRepository.save(pointCharge);
         System.out.println(save);
         log.info("DB에 1차 저장 완료!");
+
         return payReadyResDto;
     }
 
     @Transactional
     public PaymentDto getApprove(String pgToken, Integer id)throws Exception{
 
-
-        Member member=memberRepository.findById(id)
-                .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
-
-        String tid = member.getTid();
-
-//        PointCharge pointCharge = pointChargeRepository.findByMemberId(id)
+//        Member member=memberRepository.findById(id)
 //                .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
-//        String tid=pointCharge.getTid();
-        log.info("tid 확인! {}", tid);
+//
+//        String tid=member.getTid();
+
+        String tid = pointChargeRepository.findCurrentTidbyId(id);
+        log.info("service 안 getApprove 메서드 안에 있음. tid를 테이블에서 검색해 옴! {}", tid);
 
         HttpHeaders headers=new HttpHeaders();
         String auth = "KakaoAK " + adminKey;
@@ -120,7 +109,7 @@ public class KakaoPayService {
         headers.set("Authorization",auth);
 
         /** 요청 Body */
-        PayRequest payRequest=makePayRequest.getApproveRequest(tid,id,pgToken);
+        PayRequest payRequest=makePayRequest.getApproveRequest(tid, id, pgToken);
 
         log.info("kakaoPayService에서 승인 요청을 위한 body {}", payRequest.toString());
 
@@ -137,8 +126,18 @@ public class KakaoPayService {
 
         log.info("승인 요청의 결과 {}", paymentDto);
 
-        pointChargeRepository.updatePointChargeBy(paymentDto.getTid(), paymentDto.getApprovedAt(), PointCharge.Status.SUCCESS);
+        pointChargeRepository.updatePointChargeBy(paymentDto.getTid(), paymentDto.getApprovedAt(), PointCharge.Status.SUCCESS, false);
+
         return paymentDto;
     }
 
+    public PayConfirmResponseDTO findTidInfo(String tid) {
+        log.info("tid로 결제 정보 가져오는 service");
+        PointCharge pointCharge = pointChargeRepository.findById(tid).orElseThrow();
+        log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
+
+
+        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge);
+        return dto;
+    }
 }

@@ -10,8 +10,10 @@ import org.springframework.util.LinkedMultiValueMap;
 @RequiredArgsConstructor
 public class MakePayRequest {
 
-    public PayRequest getReadyRequest(Integer id, PayInfoDto payInfoDto){
+    public PayRequest getReadyRequest(PayInfoDto payInfoDto){
         LinkedMultiValueMap<String,String> map = new LinkedMultiValueMap<>();
+
+        Integer id = payInfoDto.getId();
 
         /** partner_user_id,partner_order_id는 결제 승인 요청에서도 동일해야함 */
         String memberId = id+"";

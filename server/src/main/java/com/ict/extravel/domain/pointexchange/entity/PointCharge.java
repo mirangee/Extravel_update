@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -48,4 +47,7 @@ public class PointCharge {
     public enum Status {
         PENDING, SUCCESS, FAILED, CANCELED
     }
+
+    @Column(name = "in_use")
+    private boolean inUse;
 }
