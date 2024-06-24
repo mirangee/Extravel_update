@@ -416,6 +416,7 @@ const Login = () => {
                       <Controller
                         name='phoneNumber'
                         defaultValue={''}
+                        disabled={isAuthCompleted}
                         control={signUpControl}
                         rules={{
                           required:

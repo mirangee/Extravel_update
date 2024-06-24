@@ -32,10 +32,11 @@ function AuthNumTimer({
   }, [remainingTime, onTimeZero]); // remainingTime이 변경될 때마다 useEffect가 다시 실행됨.
 
   // 시간을 분과 초로 변환하는 함수 정의.
+  //formatTime 함수는 초 단위의 시간을 "분:초" 형식의 문자열로 변환
   const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const minutes = Math.floor(timeInSeconds / 60); //분
+    const seconds = timeInSeconds % 60; //초
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; //05초 형태로 변환
   };
 
   // 재전송 버튼을 클릭했을 때 호출되는 함수 정의.
@@ -43,6 +44,7 @@ function AuthNumTimer({
     // 남은 횟수를 알림으로 표시
     const remainingAttempts = 2 - resendClickCount - 1; // 현재 클릭 후 남은 시도 횟수 계산
     if (remainingAttempts > 0) {
+      //가능 횟수
       setRemainingTime(initialTime); // 남은 시간을 초기값으로 설정하여 타이머 재설정.
       setResendClickCount((prevCount) => prevCount + 1); // 클릭 횟수 증가
       sendSMS(phoneNumber);
