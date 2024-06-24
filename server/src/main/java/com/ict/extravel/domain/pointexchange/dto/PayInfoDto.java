@@ -7,8 +7,7 @@ import lombok.ToString;
 @ToString
 public class PayInfoDto {
     private Integer id; // member id
-    private String tid; // 해당 결제의 tid
-    private int price;
+    private String price;
     private String itemName;
     private float plusPoint;
 }

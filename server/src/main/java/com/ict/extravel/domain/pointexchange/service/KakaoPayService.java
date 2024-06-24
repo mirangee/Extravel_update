@@ -10,6 +10,7 @@ import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
+import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +29,8 @@ import java.time.format.DateTimeFormatter;
 public class KakaoPayService {
     private final MakePayRequest makePayRequest;
     private final MemberRepository memberRepository;
-    private final PointChargeRepository payChargeRepository;
     private final PointChargeRepository pointChargeRepository;
+    private final WalletRepository walletRepository;
 
     @Value("${pay.admin-key}")
     private String adminKey;
@@ -74,7 +75,7 @@ public class KakaoPayService {
         PointCharge pointCharge = PointCharge.builder()
                 .tid(payReadyResDto.getTid())
                 .member(member)
-                .amount(payInfoDto.getPrice())
+                .amount(Integer.parseInt(payInfoDto.getPrice()))
                 .plusPoint(payInfoDto.getPlusPoint())
                 .createdAt(createdAt)
                 .approvedAt(null)
@@ -95,8 +96,7 @@ public class KakaoPayService {
 
 //        Member member=memberRepository.findById(id)
 //                .orElseThrow(()->new Exception("해당 유저가 존재하지 않습니다."));
-//
-//        String tid=member.getTid();
+
 
         String tid = pointChargeRepository.findCurrentTidbyId(id);
         log.info("service 안 getApprove 메서드 안에 있음. tid를 테이블에서 검색해 옴! {}", tid);
@@ -125,10 +125,37 @@ public class KakaoPayService {
         // DB에 승인 결과 저장
 
         log.info("승인 요청의 결과 {}", paymentDto);
-
         pointChargeRepository.updatePointChargeBy(paymentDto.getTid(), paymentDto.getApprovedAt(), PointCharge.Status.SUCCESS, false);
 
+
+        // 멤버 등급에 따라 plus point 산정해 총 적립 포인트 계산하는 메서드
+        float etPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
+
+        log.info("산정된 et point: {}", etPoint);
+
+        // DB Wallet에 보유 포인트 업데이트
+        walletRepository.updateWalletById(etPoint, id);
+
         return paymentDto;
+    }
+
+    private float calcTotalPoint(Integer id, int amount) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        float plusRate = 0;
+        log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
+        switch (member.getGrade()) {
+            case "BRONZE" :
+                plusRate = 0.001F;
+                break;
+            case "SILVER" :
+                plusRate = 0.002F;
+                break;
+            case "GOLD" :
+                plusRate = 0.003F;
+                break;
+        }
+        // 소수점 이하 3자리로 반올림
+        return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
     }
 
     public PayConfirmResponseDTO findTidInfo(String tid) {

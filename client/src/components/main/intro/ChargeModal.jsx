@@ -9,10 +9,40 @@ import axios from 'axios';
 const ChargeModal = ({ setModalOpen }) => {
   const modalBackground = useRef();
   const [text, setText] = useState('');
+  const [calculatedNumber, setCalculatedNumber] =
+    useState('');
+  const [chargePoint, setChargePoint] = useState('');
+
+  const userGrade = 'gold';
+
+  const getMultiplier = (grade) => {
+    switch (grade) {
+      case 'bronze':
+        return 1.001;
+      case 'silver':
+        return 1.002;
+      case 'gold':
+        return 1.003;
+      default:
+        return 1.001;
+    }
+  };
+
+  const getPointMultiplier = (grade) => {
+    switch (grade) {
+      case 'bronze':
+        return 0.001;
+      case 'silver':
+        return 0.002;
+      case 'gold':
+        return 0.003;
+      default:
+        return 0.001;
+    }
+  };
 
   const handleChange = (e) => {
     const { value } = e.target;
-
     const numberValue = Number(value.replace(/,/g, ''));
 
     if (!isNaN(numberValue)) {
@@ -20,21 +50,38 @@ const ChargeModal = ({ setModalOpen }) => {
         const formattedNumber =
           numberValue.toLocaleString();
         setText(formattedNumber);
+
+        const pointMultiplier =
+          getPointMultiplier(userGrade);
+        const calculated = (
+          numberValue * pointMultiplier
+        ).toLocaleString('ko-KR');
+        setCalculatedNumber(calculated);
+
+        const multiplier = getMultiplier(userGrade);
+        const chargePointValue = (
+          numberValue * multiplier
+        ).toLocaleString('ko-KR');
+        setChargePoint(chargePointValue);
       } else {
         alert('1억 원 이하만 충전 가능합니다.');
         setText('');
+        setCalculatedNumber('');
+        setChargePoint('');
       }
     } else {
       alert('숫자와 쉼표(,)만 입력 가능합니다.');
       setText('');
+      setCalculatedNumber('');
+      setChargePoint('');
     }
   };
 
-  function handleClose(e) {
+  const handleClose = (e) => {
     if (e.target === modalBackground.current) {
       setModalOpen(false);
     }
-  }
+  };
 
   // 카카오 페이 결제 관련 함수
   let tid = 0; // tid를 담는 변수 선언
@@ -101,7 +148,7 @@ const ChargeModal = ({ setModalOpen }) => {
         'http://localhost:8181/payment/ready',
         {
           id: 21,
-          price: 1000,
+          price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },
       );
@@ -150,7 +197,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div>
               포인트 충전 금액의
               <br />
-              <strong>1.5% </strong>적립
+              <strong>0.3% </strong>적립
             </div>
           </div>
           <div className={styles.silverGrade}>
@@ -165,7 +212,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div>
               포인트 충전 금액의
               <br />
-              <strong>1.0% </strong>적립
+              <strong>0.2% </strong>적립
             </div>
           </div>
           <div className={styles.bronzeGrade}>
@@ -178,18 +225,14 @@ const ChargeModal = ({ setModalOpen }) => {
             <div>
               포인트 충전 금액의
               <br />
-              <strong>0.5%</strong> 적립
+              <strong>0.1%</strong> 적립
             </div>
           </div>
         </div>
 
         <div className={styles.currentMoney}>
           보유 포인트
-          <div className={styles.currentMoneyInput}>
-            {Number(text) +
-              Number(text.replace(/,/g, '') * 0.005)}{' '}
-            P
-          </div>
+          <div className={styles.currentMoneyInput}>P</div>
         </div>
 
         <div className={styles.bottom}>
@@ -215,21 +258,18 @@ const ChargeModal = ({ setModalOpen }) => {
             </div>
             <div className={styles.pointContainer}>
               <div className={styles.plusPoint}>
-                {Number(text.replace(/,/g, '') * 0.005)}{' '}
+                {calculatedNumber}{' '}
               </div>{' '}
               P
             </div>
 
             <div className={styles.explain}>
-              홍길동 님의 등급은 브론즈입니다.
+              홍길동 님의 등급은 {userGrade}입니다.
               <br />
-              포인트 충전 금액의 0.5%가 적립됩니다.
+              포인트 충전 금액의 0.3%가 적립됩니다.
             </div>
             <div className={styles.total}>
-              ={' '}
-              {Number(text.replace(/,/g, '')) +
-                Number(text.replace(/,/g, '') * 0.005)}{' '}
-              P
+              = {chargePoint} P
             </div>
           </div>
 
@@ -237,11 +277,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div className={styles.totalAmountTitle}>
               충전 후 예상 포인트
             </div>
-            <div className={styles.totalAmountInput}>
-              {Number(text.replace(/,/g, '')) +
-                Number(text.replace(/,/g, '') * 0.005)}{' '}
-              P
-            </div>
+            <div className={styles.totalAmountInput}>P</div>
             <button
               className={styles.chargeBtn}
               onClick={payHandler}

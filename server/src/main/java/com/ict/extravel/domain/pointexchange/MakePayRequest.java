@@ -37,7 +37,7 @@ public class MakePayRequest {
         map.add("quantity","1");
 
         //가격
-        map.add("total_amount",payInfoDto.getPrice()+"");
+        map.add("total_amount",payInfoDto.getPrice());
 
         //비과세 금액
         map.add("tax_free_amount", "0");
