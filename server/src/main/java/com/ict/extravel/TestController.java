@@ -1,6 +1,5 @@
 package com.ict.extravel;
 
-import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.global.scheduler.exchage.ExchageCrolling;
@@ -10,7 +9,6 @@ import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

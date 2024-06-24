@@ -13,6 +13,10 @@ import MainIntro from './components/main/intro/MainIntro';
 import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
 import NaverNews from './components/main/detaeil/NaverNews';
+import MyPage from './components/main/detaeil/MyPage';
+import MyPageModify from './components/main/detaeil/MyPageModify';
+import { Switch } from '@mui/material';
+import NaverShopping from './components/user/NaverShopping';
 
 const App = () => {
   return (
@@ -30,6 +34,19 @@ const App = () => {
           <Route
             path='/oauth/kakao'
             element={<KakaoLoginHandler />}
+          />
+          <Route
+            path='/main/news'
+            element={<NaverNews />}
+          ></Route>
+          <Route
+            path='api/v1/shopping'
+            element={<NaverShopping />}
+          ></Route>
+          <Route path='/mypage' element={<MyPage />} />
+          <Route
+            path='/mypage/modify'
+            element={<MyPageModify />}
           />
         </Routes>
         <Footer />

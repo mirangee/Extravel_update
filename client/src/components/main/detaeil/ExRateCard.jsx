@@ -109,6 +109,25 @@ const ExRateCard = ({ exChanges, type }) => {
     }
   };
 
+  const [count, setCount] = useState(0);
+  const target = exChanges.lastestCurEx;
+  const increment = 18;
+
+  useEffect(() => {
+    const counting = setInterval(() => {
+      setCount((prevCount) => {
+        if (prevCount >= target) {
+          clearInterval(counting);
+          return target;
+        } else {
+          return prevCount + increment;
+        }
+      });
+    }, 20);
+
+    return () => clearInterval(counting); // Clean up the interval on component unmount
+  }, [target, increment]);
+
   const containerStyle = {
     boxShadow:
       '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
@@ -188,7 +207,8 @@ const ExRateCard = ({ exChanges, type }) => {
                       fontSize: '30px',
                     }}
                   >
-                    {exChanges.lastestCurEx} 원
+                    {new Intl.NumberFormat().format(count)}{' '}
+                    원
                   </div>
                 ) : (
                   ''
