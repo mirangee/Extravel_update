@@ -3,6 +3,7 @@ package com.ict.extravel.domain.member.controller;
 
 
 import com.ict.extravel.domain.member.dto.request.*;
+import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.service.MemberService;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 
@@ -12,6 +13,7 @@ import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,5 +123,8 @@ public class MemberController {
         String s = memberService.UpdateNation(dto);
         return ResponseEntity.ok(s);
     }
+
+
+
 }
 

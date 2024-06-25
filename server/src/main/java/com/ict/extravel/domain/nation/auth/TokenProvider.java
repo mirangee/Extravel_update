@@ -39,7 +39,7 @@ log.info("memberEntity:{}",memberEntity);
   //토큰 생성
   return Jwts.builder()
           .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()),
-                  SignatureAlgorithm.ES512)
+                  SignatureAlgorithm.HS512)
           .setIssuer("Extravel관리자")
           .setIssuedAt(new Date())
           .setExpiration(expiry)

@@ -123,6 +123,7 @@ public class MemberService {
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+
     }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -139,7 +140,7 @@ public class MemberService {
 
         // 응답 바디 꺼내기
         NaverUserDTO responseData = responseEntity.getBody();
-        log.info("user profile: {}", responseData);
+        log.info("responseData(응답바디): {}", responseData);
 
         return responseData;
     }
@@ -155,7 +156,7 @@ public class MemberService {
         // 토큰을 통해 사용자 정보를 가져오기
         KakaoUserDTO userDTO = getKakaoUserInfo(accessToken);
 
-        System.out.println(userDTO);
+        System.out.println("userDTO:" + userDTO);
 
 
     }
@@ -177,6 +178,7 @@ public class MemberService {
         // 응답 바디 꺼내기
         KakaoUserDTO responseData = responseEntity.getBody();
 
+        log.info("응답바디(responseData) :{}",responseData);
         return responseData;
     }
 
@@ -248,12 +250,15 @@ public class MemberService {
         params.add("code", code);
         params.add("state", state);
 
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+        log.info("params:{}",params);
 
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+        log.info("requestEntity:{}",requestEntity);
         RestTemplate template = new RestTemplate();
 
         ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-
+        log.info("template:{}",template);
+        log.info("responseEntity:{}",responseEntity);
 
         Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
         log.info("토큰 데이터: {}", responseData);
