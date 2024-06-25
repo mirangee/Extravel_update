@@ -65,4 +65,9 @@ public class Member {
     public void updateTid(String tid) {
         this.tid = tid;
     }
+
+//    @Enumerated(EnumType.STRING)
+//    @Builder.Default
+////    private Role role = Role.COMMON;
 }
+

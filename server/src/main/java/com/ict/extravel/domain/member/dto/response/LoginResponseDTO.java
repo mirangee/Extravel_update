@@ -18,10 +18,13 @@ public class LoginResponseDTO {
     private String nationCode;
     private String grade;
 
-    public LoginResponseDTO(Member member) {
+    private String token;
+
+    public LoginResponseDTO(Member member , String token) {
         this.email = member.getEmail();
         this.name = member.getName();
         this.nationCode = member.getNationCode().getNationCode();
         this.grade = member.getGrade();
+        this.token = token;
     }
 }

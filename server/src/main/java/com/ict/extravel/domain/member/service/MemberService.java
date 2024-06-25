@@ -8,6 +8,7 @@ import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
+import com.ict.extravel.domain.nation.auth.TokenProvider;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -73,8 +75,10 @@ public class MemberService {
 
         log.info("{}님 로그인 성공!", member.getName());
 
+        String token = tokenProvider.createToken(member);
+        log.info("token값 : {}" , token);
 
-        return new LoginResponseDTO(member);
+        return new LoginResponseDTO(member, token);
     }
 
     //자체 회원가입
