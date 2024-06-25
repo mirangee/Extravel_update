@@ -11,6 +11,25 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AvChangeCard = () => {
+  const [count, setCount] = useState(0);
+  const target = 932123;
+  const increment = 12345;
+
+  useEffect(() => {
+    const counting = setInterval(() => {
+      setCount((prevCount) => {
+        if (prevCount >= target) {
+          clearInterval(counting);
+          return target;
+        } else {
+          return prevCount + increment;
+        }
+      });
+    }, 20);
+
+    return () => clearInterval(counting); // Clean up the interval on component unmount
+  }, [target, increment]);
+
   const containerStyle = {
     width: '800px',
     marginTop: '20px',
@@ -65,7 +84,7 @@ const AvChangeCard = () => {
                     fontSize: '36px',
                   }}
                 >
-                  932,123
+                  {new Intl.NumberFormat().format(count)}
                 </span>{' '}
                 원 환전했어요.
               </CardTitle>

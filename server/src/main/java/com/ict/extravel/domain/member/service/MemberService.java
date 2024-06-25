@@ -6,7 +6,11 @@ import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
+<<<<<<< develop
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+=======
+
+>>>>>>> develop
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
@@ -20,6 +24,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+<<<<<<< develop
+=======
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.nation.repository.NationRepository;
+>>>>>>> develop
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;

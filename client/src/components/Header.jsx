@@ -3,37 +3,38 @@ import React, {
   useState,
   useContext,
 } from 'react';
-
+import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
 import axios from 'axios';
 import AuthContext from '../utils/AuthContext';
-import { API_BASE_URL, USER } from '../config/host-config';
-import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+} from 'reactstrap';
+import ChargeModal from './main/intro/ChargeModal';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
+  const [country, setCountry] = useState('US');
   const navigate = useNavigate();
-  const {
-    inLoggedIn,
-    name,
-    onChangeNation,
-    nation,
-    onLogout,
-  } = useContext(AuthContext);
+  const { inLoggedIn, name } = useContext(AuthContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const redirection = useNavigate();
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  //로그아웃 핸들러
-  const clickLogoutHandler = () => {
-    onLogout();
-    // inLoggedIn(false);
-    redirection('/');
-    alert('로그아웃 되었습니다.');
+  const goToIntro = () => {
+    navigate('/');
   };
 
   useEffect(() => {
@@ -81,8 +82,12 @@ const Header = () => {
   }, []);
 
   const handleCountryChange = (selectedOption) => {
-    onChangeNation(selectedOption.value);
+    setCountry(selectedOption.value);
+    if (selectedOption) {
+      navigate(`/${selectedOption.value}`);
+    }
   };
+
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
   }
@@ -96,59 +101,76 @@ const Header = () => {
           src={logoImage}
           alt='Logo'
           className={styles.logo}
+          onClick={goToIntro}
         />
         <nav className={styles.nav}>
           <ul className={styles.menu}>
-            <li className={styles.login}>
-              {inLoggedIn
-                ? name + '님 좋은 하루 되세요.'
-                : ''}
+            <li
+              style={{
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '18px',
+                paddingRight: '105px',
+              }}
+            >
+              {inLoggedIn ? name + '님' : '오늘'}의 할일
             </li>
-            <li>
+            <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/home'>패키지</Link>
-            </li>
-            <li>
-              <Link to='/about'>뉴스</Link>
-            </li>
-            <li>
-              <Link to='/services'>내정보</Link>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2 }}>
+              <Link to='/main'>뉴스</Link>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2 }}>
+              <Link to='/mypage'>내&nbsp;&nbsp;정보</Link>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/contact'>Places</Link>
-            </li>
-
-            <li>
-              {inLoggedIn && (
-                <Select
-                  value={countryOptions.find(
-                    (option) => option.value === nation,
-                  )}
-                  onChange={handleCountryChange}
-                  options={countryOptions}
-                  className={styles.countrySelect}
-                  classNamePrefix={styles.reactSelect}
+            </motion.li>
+            <Dropdown
+              isOpen={dropdownOpen}
+              toggle={toggleDropdown}
+              direction='down'
+            >
+              <DropdownToggle
+                caret
+                style={{ background: '#14505c' }}
+              >
+                <FontAwesomeIcon
+                  icon={faMoneyCheckDollar}
+                  size='xl'
+                  style={{ color: '#38bc8a' }}
                 />
-              )}
+              </DropdownToggle>
+              <DropdownMenu
+                style={{
+                  backgroundColor: 'white',
+                  zIndex: '1500',
+                  onClick: { modalOpen },
+                }}
+              >
+                {/* <DropdownItem
+                  style={{ padding: '0px' }}
+                  onClick={() => setModalOpen(true)}
+                > */}
+                <ChargeModal setModalOpen={setModalOpen} />
+                {/* </DropdownItem> */}
+              </DropdownMenu>
+            </Dropdown>
+            <li>
+              <Select
+                value={countryOptions.find(
+                  (option) => option.value === country,
+                )}
+                onChange={handleCountryChange}
+                options={countryOptions}
+                className={styles.countrySelect}
+                classNamePrefix={styles.reactSelect}
+              />
             </li>
-            <ul>
-              {inLoggedIn ? (
-                <li
-                  type='button'
-                  className={styles.logout}
-                  onClick={clickLogoutHandler}
-                >
-                  로그아웃
-                </li>
-              ) : (
-                <>
-                  <Link to='/login'>로그인</Link>
-                </>
-              )}
-            </ul>
           </ul>
         </nav>
       </header>
-      <div className={styles.fake}></div>
     </>
   );
 };
