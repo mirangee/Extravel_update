@@ -1,27 +1,37 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from '../../../scss/ChargeModal.module.scss';
 import { BsXLg } from 'react-icons/bs';
 import goldMedal from '../../../assets/img/gold.png';
 import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import axios from 'axios';
+import AuthContext from '../../../utils/AuthContext';
 
 const ChargeModal = ({ setModalOpen }) => {
+  const { id, grade, name } = useContext(AuthContext);
   const modalBackground = useRef();
   const [text, setText] = useState('');
   const [calculatedNumber, setCalculatedNumber] =
     useState('');
   const [chargePoint, setChargePoint] = useState('');
 
-  const userGrade = 'bronze';
+  useEffect(() => {
+    console.log('해당 유저의PK id 값 확인: ', id);
+    console.log('해당 유저의 grade 확인: ', grade);
+  }, []);
 
   const getMultiplier = (grade) => {
     switch (grade) {
-      case 'bronze':
+      case 'BRONZE':
         return 1.001;
-      case 'silver':
+      case 'SILVER':
         return 1.002;
-      case 'gold':
+      case 'GOLD':
         return 1.003;
       default:
         return 1.001;
@@ -30,11 +40,11 @@ const ChargeModal = ({ setModalOpen }) => {
 
   const getPointMultiplier = (grade) => {
     switch (grade) {
-      case 'bronze':
+      case 'BRONZE':
         return 0.001;
-      case 'silver':
+      case 'SILVER':
         return 0.002;
-      case 'gold':
+      case 'GOLD':
         return 0.003;
       default:
         return 0.001;
@@ -51,14 +61,13 @@ const ChargeModal = ({ setModalOpen }) => {
           numberValue.toLocaleString();
         setText(formattedNumber);
 
-        const pointMultiplier =
-          getPointMultiplier(userGrade);
+        const pointMultiplier = getPointMultiplier(grade);
         const calculated = (
           numberValue * pointMultiplier
         ).toLocaleString('ko-KR');
         setCalculatedNumber(calculated);
 
-        const multiplier = getMultiplier(userGrade);
+        const multiplier = getMultiplier(grade);
         const chargePointValue = (
           numberValue * multiplier
         ).toLocaleString('ko-KR');
@@ -83,13 +92,35 @@ const ChargeModal = ({ setModalOpen }) => {
     }
   };
 
+  // 카카오 페이 결제 함수
+  let tid = 0; // tid를 담는 변수 선언
   const confirmPayment = async () => {
     try {
-      const res = await axios.get(
-        'http://localhost:8181/payment/confirm',
+      console.log(tid);
+      const res = await axios.post(
+        'http://localhost:8181/payment/confirm/' + tid,
       );
       if (res.status === 200) {
-        // 결제 성공 시 새로운 페이지로 이동하며 상태 전달
+        console.log(res.data);
+        const result = res.data.status;
+        switch (result) {
+          case 'SUCCESS':
+            alert('ET 포인트 충전이 완료되었습니다.');
+            break;
+          case 'CANCELED':
+            alert('결제가 취소되었습니다!');
+            break;
+          case 'FAILED':
+            alert(
+              '결제에 실패했습니다. 다시 시도해 주세요',
+            );
+            break;
+          case 'PENDING':
+            alert(
+              '결제창이 닫혔습니다. 다시 시도해 주세요',
+            );
+            break;
+        }
       } else {
         // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
       }
@@ -98,11 +129,6 @@ const ChargeModal = ({ setModalOpen }) => {
         '결제 확인 중 오류가 발생했습니다',
         error,
       );
-      // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
-      history.push({
-        pathname: '/new-page',
-        state: { success: false },
-      });
     }
   };
 
@@ -116,9 +142,7 @@ const ChargeModal = ({ setModalOpen }) => {
     const paymentCheck = setInterval(() => {
       if (popup.closed) {
         clearInterval(paymentCheck);
-        // confirmPayment();
-        // alert('ET 포인트 충전이 완료되었습니다.');
-        // 필요한 후속 작업 수행
+        confirmPayment();
       }
     }, 1000);
   };
@@ -129,11 +153,14 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          price: 1000,
+          id,
+          price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },
       );
       console.log(res);
+      console.log(res.data.tid);
+      tid = res.data.tid;
       console.log(res.data.next_redirect_pc_url);
       if (res.status === 200) {
         openPaymentPopup(res.data.next_redirect_pc_url);
@@ -150,10 +177,10 @@ const ChargeModal = ({ setModalOpen }) => {
       onClick={handleClose}
     >
       <div className={styles.modalContent}>
-        <BsXLg
+        {/* <BsXLg
           className={styles.modalCloseBtn}
           onClick={() => setModalOpen(false)}
-        />
+        /> */}
 
         <h1>ETP 충전하기</h1>
         <h5>ExTravel Point</h5>
@@ -211,11 +238,7 @@ const ChargeModal = ({ setModalOpen }) => {
 
         <div className={styles.currentMoney}>
           보유 포인트
-          <div className={styles.currentMoneyInput}>
-            {Number(text) +
-              Number(text.replace(/,/g, '') * 0.005)}{' '}
-            P
-          </div>
+          <div className={styles.currentMoneyInput}>P</div>
         </div>
 
         <div className={styles.bottom}>
@@ -247,9 +270,11 @@ const ChargeModal = ({ setModalOpen }) => {
             </div>
 
             <div className={styles.explain}>
-              홍길동 님의 등급은 {userGrade}입니다.
+              {name} 님의 등급은 {grade}입니다.
               <br />
-              포인트 충전 금액의 0.3%가 적립됩니다.
+              포인트 충전 금액의{' '}
+              {getPointMultiplier(grade) * 100 + '%'}가
+              적립됩니다.
             </div>
             <div className={styles.total}>
               = {chargePoint} P
@@ -260,9 +285,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div className={styles.totalAmountTitle}>
               충전 후 예상 포인트
             </div>
-            <div className={styles.totalAmountInput}>
-              {} P
-            </div>
+            <div className={styles.totalAmountInput}>P</div>
             <button
               className={styles.chargeBtn}
               onClick={payHandler}

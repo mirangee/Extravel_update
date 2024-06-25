@@ -17,6 +17,7 @@ import MyPage from './components/main/detaeil/MyPage';
 import MyPageModify from './components/main/detaeil/MyPageModify';
 import { Switch } from '@mui/material';
 import NaverShopping from './components/user/NaverShopping';
+import PopularTravelContry from './components/main/detaeil/PopularTravelContry';
 
 const App = () => {
   return (
@@ -49,6 +50,8 @@ const App = () => {
             element={<MyPageModify />}
           />
         </Routes>
+        {/* <PopularTravelContry /> */}
+
         <Footer />
         <ScrollToTopButton />
       </AuthContextProvider>

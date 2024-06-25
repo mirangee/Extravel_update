@@ -73,6 +73,20 @@ const MyPageModify = () => {
           style={{ width: '700px', height: '72px' }}
         />
       </div>
+      {/* <div className='PasswordBox'>
+        <span>Password</span>
+        <Input
+          fullWidth
+          // value={phone}
+          // onChange={(e) => setPhone(e.target.value)}
+          style={{
+            width: '700px',
+            height: '72px',
+            color: 'black',
+          }}
+          disabled
+        />
+      </div> */}
       <div className='PhoneBox'>
         <span>Phone-Number</span>
         <Input

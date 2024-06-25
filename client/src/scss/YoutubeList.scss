@@ -1,25 +1,7 @@
 .youtubeContainer {
-  align-items: center;
-  // background-color: #ff0000;
-
-  .youtube1 {
-    padding-left: 10px;
-  }
-  .youtube2 {
-    padding-left: 10px;
-  }
-  .youtube3 {
-    padding-left: 10px;
-  }
-  iframe {
-    margin-left: 100px;
-  }
+  width: 100%;
+  margin: 30px auto;
 }
-
-// .youtubeContainer {
-//   width: 100%;
-//   margin: 30px auto;
-// }
 
 // Swiper 슬라이더의 스타일
 .youtubeSlider {
@@ -45,4 +27,3 @@
 .swiper-pagination-bullet-active{
   background: #275963;
 }
-
