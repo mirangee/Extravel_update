@@ -456,7 +456,7 @@ const Login = () => {
                                 styles.phoneNumberCheck
                               }
                               style={{
-                                margin: 5,
+                                marginLeft: '100px',
                                 display: !isAuthCompleted
                                   ? 'block'
                                   : 'none',
@@ -512,6 +512,8 @@ const Login = () => {
                             color='success'
                             style={{
                               marginTop: 10,
+                              marginLeft: '100px',
+                              background: 'black',
                               display: !isAuthCompleted
                                 ? 'block'
                                 : 'none',
