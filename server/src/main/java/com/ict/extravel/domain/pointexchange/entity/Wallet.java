@@ -10,6 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor @AllArgsConstructor
+@ToString @EqualsAndHashCode
 @Builder
 @Entity
 @Table(name = "wallet")

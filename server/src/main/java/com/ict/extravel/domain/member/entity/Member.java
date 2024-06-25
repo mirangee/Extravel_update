@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor @NoArgsConstructor
+@ToString @EqualsAndHashCode
 @Builder
 @Entity
 @Table(name = "member")

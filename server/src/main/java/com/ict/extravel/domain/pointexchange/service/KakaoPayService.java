@@ -157,7 +157,7 @@ public class KakaoPayService {
         
         // DB Wallet에 보유 포인트 업데이트
         Wallet wallet1 = upsertWallet(id, member, currentEtPointBD.add(newEtiPointBD));
-        log.info(wallet1.toString());
+        log.info("wallet 저장 결과: {}", wallet1.toString());
     }
 
     private float calcTotalPoint(Integer id, int amount) {
@@ -180,11 +180,15 @@ public class KakaoPayService {
     }
 
     public Wallet upsertWallet(Integer memberId, Member member, BigDecimal etPoint) {
-        Wallet wallet = walletRepository.findById(memberId)
-                .orElse(Wallet.builder()
-                        .id(memberId)
-                        .member(member)
-                        .build());
+        Wallet wallet = walletRepository.findById(memberId).orElse(null);
+
+        if (wallet == null) {
+            wallet = Wallet.builder()
+                    .id(memberId)
+                    .member(member)
+                    .build();
+        }
+
         wallet.setEtPoint(etPoint);
         wallet.setUpdatedAt(Instant.now());
         log.info("wallet 저장합니다 {}", wallet);
