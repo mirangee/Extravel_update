@@ -13,7 +13,7 @@ const ChargeModal = ({ setModalOpen }) => {
     useState('');
   const [chargePoint, setChargePoint] = useState('');
 
-  const userGrade = 'bronze';
+  const userGrade = 'gold';
 
   const getMultiplier = (grade) => {
     switch (grade) {
@@ -83,13 +83,35 @@ const ChargeModal = ({ setModalOpen }) => {
     }
   };
 
+  // 카카오 페이 결제 함수
+  let tid = 0; // tid를 담는 변수 선언
   const confirmPayment = async () => {
     try {
-      const res = await axios.get(
-        'http://localhost:8181/payment/confirm',
+      console.log(tid);
+      const res = await axios.post(
+        'http://localhost:8181/payment/confirm/' + tid,
       );
       if (res.status === 200) {
-        // 결제 성공 시 새로운 페이지로 이동하며 상태 전달
+        console.log(res.data);
+        const result = res.data.status;
+        switch (result) {
+          case 'SUCCESS':
+            alert('ET 포인트 충전이 완료되었습니다.');
+            break;
+          case 'CANCELED':
+            alert('결제가 취소되었습니다!');
+            break;
+          case 'FAILED':
+            alert(
+              '결제에 실패했습니다. 다시 시도해 주세요',
+            );
+            break;
+          case 'PENDING':
+            alert(
+              '결제창이 닫혔습니다. 다시 시도해 주세요',
+            );
+            break;
+        }
       } else {
         // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
       }
@@ -98,11 +120,6 @@ const ChargeModal = ({ setModalOpen }) => {
         '결제 확인 중 오류가 발생했습니다',
         error,
       );
-      // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
-      history.push({
-        pathname: '/new-page',
-        state: { success: false },
-      });
     }
   };
 
@@ -116,9 +133,7 @@ const ChargeModal = ({ setModalOpen }) => {
     const paymentCheck = setInterval(() => {
       if (popup.closed) {
         clearInterval(paymentCheck);
-        // confirmPayment();
-        // alert('ET 포인트 충전이 완료되었습니다.');
-        // 필요한 후속 작업 수행
+        confirmPayment();
       }
     }, 1000);
   };
@@ -129,11 +144,14 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          price: 1000,
+          id: 70,
+          price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },
       );
       console.log(res);
+      console.log(res.data.tid);
+      tid = res.data.tid;
       console.log(res.data.next_redirect_pc_url);
       if (res.status === 200) {
         openPaymentPopup(res.data.next_redirect_pc_url);
@@ -211,11 +229,7 @@ const ChargeModal = ({ setModalOpen }) => {
 
         <div className={styles.currentMoney}>
           보유 포인트
-          <div className={styles.currentMoneyInput}>
-            {Number(text) +
-              Number(text.replace(/,/g, '') * 0.005)}{' '}
-            P
-          </div>
+          <div className={styles.currentMoneyInput}>P</div>
         </div>
 
         <div className={styles.bottom}>
@@ -260,9 +274,7 @@ const ChargeModal = ({ setModalOpen }) => {
             <div className={styles.totalAmountTitle}>
               충전 후 예상 포인트
             </div>
-            <div className={styles.totalAmountInput}>
-              {} P
-            </div>
+            <div className={styles.totalAmountInput}>P</div>
             <button
               className={styles.chargeBtn}
               onClick={payHandler}

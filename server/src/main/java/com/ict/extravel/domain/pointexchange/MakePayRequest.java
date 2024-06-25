@@ -10,8 +10,10 @@ import org.springframework.util.LinkedMultiValueMap;
 @RequiredArgsConstructor
 public class MakePayRequest {
 
-    public PayRequest getReadyRequest(Integer id, PayInfoDto payInfoDto){
+    public PayRequest getReadyRequest(PayInfoDto payInfoDto){
         LinkedMultiValueMap<String,String> map = new LinkedMultiValueMap<>();
+
+        Integer id = payInfoDto.getId();
 
         /** partner_user_id,partner_order_id는 결제 승인 요청에서도 동일해야함 */
         String memberId = id+"";
@@ -35,7 +37,7 @@ public class MakePayRequest {
         map.add("quantity","1");
 
         //가격
-        map.add("total_amount",payInfoDto.getPrice()+"");
+        map.add("total_amount",payInfoDto.getPrice());
 
         //비과세 금액
         map.add("tax_free_amount", "0");
@@ -45,8 +47,8 @@ public class MakePayRequest {
         // 나온 결과로 이동할 url을 설정해 주는 것입니다.
         map.add("approval_url", "http://localhost:8181/payment/success"+"/"+id); // 성공 시 redirect url
 //        map.add("approval_url", "http://localhost:3000"); // 성공 시 redirect url
-        map.add("cancel_url", "http://localhost:8181/payment/cancel"); // 취소 시 redirect url
-        map.add("fail_url", "http://localhost:8181/payment/fail"); // 실패 시 redirect url
+        map.add("cancel_url", "http://localhost:8181/payment/cancel"+"/"+id); // 취소 시 redirect url
+        map.add("fail_url", "http://localhost:8181/payment/fail"+"/"+id); // 실패 시 redirect url
 
         return new PayRequest("https://kapi.kakao.com/v1/payment/ready",map);
     }
