@@ -84,6 +84,7 @@ const MyPageModify = () => {
             height: '72px',
             color: 'black',
           }}
+          disabled
         />
       </div>
       <div className='NationBox'>

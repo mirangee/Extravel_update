@@ -58,7 +58,6 @@ public class Member {
     private String tid;
 
     @Size(max = 30)
-    @NotNull
     @Column(name = "path", nullable = false, length = 30)
     private String path;
 

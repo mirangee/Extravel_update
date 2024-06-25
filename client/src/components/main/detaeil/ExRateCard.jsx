@@ -127,7 +127,6 @@ const ExRateCard = ({ exChanges, type }) => {
 
     return () => clearInterval(counting); // Clean up the interval on component unmount
   }, [target, increment]);
-
   const containerStyle = {
     boxShadow:
       '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',

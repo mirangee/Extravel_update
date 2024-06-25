@@ -32,23 +32,55 @@ function NaverNews() {
         height: '362px',
         overflow: 'auto',
         border: '1px solid #ccc',
-        padding: '10px',
+        padding: '15px',
         borderRadius: '10px',
         marginLeft: '10px',
+        scrollbarWidth:
+          'thin' /* Firefox에서 스크롤바 너비 설정 */,
+        scrollbarColor:
+          '#14505C #f1f1f1' /* Firefox 64+에서 스크롤바 색상 설정 */,
+        WebkitOverflowScrolling:
+          'touch' /* iOS에서 부드러운 스크롤을 위한 설정 */,
       }}
     >
-      <h2 style={{ textAlign: 'center' }}>
-        환율 실시간 뉴스
+      <h2
+        style={{
+          textAlign: 'left',
+          fontWeight: 'bold',
+          padding: '20px 40px',
+          color: '#14505C',
+        }}
+      >
+        News🧾
       </h2>
-      <ul>
+      <ul
+        style={{
+          listStyleType: 'none',
+          fontSize: '16px',
+        }}
+      >
         {article.map((item, index) => (
-          <li key={index}>
+          <li
+            style={{
+              listStyleType: 'none',
+              fontSize: '16px',
+              padding: '5px',
+            }}
+            key={index}
+          >
             <a
               href={item.link}
               target='_blank'
               rel='noopener noreferrer'
             >
-              <h3>{item.title}</h3>
+              <h3
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {item.title}
+              </h3>
             </a>
             <p>{item.description}</p>
           </li>
