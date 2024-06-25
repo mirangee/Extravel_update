@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.member.entity;
 
 import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -51,9 +52,13 @@ public class Member {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Size(max = 50)
-    @Column(name = "grade", length = 50)
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade", nullable = false, length = 50)
+    private Grade grade;
+
+    public enum Grade {
+        BRONZE, SILVER, GOLD
+    }
 
     @Size(max = 255)
     @ColumnDefault("default_value")

@@ -13,12 +13,14 @@ import lombok.*;
 
 
 public class LoginResponseDTO {
+    private Integer id;
     private String email;
     private String name;
     private String nationCode;
-    private String grade;
+    private Member.Grade grade;
 
     public LoginResponseDTO(Member member) {
+        this.id = member.getId();
         this.email = member.getEmail();
         this.name = member.getName();
         this.nationCode = member.getNationCode().getNationCode();

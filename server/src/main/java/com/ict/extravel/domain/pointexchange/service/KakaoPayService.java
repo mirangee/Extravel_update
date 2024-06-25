@@ -163,13 +163,13 @@ public class KakaoPayService {
         float plusRate = 0;
         log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
         switch (member.getGrade()) {
-            case "BRONZE" :
+            case BRONZE:
                 plusRate = 0.001F;
                 break;
-            case "SILVER" :
+            case SILVER:
                 plusRate = 0.002F;
                 break;
-            case "GOLD" :
+            case GOLD:
                 plusRate = 0.003F;
                 break;
         }

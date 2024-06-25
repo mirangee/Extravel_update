@@ -1,27 +1,37 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from '../../../scss/ChargeModal.module.scss';
 import { BsXLg } from 'react-icons/bs';
 import goldMedal from '../../../assets/img/gold.png';
 import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import axios from 'axios';
+import AuthContext from '../../../utils/AuthContext';
 
 const ChargeModal = ({ setModalOpen }) => {
+  const { id, grade, name } = useContext(AuthContext);
   const modalBackground = useRef();
   const [text, setText] = useState('');
   const [calculatedNumber, setCalculatedNumber] =
     useState('');
   const [chargePoint, setChargePoint] = useState('');
 
-  const userGrade = 'gold';
+  useEffect(() => {
+    console.log('해당 유저의PK id 값 확인: ', id);
+    console.log('해당 유저의 grade 확인: ', grade);
+  }, []);
 
   const getMultiplier = (grade) => {
     switch (grade) {
-      case 'bronze':
+      case 'BRONZE':
         return 1.001;
-      case 'silver':
+      case 'SILVER':
         return 1.002;
-      case 'gold':
+      case 'GOLD':
         return 1.003;
       default:
         return 1.001;
@@ -30,11 +40,11 @@ const ChargeModal = ({ setModalOpen }) => {
 
   const getPointMultiplier = (grade) => {
     switch (grade) {
-      case 'bronze':
+      case 'BRONZE':
         return 0.001;
-      case 'silver':
+      case 'SILVER':
         return 0.002;
-      case 'gold':
+      case 'GOLD':
         return 0.003;
       default:
         return 0.001;
@@ -51,14 +61,13 @@ const ChargeModal = ({ setModalOpen }) => {
           numberValue.toLocaleString();
         setText(formattedNumber);
 
-        const pointMultiplier =
-          getPointMultiplier(userGrade);
+        const pointMultiplier = getPointMultiplier(grade);
         const calculated = (
           numberValue * pointMultiplier
         ).toLocaleString('ko-KR');
         setCalculatedNumber(calculated);
 
-        const multiplier = getMultiplier(userGrade);
+        const multiplier = getMultiplier(grade);
         const chargePointValue = (
           numberValue * multiplier
         ).toLocaleString('ko-KR');
@@ -144,7 +153,7 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          id: 70,
+          id,
           price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },
@@ -261,9 +270,11 @@ const ChargeModal = ({ setModalOpen }) => {
             </div>
 
             <div className={styles.explain}>
-              홍길동 님의 등급은 {userGrade}입니다.
+              {name} 님의 등급은 {grade}입니다.
               <br />
-              포인트 충전 금액의 0.3%가 적립됩니다.
+              포인트 충전 금액의{' '}
+              {getPointMultiplier(grade) * 100 + '%'}가
+              적립됩니다.
             </div>
             <div className={styles.total}>
               = {chargePoint} P

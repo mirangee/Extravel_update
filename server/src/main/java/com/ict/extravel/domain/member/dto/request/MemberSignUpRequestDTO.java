@@ -41,6 +41,7 @@ public class MemberSignUpRequestDTO {
                 .phoneNumber(phoneNumber)//리액트랑 동일명
                 .email(email)
                 .password(password)
+                .grade(Member.Grade.BRONZE)
                 .nationCode(us)
                 .build();
     }
