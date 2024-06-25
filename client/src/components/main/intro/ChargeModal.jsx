@@ -103,10 +103,10 @@ const ChargeModal = ({ setModalOpen }) => {
       onClick={handleClose}
     >
       <div className={styles.modalContent}>
-        <BsXLg
+        {/* <BsXLg
           className={styles.modalCloseBtn}
           onClick={() => setModalOpen(false)}
-        />
+        /> */}
 
         <h1>ETP 충전하기</h1>
         <h5>ExTravel Point</h5>

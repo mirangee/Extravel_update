@@ -274,7 +274,7 @@ const Login = () => {
                 >
                   X
                 </button>
-                <h1>회원가입 하기</h1>
+                <h1>Sign Up</h1>
                 <div className={styles['social-container']}>
                   {/* 소셜 아이콘 (네이버, 카카오, 구글) */}
                   <a
@@ -578,13 +578,13 @@ const Login = () => {
                   className={`${styles['overlay-panel']} ${styles['overlay-left']}`}
                 >
                   <h1>
-                    EXTRAVEL
-                    <br />
-                    Sign Up
+                    {/* EXTRAVEL
+                    <br /> */}
+                    Create Account
                   </h1>
                   <p>
-                    To keep connected with us please login
-                    with your personal info
+                    To keep connected with us <br /> please
+                    login with your personal info
                   </p>
                   <button
                     className={styles.ghost}
@@ -605,8 +605,8 @@ const Login = () => {
                     X
                   </button>
                   <h1>
-                    EXTRAVEL
-                    <br />
+                    {/* EXTRAVEL
+                    <br /> */}
                     Login
                   </h1>
                   <p>
