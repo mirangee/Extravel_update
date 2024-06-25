@@ -2,29 +2,30 @@ package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
+import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.nation.repository.NationRepository;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
-import com.ict.extravel.domain.nation.entity.Nation;
-import com.ict.extravel.domain.nation.repository.NationRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final PasswordEncoder passwordEncoder;
+    final DefaultMessageService messageService;
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -54,6 +56,39 @@ public class MemberService {
     private String KAKAO_CLIENT_SECRET;
 
 
+    //coolSMS
+    @Value("${CoolSMS.api_key}")
+    private String API_KEY;
+
+    @Value("${CoolSMS.apiSecretKey}")
+    private String API_SECRET_KEY;
+
+    @Value("${CoolSMS.web}")
+    private String WEB;
+
+    @Value("${CoolSMS.phone_number}")
+    private int PHONE_NUMBER;
+
+
+
+    private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
+        // 요청 uri
+        String requestURI = "https://kapi.kakao.com/v2/user/me";
+        // 요청 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // 요청 보내기
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<KakaoUserDTO> responseEntity
+                = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), KakaoUserDTO.class);
+
+        // 응답 바디 꺼내기
+        KakaoUserDTO responseData = responseEntity.getBody();
+
+        return responseData;
+    }
 
     //자체 로그인
     public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
@@ -99,13 +134,12 @@ public class MemberService {
 
     }
 
-
     //이메일 중복검사
     public boolean isDuplicate(String email) {
-        if(memberRepository.existsByEmail(email)) {
+        if (memberRepository.existsByEmail(email)) {
             log.warn("이메일이 중복되었습니다. - {}", email);
             return true;
-        }   else return false;
+        } else return false;
     }
 
     public void NaverLoginService(String code) {
@@ -136,10 +170,6 @@ public class MemberService {
         return responseData;
     }
 
-
-
-
-
     public void kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
         System.out.println(KAKAO_CLIENT_ID);
@@ -153,26 +183,6 @@ public class MemberService {
         System.out.println(userDTO);
 
 
-    }
-
-
-    private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
-        // 요청 uri
-        String requestURI = "https://kapi.kakao.com/v2/user/me";
-        // 요청 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // 요청 보내기
-        RestTemplate template = new RestTemplate();
-        ResponseEntity<KakaoUserDTO> responseEntity
-                = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), KakaoUserDTO.class);
-
-        // 응답 바디 꺼내기
-        KakaoUserDTO responseData = responseEntity.getBody();
-
-        return responseData;
     }
 
     private String getKakaoAccessToken(String code) {
@@ -258,15 +268,17 @@ public class MemberService {
 
 
     public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
-        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(()->new IllegalArgumentException("존재하지않는멤버"));
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지않는멤버"));
         Nation nation = nationRepository.findById(dto.getNationCode()).orElseThrow(() -> new IllegalArgumentException("존재하지않는국가"));
         member.setNationCode(nation);
         Member save = memberRepository.save(member);
         return save.getNationCode().getNationCode();
 
     }
-}
 
+    //회원가입 시 본인 인증
+
+}
 
 
 
