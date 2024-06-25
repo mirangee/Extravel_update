@@ -1,7 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import styles from '../../scss/NaverShopping.module.scss';
+import Pagination from 'react-js-pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/scss';
+import 'swiper/scss/navigation';
+import 'swiper/scss/pagination';
+import {
+  Navigation,
+  Autoplay,
+  Pagination as SwiperPagination,
+} from 'swiper/modules';
+import { CiPlay1, CiPause1 } from 'react-icons/ci';
 
 const NaverShopping = () => {
   const [article, setArticle] = useState([]);
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 9;
+  const [isPlaying, setIsPlaying] = useState(true);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     fetch('http://localhost:8181/api/v1/shopping')
@@ -21,64 +37,113 @@ const NaverShopping = () => {
         console.error('Error fetching data : ', error),
       );
   }, []);
-  return (
-    <div
-      className='box'
-      style={{
-        width: '100%',
-        height: '100%',
 
-        border: '1px solid #ccc',
-        padding: '10px',
-        borderRadius: '10px',
-        marginLeft: '10px',
-      }}
-    >
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {article.map((item, index) => (
-          <li key={index} style={{ marginBottom: '20px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '5px',
-                  marginRight: '20px',
-                }}
-              />
-              <div>
-                <h3 style={{ margin: '0 0 10px 0' }}>
-                  {item.title}
-                </h3>
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+  const indexOfLastArticle = activePage * itemsPerPage;
+  const indexOfFirstArticle =
+    indexOfLastArticle - itemsPerPage;
+  const currentArticles = article.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle,
+  );
+
+  const handleAutoplayToggle = () => {
+    const swiperInstance =
+      swiperRef.current && swiperRef.current.swiper;
+    if (swiperInstance) {
+      if (isPlaying) {
+        swiperInstance.autoplay.stop();
+      } else {
+        swiperInstance.autoplay.start();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <>
+      <div className={styles.shoppingHeader}>
+        <div className={styles.headerBox}>
+          <Swiper
+            ref={swiperRef}
+            className={styles.swiperBox}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{
+              delay: 4000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            modules={[
+              Navigation,
+              Autoplay,
+              SwiperPagination,
+            ]}
+          >
+            <a href='https://m.hanatour.com/dcr/'>
+              <SwiperSlide>Slide 1</SwiperSlide>
+            </a>
+            <SwiperSlide>
+              <a href=''></a>Slide 2
+            </SwiperSlide>
+            <SwiperSlide>
+              <a href=''></a>Slide 3
+            </SwiperSlide>
+            <SwiperSlide>
+              <a href=''></a>Slide 4
+            </SwiperSlide>
+            <SwiperSlide>
+              <a href=''></a>Slide 5
+            </SwiperSlide>
+          </Swiper>
+          <button
+            onClick={handleAutoplayToggle}
+            className={styles.autoplayToggle}
+          >
+            {isPlaying ? <CiPause1 /> : <CiPlay1 />}
+          </button>
+        </div>
+      </div>
+      <div className={styles.naverShoppingBox}>
+        <ul className={styles.listUl}>
+          {currentArticles.map((item, index) => (
+            <li key={index}>
+              <div className={styles.itemTitleContainer}>
                 <a
                   href={item.link}
                   target='_blank'
                   rel='noopener noreferrer'
-                  style={{
-                    color: '#1a0dab',
-                    textDecoration: 'none',
-                  }}
                 >
-                  자세히 보기
+                  <img src={item.image} alt={item.title} />
+                  <div className={styles.itemTitle}>
+                    <h3>{item.title}</h3>
+                    <p>{item.lprice.replace(/,/g, '')}원</p>
+                  </div>
                 </a>
-                <p
-                  style={{ margin: '5px 0', color: '#555' }}
-                >
-                  가격: {item.lprice}원
-                </p>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+            </li>
+          ))}
+        </ul>
+        <div className={styles.pagination}>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={itemsPerPage}
+            totalItemsCount={article.length}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+            itemClass='page-item'
+            linkClass='page-link'
+            activeClass='active'
+            disabledClass='disabled'
+            hideDisabled='false'
+          />
+        </div>
+      </div>
+    </>
   );
 };
 

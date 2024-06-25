@@ -1,0 +1,120 @@
+.shoppingHeader {
+  width: 100%;
+  height: 600px;
+  margin: 200px 0 150px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+  background-image: url(../assets/img/beach.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+
+  .headerBox {
+    width: 40%;
+    height: 90%;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background: white;
+
+    .swiperBox {
+      height: 100%;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      background: none;
+    }
+  }
+}
+
+.naverShoppingBox {
+  width: 70%;
+  height: 100%;
+  //   border: 1px solid #ccc;
+  padding: 50px;
+  margin-left: 15%;
+
+  .listUl {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    justify-content: center;
+
+    li {
+      margin-bottom: 20px;
+      justify-content: center;
+
+      .itemTitleContainer {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+        border-radius: 15px;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+          color: #1a0dab;
+          text-decoration: none;
+
+          img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            margin-right: 20px;
+          }
+
+          .itemTitle {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            padding: 10px;
+
+            h3 {
+              font-size: 20px;
+            }
+
+            p {
+              //   margin: 5px 0;
+              color: #555;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    list-style: none;
+
+    li {
+      display: inline-block;
+      margin: 0 5px;
+
+      a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 10px;
+        transition: background-color 0.3s;
+      }
+    }
+  }
+}
