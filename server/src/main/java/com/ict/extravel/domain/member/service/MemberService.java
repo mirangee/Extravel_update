@@ -103,22 +103,12 @@ public class MemberService {
         Nation us = nationRepository.findById("US").orElseThrow();
         Member saved = memberRepository.save(dto.toEntity(us));
 
-        // member table에 회원 저장될 때 회원 wallet도 생성
-        Wallet wallet = Wallet.builder()
-                .id(saved.getId())
-                .member(saved)
-                .etPoint(BigDecimal.valueOf(0.0))
-                .updatedAt(Instant.now())
-                .build();
-        log.info("생성된 wallet: {}", wallet.toString());
-
+        // member table에 회원 저장되면 wallet에도 데이터 생성
+        walletRepository.insertWallet(saved.getId(), BigDecimal.valueOf(0.0));
 
         log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
-
         return new MemberSignUpResponseDTO(saved);
-
     }
-
 
     //이메일 중복검사
     public boolean isDuplicate(String email) {
@@ -133,8 +123,6 @@ public class MemberService {
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
-
-
     }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -155,9 +143,6 @@ public class MemberService {
 
         return responseData;
     }
-
-
-
 
 
     public void kakaoService(String code) {

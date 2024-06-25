@@ -83,9 +83,8 @@ const ChargeModal = ({ setModalOpen }) => {
     }
   };
 
-  // 카카오 페이 결제 관련 함수
+  // 카카오 페이 결제 함수
   let tid = 0; // tid를 담는 변수 선언
-
   const confirmPayment = async () => {
     try {
       console.log(tid);
@@ -135,8 +134,6 @@ const ChargeModal = ({ setModalOpen }) => {
       if (popup.closed) {
         clearInterval(paymentCheck);
         confirmPayment();
-        // alert('ET 포인트 충전이 완료되었습니다.');
-        // 필요한 후속 작업 수행
       }
     }, 1000);
   };
@@ -147,7 +144,7 @@ const ChargeModal = ({ setModalOpen }) => {
       const res = await axios.post(
         'http://localhost:8181/payment/ready',
         {
-          id: 27,
+          id: 70,
           price: text.replace(/,/g, ''),
           itemName: 'ET 포인트',
         },

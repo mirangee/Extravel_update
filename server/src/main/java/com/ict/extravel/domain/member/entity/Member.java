@@ -74,8 +74,4 @@ public class Member {
 
     @Column(name = "refresh_token_expiry_date")
     private LocalDate refreshTokenExpiryDate;
-
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Wallet wallet;
-
 }

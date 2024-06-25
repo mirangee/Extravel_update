@@ -136,7 +136,6 @@ public class KakaoPayService {
         PointCharge pointCharge = pointChargeRepository.findById(tid).orElseThrow();
         log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
 
-
         PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge);
         return dto;
     }
@@ -183,7 +182,6 @@ public class KakaoPayService {
         log.info("upsertWallet 안에서 wallet을 찾은 결과 {}", Objects.requireNonNull(wallet));
 
         wallet.setEtPoint(etPoint);
-        wallet.setUpdatedAt(Instant.now());
         log.info("wallet 저장합니다 {}", wallet);
 
         return walletRepository.save(wallet);
