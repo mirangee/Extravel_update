@@ -41,7 +41,7 @@
 .EmailBox {
   // background-color: pink;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #14505c;
   display: flex;
   flex-direction: column;
@@ -62,9 +62,33 @@
   // margin-top: 50px;
 }
 
+// .PasswordBox {
+//   // background-color: pink;
+//   // margin-top: 40px;
+//   margin-bottom: 30px;
+//   color: #14505c;
+//   display: flex;
+//   flex-direction: column;
+
+// }
+
+// .PasswordBox span {
+//   font-size: 26px;
+//   font-weight: bold;
+//   margin-top: 10px;
+
+// }
+
+// .PasswordBox input {
+//   // padding-top: 30px;
+//   font-size: 26px;
+//   font-weight: bold;
+//   // margin-top: 50px;
+// }
+
 .PhoneBox {
   // margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #14505c;
   display: flex;
   flex-direction: column;
@@ -85,7 +109,7 @@
 }
 
 .NationBox {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #14505c;
   display: flex;
   flex-direction: column;

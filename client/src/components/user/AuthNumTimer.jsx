@@ -79,7 +79,7 @@ function AuthNumTimer({
           style={{
             padding: '10px 15px',
             fontSize: '16px',
-            backgroundColor: 'blue',
+            backgroundColor: 'gray',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
