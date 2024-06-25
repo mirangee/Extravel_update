@@ -10,6 +10,9 @@ import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,7 +110,8 @@ public class MemberService {
                 .etPoint(BigDecimal.valueOf(0.0))
                 .updatedAt(Instant.now())
                 .build();
-        walletRepository.insert(wallet);
+        log.info("생성된 wallet: {}", wallet.toString());
+
 
         log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
 
