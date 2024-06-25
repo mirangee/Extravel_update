@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -152,11 +153,9 @@ public class KakaoPayService {
         if (wallet.isPresent()) {
             currentEtPointBD = wallet.get().getEtPoint();
         }
-        Member member = memberRepository.findById(id).orElseThrow();
-        log.info("member를 찾아냈단 {}", member);
-        
+
         // DB Wallet에 보유 포인트 업데이트
-        Wallet wallet1 = upsertWallet(id, member, currentEtPointBD.add(newEtiPointBD));
+        Wallet wallet1 = updateWallet(id, currentEtPointBD.add(newEtiPointBD));
         log.info("wallet 저장 결과: {}", wallet1.toString());
     }
 
@@ -179,15 +178,9 @@ public class KakaoPayService {
         return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
     }
 
-    public Wallet upsertWallet(Integer memberId, Member member, BigDecimal etPoint) {
-        Wallet wallet = walletRepository.findById(memberId).orElse(null);
-
-        if (wallet == null) {
-            wallet = Wallet.builder()
-                    .id(memberId)
-                    .member(member)
-                    .build();
-        }
+    public Wallet updateWallet(Integer memberId, BigDecimal etPoint) {
+        Wallet wallet = walletRepository.findById(memberId).orElseThrow();
+        log.info("upsertWallet 안에서 wallet을 찾은 결과 {}", Objects.requireNonNull(wallet));
 
         wallet.setEtPoint(etPoint);
         wallet.setUpdatedAt(Instant.now());

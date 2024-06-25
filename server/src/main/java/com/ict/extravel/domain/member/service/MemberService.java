@@ -8,6 +8,8 @@ import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
+import com.ict.extravel.domain.pointexchange.entity.Wallet;
+import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,6 +39,7 @@ import java.util.Objects;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
+    private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
 
     // naver login
@@ -93,6 +99,16 @@ public class MemberService {
         // dto를 Entity로 변환해서 저장.
         Nation us = nationRepository.findById("US").orElseThrow();
         Member saved = memberRepository.save(dto.toEntity(us));
+
+        // member table에 회원 저장될 때 회원 wallet도 생성
+        Wallet wallet = Wallet.builder()
+                .id(saved.getId())
+                .member(saved)
+                .etPoint(BigDecimal.valueOf(0.0))
+                .updatedAt(Instant.now())
+                .build();
+        walletRepository.insert(wallet);
+
         log.info("회원 가입 정상 수행됨! - saved user - {}", saved);
 
         return new MemberSignUpResponseDTO(saved);

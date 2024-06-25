@@ -14,4 +14,9 @@ public interface WalletRepository extends JpaRepository<Wallet, Integer> {
     @Transactional
     @Query("UPDATE Wallet w SET w.etPoint = :amount WHERE w.id = :id")
     void updateWalletById(@Param("amount") BigDecimal amount, @Param("id") Integer id);
+
+    @Modifying
+    @Transactional
+    @Query("INSERT INTO Wallet w SET w.etPoint = :amount WHERE w.id = :id")
+    void insert(@Param("amount") BigDecimal amount, @Param("id") Integer id);
 }

@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.member.entity;
 
 import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -73,5 +74,8 @@ public class Member {
 
     @Column(name = "refresh_token_expiry_date")
     private LocalDate refreshTokenExpiryDate;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Wallet wallet;
 
 }
