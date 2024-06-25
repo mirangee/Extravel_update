@@ -25,9 +25,11 @@ const Header = () => {
   const [countryOptions, setCountryOptions] = useState([]);
   const [country, setCountry] = useState('US');
   const navigate = useNavigate();
-  const { inLoggedIn, name } = useContext(AuthContext);
+  const { inLoggedIn, name, onLogout } =
+    useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const redirection = useNavigate();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -35,6 +37,14 @@ const Header = () => {
 
   const goToIntro = () => {
     navigate('/');
+  };
+
+  //로그아웃 핸들러
+  const clickLogoutHandler = () => {
+    onLogout();
+    // inLoggedIn(false);
+    redirection('/');
+    alert('로그아웃 되었습니다.');
   };
 
   useEffect(() => {
@@ -168,6 +178,21 @@ const Header = () => {
                 classNamePrefix={styles.reactSelect}
               />
             </li>
+            <ul>
+              {inLoggedIn ? (
+                <li
+                  type='button'
+                  className={styles.logout}
+                  onClick={clickLogoutHandler}
+                >
+                  로그아웃
+                </li>
+              ) : (
+                <>
+                  <Link to='/login'>로그인</Link>
+                </>
+              )}
+            </ul>
           </ul>
         </nav>
       </header>

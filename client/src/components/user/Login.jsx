@@ -116,6 +116,7 @@ const Login = () => {
   const handleSignUpSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
     const { passwordConfirm, ...submitData } = data;
+    submitData.phoneNumber = phoneNumber;
     console.log(
       'handleSignUpSubmit data 넘어옴: ',
       submitData,
@@ -156,7 +157,7 @@ const Login = () => {
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
 
-      navigate('/login'); // 회원가입 후 메인 페이지로 이동
+      navigate('/'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
       alert(
