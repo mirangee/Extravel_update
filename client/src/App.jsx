@@ -23,7 +23,7 @@ const App = () => {
   return (
     <>
       <AuthContextProvider>
-        {/* <Header />
+        <Header />
         <Routes>
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
@@ -49,8 +49,8 @@ const App = () => {
             path='/mypage/modify'
             element={<MyPageModify />}
           />
-        </Routes> */}
-        <PopularTravelContry />
+        </Routes>
+        {/* <PopularTravelContry /> */}
 
         <Footer />
         <ScrollToTopButton />
