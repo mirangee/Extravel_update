@@ -18,7 +18,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from 'reactstrap';
-import ChargeModal from './main/intro/ChargeModal';
+import ChargeModal from './main/intro/ChargeModal/ChargeModal';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -162,7 +162,10 @@ const Header = () => {
                   style={{ padding: '0px' }}
                   onClick={() => setModalOpen(true)}
                 > */}
-                  <ChargeModal toggle={toggleDropdown} />
+                  <ChargeModal
+                    toggle={toggleDropdown}
+                    modalOpen={dropdownOpen}
+                  />
                   {/* </DropdownItem> */}
                 </DropdownMenu>
               </Dropdown>

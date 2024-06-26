@@ -5,6 +5,7 @@ import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PointInfoRequestDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
+import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PointInfoResponseDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
@@ -37,6 +38,7 @@ public class KakaoPayController {
             log.info("/payment/ready 요청 들어 옴! {}", payInfoDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(kakaoPayService.getRedirectUrl(payInfoDto));
+
         }
         catch(Exception e){
             e.printStackTrace();
