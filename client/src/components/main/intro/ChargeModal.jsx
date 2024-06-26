@@ -11,18 +11,33 @@ import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import axios from 'axios';
 import AuthContext from '../../../utils/AuthContext';
+import { API_BASE_URL } from '../../../config/host-config';
 
-const ChargeModal = ({ setModalOpen }) => {
+const ChargeModal = ({ toggle }) => {
   const { id, grade, name } = useContext(AuthContext);
   const modalBackground = useRef();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(0);
   const [calculatedNumber, setCalculatedNumber] =
-    useState('');
-  const [chargePoint, setChargePoint] = useState('');
+    useState(0);
+  const [chargePoint, setChargePoint] = useState(0);
+  const [currentEtp, setCurrentEtp] = useState(0);
 
   useEffect(() => {
     console.log('해당 유저의PK id 값 확인: ', id);
     console.log('해당 유저의 grade 확인: ', grade);
+    async function fetchData() {
+      try {
+        const response = await axios.post(
+          API_BASE_URL + '/payment/pointInfo',
+          { id },
+        );
+        console.log(response.data);
+        setCurrentEtp(response.data.etPoint);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    fetchData();
   }, []);
 
   const getMultiplier = (grade) => {
@@ -57,48 +72,41 @@ const ChargeModal = ({ setModalOpen }) => {
 
     if (!isNaN(numberValue)) {
       if (numberValue >= 0 && numberValue <= 100000000) {
-        const formattedNumber =
-          numberValue.toLocaleString();
-        setText(formattedNumber);
+        setText(numberValue);
 
         const pointMultiplier = getPointMultiplier(grade);
-        const calculated = (
-          numberValue * pointMultiplier
-        ).toLocaleString('ko-KR');
+        const calculated = numberValue * pointMultiplier;
         setCalculatedNumber(calculated);
 
         const multiplier = getMultiplier(grade);
-        const chargePointValue = (
-          numberValue * multiplier
-        ).toLocaleString('ko-KR');
+        const chargePointValue = numberValue * multiplier;
         setChargePoint(chargePointValue);
       } else {
         alert('1억 원 이하만 충전 가능합니다.');
-        setText('');
-        setCalculatedNumber('');
-        setChargePoint('');
+        setText(0);
+        setCalculatedNumber(0);
+        setChargePoint(0);
       }
     } else {
       alert('숫자와 쉼표(,)만 입력 가능합니다.');
-      setText('');
-      setCalculatedNumber('');
-      setChargePoint('');
+      setText(0);
+      setCalculatedNumber(0);
+      setChargePoint(0);
     }
   };
 
   const handleClose = (e) => {
     if (e.target === modalBackground.current) {
-      setModalOpen(false);
+      console.log('close 핸들러가 발동됨!');
     }
   };
 
   // 카카오 페이 결제 함수
-  let tid = 0; // tid를 담는 변수 선언
+  let tid = 0;
   const confirmPayment = async () => {
     try {
-      console.log(tid);
       const res = await axios.post(
-        'http://localhost:8181/payment/confirm/' + tid,
+        API_BASE_URL + '/payment/confirm/' + tid,
       );
       if (res.status === 200) {
         console.log(res.data);
@@ -151,22 +159,19 @@ const ChargeModal = ({ setModalOpen }) => {
     console.log('충전하기 버튼이 클릭됨!');
     try {
       const res = await axios.post(
-        'http://localhost:8181/payment/ready',
+        API_BASE_URL + '/payment/ready',
         {
           id,
-          price: text.replace(/,/g, ''),
+          price: text,
           itemName: 'ET 포인트',
         },
       );
-      console.log(res);
-      console.log(res.data.tid);
       tid = res.data.tid;
-      console.log(res.data.next_redirect_pc_url);
       if (res.status === 200) {
         openPaymentPopup(res.data.next_redirect_pc_url);
       }
     } catch {
-      console.log('결제 진행 중 오류가 발생했습니다');
+      console.log('axios 요청 보낼 때 오류가 발생했습니다');
     }
   };
 
@@ -177,10 +182,10 @@ const ChargeModal = ({ setModalOpen }) => {
       onClick={handleClose}
     >
       <div className={styles.modalContent}>
-        {/* <BsXLg
+        <BsXLg
           className={styles.modalCloseBtn}
-          onClick={() => setModalOpen(false)}
-        /> */}
+          onClick={toggle}
+        />
 
         <h1>ETP 충전하기</h1>
         <h5>ExTravel Point</h5>
@@ -238,7 +243,9 @@ const ChargeModal = ({ setModalOpen }) => {
 
         <div className={styles.currentMoney}>
           보유 포인트
-          <div className={styles.currentMoneyInput}>P</div>
+          <div className={styles.currentMoneyInput}>
+            {currentEtp.toLocaleString('ko-KR')}P
+          </div>
         </div>
 
         <div className={styles.bottom}>
@@ -248,12 +255,12 @@ const ChargeModal = ({ setModalOpen }) => {
             </div>
             <div className={styles.chargeInput}>
               <div>
-                충전할 금액을 입력하세요.(1000원 이상 충전
+                충전할 금액을 입력하세요.(1,000원 이상 충전
                 가능)
               </div>
               <input
                 type='text'
-                value={text}
+                value={text.toLocaleString('ko-KR')}
                 onChange={handleChange}
               />
               원 <br />
@@ -264,7 +271,7 @@ const ChargeModal = ({ setModalOpen }) => {
             </div>
             <div className={styles.pointContainer}>
               <div className={styles.plusPoint}>
-                {calculatedNumber}{' '}
+                {calculatedNumber.toLocaleString('ko-KR')}{' '}
               </div>{' '}
               P
             </div>
@@ -277,7 +284,7 @@ const ChargeModal = ({ setModalOpen }) => {
               적립됩니다.
             </div>
             <div className={styles.total}>
-              = {chargePoint} P
+              = {chargePoint.toLocaleString('ko-KR')} P
             </div>
           </div>
 
@@ -285,7 +292,14 @@ const ChargeModal = ({ setModalOpen }) => {
             <div className={styles.totalAmountTitle}>
               충전 후 예상 포인트
             </div>
-            <div className={styles.totalAmountInput}>P</div>
+            <div className={styles.totalAmountInput}>
+              {(
+                currentEtp +
+                text +
+                calculatedNumber
+              ).toLocaleString('ko-KR')}
+              P
+            </div>
             <button
               className={styles.chargeBtn}
               onClick={payHandler}

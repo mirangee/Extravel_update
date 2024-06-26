@@ -28,7 +28,6 @@ const Header = () => {
   const { isLoggedIn, name, onLogout } =
     useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const redirection = useNavigate();
 
   const toggleDropdown = () => {
@@ -157,16 +156,13 @@ const Header = () => {
                   style={{
                     backgroundColor: 'white',
                     zIndex: '1500',
-                    onClick: { modalOpen },
                   }}
                 >
                   {/* <DropdownItem
                   style={{ padding: '0px' }}
                   onClick={() => setModalOpen(true)}
                 > */}
-                  <ChargeModal
-                    setModalOpen={setModalOpen}
-                  />
+                  <ChargeModal toggle={toggleDropdown} />
                   {/* </DropdownItem> */}
                 </DropdownMenu>
               </Dropdown>

@@ -8,6 +8,7 @@ import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PayRequest;
 import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
+import com.ict.extravel.domain.pointexchange.dto.response.PointInfoResponseDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
@@ -23,7 +24,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -185,5 +185,12 @@ public class KakaoPayService {
         log.info("wallet 저장합니다 {}", wallet);
 
         return walletRepository.save(wallet);
+    }
+
+    public PointInfoResponseDto getPointInfo(Integer id) {
+        Wallet wallet = walletRepository.findById(id).orElseThrow();
+        log.info("wallet에 담긴 정보: {}", wallet);
+        PointInfoResponseDto responseDto = new PointInfoResponseDto();
+        return responseDto.toEntity(wallet.getEtPoint());
     }
 }
