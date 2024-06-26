@@ -115,8 +115,10 @@ public class MemberController {
 
     @PostMapping("/google")
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
+
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
+        memberService.googleService(googleUserInfoDTO);
         return ResponseEntity.ok().body("SUCCESS");
     }
     @PutMapping("/nation")

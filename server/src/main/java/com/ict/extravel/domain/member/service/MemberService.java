@@ -217,7 +217,7 @@ public class MemberService {
         log.info("userDTO:{}", userDTO);
 
         System.out.println("userDTO:" + userDTO);
-        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail() );
+        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail());
 
     }
 
@@ -309,7 +309,9 @@ public class MemberService {
     }
 
 
-
+    public void googleService(GoogleUserInfoDTO googleUserInfoDTO) {
+        Member member = saveMember(googleUserInfoDTO.getName(), googleUserInfoDTO.getEmail());
+    }
 }
 
 
