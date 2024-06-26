@@ -25,7 +25,7 @@ const Header = () => {
   const [countryOptions, setCountryOptions] = useState([]);
   const [country, setCountry] = useState('US');
   const navigate = useNavigate();
-  const { inLoggedIn, name, onLogout } =
+  const { isLoggedIn, name, onLogout } =
     useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,7 +42,7 @@ const Header = () => {
   //로그아웃 핸들러
   const clickLogoutHandler = () => {
     onLogout();
-    // inLoggedIn(false);
+    // isLoggedIn(false);
     redirection('/');
     alert('로그아웃 되었습니다.');
   };
@@ -123,7 +123,7 @@ const Header = () => {
                 paddingRight: '105px',
               }}
             >
-              {inLoggedIn ? name + '님' : '오늘'}의 할일
+              {isLoggedIn ? name + '님' : '오늘'}의 할일
             </li>
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/home'>패키지</Link>
@@ -137,36 +137,40 @@ const Header = () => {
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/contact'>Places</Link>
             </motion.li>
-            <Dropdown
-              isOpen={dropdownOpen}
-              toggle={toggleDropdown}
-              direction='down'
-            >
-              <DropdownToggle
-                caret
-                style={{ background: '#14505c' }}
+            {isLoggedIn && (
+              <Dropdown
+                isOpen={dropdownOpen}
+                toggle={toggleDropdown}
+                direction='down'
               >
-                <FontAwesomeIcon
-                  icon={faMoneyCheckDollar}
-                  size='xl'
-                  style={{ color: '#38bc8a' }}
-                />
-              </DropdownToggle>
-              <DropdownMenu
-                style={{
-                  backgroundColor: 'white',
-                  zIndex: '1500',
-                  onClick: { modalOpen },
-                }}
-              >
-                {/* <DropdownItem
+                <DropdownToggle
+                  caret
+                  style={{ background: '#14505c' }}
+                >
+                  <FontAwesomeIcon
+                    icon={faMoneyCheckDollar}
+                    size='xl'
+                    style={{ color: '#38bc8a' }}
+                  />
+                </DropdownToggle>
+                <DropdownMenu
+                  style={{
+                    backgroundColor: 'white',
+                    zIndex: '1500',
+                    onClick: { modalOpen },
+                  }}
+                >
+                  {/* <DropdownItem
                   style={{ padding: '0px' }}
                   onClick={() => setModalOpen(true)}
                 > */}
-                <ChargeModal setModalOpen={setModalOpen} />
-                {/* </DropdownItem> */}
-              </DropdownMenu>
-            </Dropdown>
+                  <ChargeModal
+                    setModalOpen={setModalOpen}
+                  />
+                  {/* </DropdownItem> */}
+                </DropdownMenu>
+              </Dropdown>
+            )}
             <li>
               <Select
                 value={countryOptions.find(
@@ -179,7 +183,7 @@ const Header = () => {
               />
             </li>
             <ul>
-              {inLoggedIn ? (
+              {isLoggedIn ? (
                 <li
                   type='button'
                   className={styles.logout}

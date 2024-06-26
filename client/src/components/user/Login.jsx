@@ -74,7 +74,7 @@ const Login = () => {
     },
     register: signUpRegister,
   } = useForm({
-    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행
+    mode: 'onBlur', // 입력값이 변경될 때마다 유효성 검사를 수행
   });
 
   const {
