@@ -32,7 +32,7 @@ public class NaverShoppingController {
         String Url = "https://openapi.naver.com/v1/search/shop.json";
 
         URI uri = UriComponentsBuilder.fromUriString(Url)
-                .queryParam("query", "일본여행")
+                .queryParam("query", "일본 여행")
                 .queryParam("display" , 100)
                 .queryParam("filter", "naverpay")
                 .queryParam("start",1)

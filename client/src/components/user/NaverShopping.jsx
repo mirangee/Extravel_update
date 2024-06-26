@@ -10,13 +10,14 @@ import {
   Autoplay,
   Pagination as SwiperPagination,
 } from 'swiper/modules';
-import { CiPlay1, CiPause1 } from 'react-icons/ci';
+import { FaPlay, FaPause } from 'react-icons/fa6';
+import { motion } from 'framer-motion';
 
 const NaverShopping = () => {
   const [article, setArticle] = useState([]);
-  const [activePage, setActivePage] = useState(1);
-  const itemsPerPage = 9;
   const [isPlaying, setIsPlaying] = useState(true);
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 12;
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -38,8 +39,16 @@ const NaverShopping = () => {
       );
   }, []);
 
+  const formatPrice = (lprice) => {
+    return new Intl.NumberFormat('ko-KR').format(lprice);
+  };
+
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
+    window.scrollTo({
+      top: 800,
+      behavior: 'smooth',
+    });
   };
 
   const indexOfLastArticle = activePage * itemsPerPage;
@@ -65,7 +74,11 @@ const NaverShopping = () => {
 
   return (
     <>
+      {/* -------------------------- 패키지 페이지의 Header 시작----------------------------- */}
       <div className={styles.shoppingHeader}>
+        <div className={styles.topFive}>
+          Top 5 추천 패키지
+        </div>
         <div className={styles.headerBox}>
           <Swiper
             ref={swiperRef}
@@ -74,45 +87,63 @@ const NaverShopping = () => {
             navigation
             pagination={{ clickable: true }}
             autoplay={{
-              delay: 4000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
-            loop={true}
+            loop={false}
             modules={[
               Navigation,
               Autoplay,
               SwiperPagination,
             ]}
           >
-            <a href='https://m.hanatour.com/dcr/'>
-              <SwiperSlide>Slide 1</SwiperSlide>
-            </a>
-            <SwiperSlide>
-              <a href=''></a>Slide 2
-            </SwiperSlide>
-            <SwiperSlide>
-              <a href=''></a>Slide 3
-            </SwiperSlide>
-            <SwiperSlide>
-              <a href=''></a>Slide 4
-            </SwiperSlide>
-            <SwiperSlide>
-              <a href=''></a>Slide 5
-            </SwiperSlide>
+            {/* ----------------------------header swiperSlide 시작--------------------------------- */}
+            {article.slice(0, 5).map((item, index) => (
+              <SwiperSlide key={index}>
+                <div className={styles.swiperSlide}>
+                  <a
+                    href={item.link}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <div className={styles.slideContent}>
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                      />
+                      <div className={styles.overlay}>
+                        <h3>{item.title}</h3>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
           <button
             onClick={handleAutoplayToggle}
             className={styles.autoplayToggle}
           >
-            {isPlaying ? <CiPause1 /> : <CiPlay1 />}
+            {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
         </div>
       </div>
+      {/* -------------------------- 패키지 페이지의 Header 끝----------------------------- */}
       <div className={styles.naverShoppingBox}>
         <ul className={styles.listUl}>
           {currentArticles.map((item, index) => (
             <li key={index}>
-              <div className={styles.itemTitleContainer}>
+              <motion.div
+                className={styles.itemTitleContainer}
+                initial={{ y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{
+                  ease: 'easeInOut',
+                  duration: 2,
+                  y: { duration: 0.66 },
+                }}
+              >
                 <a
                   href={item.link}
                   target='_blank'
@@ -120,14 +151,18 @@ const NaverShopping = () => {
                 >
                   <img src={item.image} alt={item.title} />
                   <div className={styles.itemTitle}>
-                    <h3>{item.title}</h3>
-                    <p>{item.lprice.replace(/,/g, '')}원</p>
+                    <div>
+                      <h3>{item.title}</h3>
+                    </div>
+                    <p>{formatPrice(item.lprice)}원</p>
                   </div>
                 </a>
-              </div>
+              </motion.div>
             </li>
           ))}
         </ul>
+
+        {/* ----------------------------------pagination--------------------------------- */}
         <div className={styles.pagination}>
           <Pagination
             activePage={activePage}
@@ -139,7 +174,7 @@ const NaverShopping = () => {
             linkClass='page-link'
             activeClass='active'
             disabledClass='disabled'
-            hideDisabled='false'
+            hideDisabled={false}
           />
         </div>
       </div>
