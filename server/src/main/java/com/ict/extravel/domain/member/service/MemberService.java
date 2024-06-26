@@ -1,5 +1,6 @@
 package com.ict.extravel.domain.member.service;
 
+import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
@@ -13,9 +14,11 @@ import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,18 +35,19 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -118,11 +122,48 @@ public class MemberService {
         }   else return false;
     }
 
+
+    private String getNaverAccessToken(String code) {
+
+        String requestURI = "https://nid.naver.com/oauth2.0/token";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
+        params.add("client_secret", client_secret);
+        params.add("code", code);
+        params.add("state", state);
+
+        log.info("params:{}",params);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+        log.info("requestEntity:{}",requestEntity);
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
+
+        log.info("responseEntity:{}",responseEntity);
+
+        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
+
+//        return (String) Objects.requireNonNull(responseData).get("access_token");
+        return (String) responseData.get("access_token");
+    }
+
+
+
+
     public void NaverLoginService(String code) {
         String accessToken = getNaverAccessToken(code);
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+        log.info("naVerUserInfo: {}",naverUserInfo);
+
+        Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
 
     }
 
@@ -136,13 +177,31 @@ public class MemberService {
 
         //요청보내기
         RestTemplate template = new RestTemplate();
-        ResponseEntity<NaverUserDTO> responseEntity = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), NaverUserDTO.class);
+        ResponseEntity<NaverUserDTO> responseEntity
+                = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), NaverUserDTO.class);
 
         // 응답 바디 꺼내기
         NaverUserDTO responseData = responseEntity.getBody();
-        log.info("responseData(응답바디): {}", responseData);
+        log.info("responseData(응답바디): {}", responseEntity.getBody());
 
         return responseData;
+    }
+
+
+
+    public Member saveMember(String name,String email) {
+       MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
+       dto.setEmail(email);
+       dto.setName(name);
+       dto.setPhoneNumber("1234");
+       dto.setPassword("몰라도됩니다");
+        Nation us = nationRepository.findById("US").orElseThrow();
+        Member saved = memberRepository.save(dto.toEntity(us));
+
+        log.info("dto에들어가는 saved:{}",saved);
+
+        return saved;
+
     }
 
 
@@ -155,9 +214,10 @@ public class MemberService {
         System.out.println(accessToken);
         // 토큰을 통해 사용자 정보를 가져오기
         KakaoUserDTO userDTO = getKakaoUserInfo(accessToken);
+        log.info("userDTO:{}", userDTO);
 
         System.out.println("userDTO:" + userDTO);
-
+        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail() );
 
     }
 
@@ -237,34 +297,6 @@ public class MemberService {
 
     }
 
-    private String getNaverAccessToken(String code) {
-
-        String requestURI = "https://nid.naver.com/oauth2.0/token";
-
-        HttpHeaders headers = new HttpHeaders();
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("client_secret", client_secret);
-        params.add("code", code);
-        params.add("state", state);
-
-        log.info("params:{}",params);
-
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
-        log.info("requestEntity:{}",requestEntity);
-        RestTemplate template = new RestTemplate();
-
-        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-        log.info("template:{}",template);
-        log.info("responseEntity:{}",responseEntity);
-
-        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터: {}", responseData);
-
-        return (String) Objects.requireNonNull(responseData).get("access_token");
-    }
 
 
     public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
@@ -275,6 +307,9 @@ public class MemberService {
         return save.getNationCode().getNationCode();
 
     }
+
+
+
 }
 
 

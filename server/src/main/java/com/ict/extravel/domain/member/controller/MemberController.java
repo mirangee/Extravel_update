@@ -2,6 +2,7 @@ package com.ict.extravel.domain.member.controller;
 
 
 
+import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.*;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.service.MemberService;
@@ -102,7 +103,7 @@ public class MemberController {
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
         memberService.NaverLoginService(code);
-        return null;
+        return ResponseEntity.ok().body("SUCCESS");
     }
 
     @GetMapping("/kakaologin")
@@ -123,6 +124,11 @@ public class MemberController {
         String s = memberService.UpdateNation(dto);
         return ResponseEntity.ok(s);
     }
+
+//    @PostMapping("/naverlogin")
+//    public Member naverLogin(@RequestBody NaverUserDTO naverUserDetail){
+//        return memberService.saveMember();
+//    }
 
 
 

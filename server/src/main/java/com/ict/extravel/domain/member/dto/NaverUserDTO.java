@@ -5,16 +5,18 @@ import lombok.*;
 
 @Getter @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class NaverUserDTO {
 
     @JsonProperty("response")
-    private NaverUserDetail naverUserDetail;
+    private Response response;
 
-    @Getter
+    @Getter @Setter
+    @ToString
     @NoArgsConstructor
     @AllArgsConstructor
-    @ToString
-    public static class NaverUserDetail {
+    public class Response {
         private String name;
         private String email;
     }
