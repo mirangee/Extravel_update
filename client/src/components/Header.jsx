@@ -122,7 +122,7 @@ const Header = () => {
                 paddingRight: '105px',
               }}
             >
-              {inLoggedIn ? name + '님 안녕하세요' : ''}
+              {isLoggedIn ? name + '님 안녕하세요' : ''}
             </li>
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/api/v1/shopping/'>패키지</Link>

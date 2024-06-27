@@ -4,7 +4,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css'; // Swiper의 기본 CSS를 가져옵니다.
 import 'swiper/css/navigation'; // Swiper의 Navigation CSS를 가져옵니다.
 import 'swiper/css/pagination'; // Swiper의 Pagination CSS를 가져옵니다.
-import styles from '../../../scss/YoutubeList.scss';
+import styles from '../../../scss/YoutubeList.module.scss';
 const YoutubeList = () => {
   return (
     <>
