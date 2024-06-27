@@ -108,7 +108,8 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        LoginResponseDTO loginResponseDTO = memberService.NaverLoginService(code);
+        Member loginResponseDTO = memberService.NaverLoginService(code);
+
         return ResponseEntity.ok().body("SUCCESS");
     }
 
@@ -138,7 +139,7 @@ public class MemberController {
 //    public Member naverLogin(@RequestBody NaverUserDTO naverUserDetail){
 //        return memberService.saveMember();
 //    }
-
+//
 
 
 }
