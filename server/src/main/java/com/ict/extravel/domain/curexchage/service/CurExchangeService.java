@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.curexchage.service;
 
 
+import com.ict.extravel.domain.curexchage.dto.LiveRankExchangeResponseDTO;
 import com.ict.extravel.domain.curexchage.dto.NationDateExchangeDataResponseDTO;
 import com.ict.extravel.domain.curexchage.entity.CurrentExchangeRate;
 import com.ict.extravel.domain.curexchage.repository.CurrentExchangeRepository;
@@ -12,6 +13,11 @@ import com.ict.extravel.domain.weekexchange.entity.WeeklyPastExchangeRate;
 import com.ict.extravel.domain.weekexchange.repository.WeekExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +45,28 @@ public class CurExchangeService {
                 .lastestMonthEndDate(monthData.getEndDate())
                 .build();
 
+    }
+
+    public List<LiveRankExchangeResponseDTO> getNationLiveExchangeData() {
+        List<LiveRankExchangeResponseDTO> list = currentExchangeRepository.findAll().stream().map(x ->
+                LiveRankExchangeResponseDTO.builder()
+                        .exchangeRate(x.getExchangeRateValue())
+                        .preExchangeRate(x.getPreExchangeRateValue())
+                        .nationCode(x.getNationCode().getNationCode())
+                        .nationName(x.getNationCode().getName())
+                        .flag(x.getNationCode().getFlag())
+                        .currencyCode(x.getCurrencyCode().getCurrencyCode())
+                        .changeRate(getChangeRate(x))
+                        .build()).toList();
+
+        return list.stream().sorted(Comparator.comparing(LiveRankExchangeResponseDTO::getChangeRate)).toList();
+    }
+
+    private BigDecimal getChangeRate(CurrentExchangeRate x) {
+
+        return x.getExchangeRateValue()
+                .subtract(x.getPreExchangeRateValue())
+                .divide(x.getPreExchangeRateValue(), 4, RoundingMode.HALF_UP)
+                .multiply(new BigDecimal(100));
     }
 }

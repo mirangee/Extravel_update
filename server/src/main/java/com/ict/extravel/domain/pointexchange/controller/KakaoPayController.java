@@ -3,10 +3,14 @@ package com.ict.extravel.domain.pointexchange.controller;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
+import com.ict.extravel.domain.pointexchange.dto.request.PointInfoRequestDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
+import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
+import com.ict.extravel.domain.pointexchange.dto.response.PointInfoResponseDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
+import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import com.ict.extravel.domain.pointexchange.service.KakaoPayService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +30,6 @@ public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
     private final PointChargeRepository pointChargeRepository;
-    private final MemberRepository memberRepository;
 
     /** 결제 준비 redirect url 받기 --> 상품명과 가격을 같이 보내줘야함 */
     @PostMapping("/ready")
@@ -34,6 +38,7 @@ public class KakaoPayController {
             log.info("/payment/ready 요청 들어 옴! {}", payInfoDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(kakaoPayService.getRedirectUrl(payInfoDto));
+
         }
         catch(Exception e){
             e.printStackTrace();
@@ -170,5 +175,13 @@ public class KakaoPayController {
         log.info("/payment/confirm/tid 요청 들어 옴! {}", tid);
         PayConfirmResponseDTO tidInfo = kakaoPayService.findTidInfo(tid);
         return ResponseEntity.status(HttpStatus.OK).body(tidInfo);
+    }
+
+    /** 충전 모달 창 열었을 때 보유 포인트 조회하는 요청 --> DB에서 wallet 정보 조회 결과를 보내줘야 함 */
+    @PostMapping("/pointInfo")
+    public ResponseEntity<?> getPointInfo(@RequestBody PointInfoRequestDto dto) {
+        log.info("/payment/pointInfo 요청 들어 옴! {}", dto);
+        PointInfoResponseDto pointInfo = kakaoPayService.getPointInfo(dto.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(pointInfo);
     }
 }

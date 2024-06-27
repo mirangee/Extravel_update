@@ -90,7 +90,7 @@ export const AuthContextProvider = (props) => {
     //컨텍스트 값 -> 하위 컴포넌트에 제공
     <AuthContext.Provider
       value={{
-        inLoggedIn: isLoggedIn,
+        isLoggedIn,
         name: userName,
         nation,
         id,
