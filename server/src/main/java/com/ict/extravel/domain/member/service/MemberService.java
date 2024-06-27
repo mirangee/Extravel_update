@@ -3,13 +3,15 @@ package com.ict.extravel.domain.member.service;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
+import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
-import com.ict.extravel.domain.pointexchange.entity.Wallet;
+import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -24,10 +26,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
-import com.ict.extravel.domain.nation.entity.Nation;
-import com.ict.extravel.domain.nation.repository.NationRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -35,6 +33,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,7 +66,24 @@ public class MemberService {
     @Value("${kakao.client_secret}")
     private String KAKAO_CLIENT_SECRET;
 
+    private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
+        // 요청 uri
+        String requestURI = "https://kapi.kakao.com/v2/user/me";
+        // 요청 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
+        // 요청 보내기
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<KakaoUserDTO> responseEntity
+                = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), KakaoUserDTO.class);
+
+        // 응답 바디 꺼내기
+        KakaoUserDTO responseData = responseEntity.getBody();
+
+        return responseData;
+    }
 
     //자체 로그인
     public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
@@ -115,12 +131,29 @@ public class MemberService {
         return new MemberSignUpResponseDTO(saved);
     }
 
+
+//풀리용 임시 주석 처리 06.27 진행중~ by종구
+    //자체 아이디 찾기
+//    public FindIDResponseDTO findEmail(FindIDRequestDTO requestDTO) {
+//        Optional<Member> id = memberRepository.findByID(requestDTO.getPhoneNumber(), requestDTO.getName());
+//
+//        if (id.isPresent()) {
+//            log.warn("아이디가 존재하지 않습니다: 전화번호 = {}, 이름 = {}", requestDTO.getPhoneNumber(), requestDTO.getName());
+//            return null;
+//        } else {
+//            Map<String, String> result = new HashMap<>();
+//            String realId = result.put(id.getName());
+//
+//            return realId;
+//        }
+//    }
+
     //이메일 중복검사
     public boolean isDuplicate(String email) {
-        if(memberRepository.existsByEmail(email)) {
+        if (memberRepository.existsByEmail(email)) {
             log.warn("이메일이 중복되었습니다. - {}", email);
             return true;
-        }   else return false;
+        } else return false;
     }
 
 
@@ -200,12 +233,11 @@ public class MemberService {
 
         //요청보내기
         RestTemplate template = new RestTemplate();
-        ResponseEntity<NaverUserDTO> responseEntity
-                = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), NaverUserDTO.class);
+        ResponseEntity<NaverUserDTO> responseEntity = template.exchange(requestURI, HttpMethod.GET, new HttpEntity<>(headers), NaverUserDTO.class);
 
         // 응답 바디 꺼내기
         NaverUserDTO responseData = responseEntity.getBody();
-        log.info("responseData(응답바디): {}", responseEntity.getBody());
+        log.info("user profile: {}", responseData);
 
         return responseData;
     }
@@ -320,10 +352,35 @@ public class MemberService {
 
     }
 
+    private String getNaverAccessToken(String code) {
+
+        String requestURI = "https://nid.naver.com/oauth2.0/token";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
+        params.add("client_secret", client_secret);
+        params.add("code", code);
+        params.add("state", state);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
+
+
+        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
+
+        return (String) Objects.requireNonNull(responseData).get("access_token");
+    }
 
 
     public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
-        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(()->new IllegalArgumentException("존재하지않는멤버"));
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지않는멤버"));
         Nation nation = nationRepository.findById(dto.getNationCode()).orElseThrow(() -> new IllegalArgumentException("존재하지않는국가"));
         member.setNationCode(nation);
         Member save = memberRepository.save(member);
@@ -335,6 +392,8 @@ public class MemberService {
     public void googleService(GoogleUserInfoDTO googleUserInfoDTO) {
         Member member = saveMember(googleUserInfoDTO.getName(), googleUserInfoDTO.getEmail());
     }
+
+
 }
 
 

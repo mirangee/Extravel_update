@@ -1,129 +1,86 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import React, { useEffect, useState, useRef } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 import styles from '../../../scss/Section2.module.scss'; // 스타일을 위한 SCSS 파일 import
-
-const countries = [
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  {
-    name: 'United States',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
-    description:
-      'The United States of America is a country primarily located in North America.',
-  },
-  {
-    name: 'South Korea',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg',
-    description:
-      'South Korea is a country in East Asia, known for its culture, technology, and cuisine.',
-  },
-  // 나머지 국가 정보들 추가
-  {
-    name: 'Canada',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
-    description:
-      'Canada is a country in North America, known for its vast landscapes and multicultural society.',
-  },
-  {
-    name: 'Germany',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',
-    description:
-      'Germany is a country in Central Europe, known for its rich history, culture, and engineering.',
-  },
-  // 여기에 20개 나라 더 추가
-];
+import axios from 'axios';
+import LiveRankExRateCard from './LiveRankExRateCard';
+import '../../../scss/SwiperCustom.css';
+import Button from '@mui/material/Button';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { createTheme } from '@mui/material/styles';
+import VirualEx from './VirualEx';
 
 const Section2 = () => {
+  const [liveData, setLiveData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    const getLiveData = async () => {
+      await axios
+        .get('http://localhost:8181/api/rate/currency/live')
+        .then((res) => {
+          setLiveData(res.data);
+          setLoading(true);
+        });
+    };
+
+    getLiveData();
+  }, []);
+
   return (
     <>
       <div className={styles.section2}>
-        {/* <h3 className='title'>각 나라의 환율 정보</h3> */}
-        <div className={styles.section2Container}>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={50}
-            slidesPerView={5}
-            navigation
-            pagination={{ clickable: true }}
-            freeMode={true}
-            style={{ width: '1800px', height: '500px' }} // Swiper 컨테이너 크기 설정
-          >
-            {countries.map((country, index) => (
-              <SwiperSlide
-                key={index}
+        <div className={styles.section2Box}>
+          <div className={styles.titleBox}>
+            <h1>실시간 환율을 확인하세요</h1>
+            <span>
+              {' '}
+              22개의 국가 환율을 확인하고, 원화가 강세인
+              여행지를 추천받으세요{' '}
+            </span>
+            <div className={styles.titleBt}>
+              <Button
+                startIcon={<ArrowForwardIcon />}
+                variant='contained'
                 style={{
-                  textAlign: 'center',
-                  fontSize: '18px',
-                  background: '#fff',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  backgroundColor: '#275963',
+                  borderRadius: '10px',
                 }}
               >
-                <div className={styles.countryCard}>
-                  <img
-                    src={country.flag}
-                    alt={`${country.name} flag`}
-                    className={styles.flag}
+                더 많은 국가 보기
+              </Button>
+            </div>
+          </div>
+          <div className={styles.rateContent}>
+            <div className={styles.downRate}>
+              {liveData.splice(0, 3).map((data) => (
+                <LiveRankExRateCard
+                  item={data}
+                  key={data.id}
+                />
+              ))}
+            </div>
+            <div className={styles.upRate}>
+              {liveData
+                .reverse()
+                .splice(0, 3)
+                .map((data) => (
+                  <LiveRankExRateCard
+                    item={data}
+                    key={data.id}
                   />
-                  <h3>{country.name}</h3>
-                  <p>{country.description}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                ))}
+            </div>
+          </div>
+        </div>
+        <div className={styles.section2Box2}>
+          <div className={styles.searchTableBox}>
+            <VirualEx />
+          </div>
+          <div className={styles.searchTextBox}></div>
         </div>
       </div>
     </>

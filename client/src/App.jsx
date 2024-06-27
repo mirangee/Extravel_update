@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -9,6 +9,7 @@ import KakaoLoginHandler from './components/user/KakaoLoginHandler';
 import { AuthContextProvider } from './utils/AuthContext';
 
 import Login from './components/user/Login';
+import FindIDandPassword from './components/user/FindIDandPassword';
 import MainIntro from './components/main/intro/MainIntro';
 import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
@@ -28,6 +29,11 @@ const App = () => {
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
           <Route path='/login' element={<Login />} />
+          <Route
+            path='/login/FindIDandPassword'
+            element={<FindIDandPassword />}
+          />
+
           <Route
             path='/user/auth/naver'
             element={<NaverLoginHandler />}
