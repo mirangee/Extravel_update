@@ -12,7 +12,7 @@ function AuthNumTimer({
     useState(initialTime);
 
   const [resendClickCount, setResendClickCount] =
-    useState(0); // 현재 클릭 후 남은 시도 횟수
+    useState(0); //재전송 버튼을 클릭한 횟수를 추적
 
   useEffect(() => {
     // useEffect를 사용하여 컴포넌트가 마운트될 때 타이머 시작.
@@ -23,7 +23,7 @@ function AuthNumTimer({
       } else {
         // 남은 시간이 0이 되면 타이머 정지.
         clearInterval(timer);
-        onTimeZero(true); // 타이머가 0이 되면 부모 컴포넌트에게 알림
+        onTimeZero(true); // 타이머가 0이 되면 부모 컴포넌트에게 알림(onTimeZero 콜백)
       }
     }, 1000);
 

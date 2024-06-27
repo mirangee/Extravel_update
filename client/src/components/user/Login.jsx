@@ -5,7 +5,13 @@ import React, {
   input,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import {
+  useNavigate,
+  Link,
+  Outlet,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import { Button, Grid, TextField } from '@mui/material';
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
@@ -17,6 +23,7 @@ import GoogleLogin from './GoogleLogin';
 import axios from 'axios';
 import AuthContext from '../../utils/AuthContext';
 import AuthNumTimer from './AuthNumTimer';
+import FindIDandPassword from './FindIDandPassword';
 
 import {
   API_BASE_URL as BASE,
@@ -116,7 +123,7 @@ const Login = () => {
   const handleSignUpSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
     const { passwordConfirm, ...submitData } = data;
-    submitData.phoneNumber = phoneNumber;
+    submitData.phoneNumber = phoneNumber; //@@@ phoneNumber 데이터 따로 추가
     console.log(
       'handleSignUpSubmit data 넘어옴: ',
       submitData,
@@ -484,13 +491,13 @@ const Login = () => {
                             onChange={(e) =>
                               setCheckCode(e.target.value)
                             }
-                            disabled={isAuthCompleted} // @@@ 인증 완료 시 비활성화
+                            disabled={isAuthCompleted} // 인증 완료 시 비활성화
                           />
 
                           {showAuthNumTimer &&
                             !isAuthCompleted && (
                               <AuthNumTimer
-                                onTimeZero={handleTimeZero}
+                                onTimeZero={handleTimeZero} //@@@ 타이머가 0이 되었을 때 호출될 콜백 함수
                                 sendSMS={sendSMS}
                                 phoneNumber={phoneNumber}
                               />
@@ -714,9 +721,12 @@ const Login = () => {
                   placeholder='Password'
                   onChange={onChangePasswordHandler}
                 />
-                <a className={styles.a} href='#'>
-                  비밀번호를 잊으셨나요?
-                </a>
+
+                <Link to='/login/FindIDandPassword'>
+                  아이디/비밀번호 찾기!!!!!!!!!!!!!!
+                </Link>
+                {/* @@@ */}
+
                 <Button
                   className={styles.button}
                   type='submit'

@@ -68,7 +68,9 @@ public class CoolSMSApi {
         message.setFrom("01021356409");
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL]" +
-                "아래의 인증번호를 [" + verificationCode + "] 입력해주세요\n");
+                "아래의 인증번호를" +
+                "[" + verificationCode + "]" +
+                "입력해주세요!\n");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
 
