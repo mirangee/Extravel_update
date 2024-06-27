@@ -102,7 +102,7 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        memberService.NaverLoginService(code);
+        LoginResponseDTO loginResponseDTO = memberService.NaverLoginService(code);
         return ResponseEntity.ok().body("SUCCESS");
     }
 

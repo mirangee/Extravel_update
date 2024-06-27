@@ -37,6 +37,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -166,6 +167,28 @@ public class MemberService {
         Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
 
     }
+    ////////////////////////// 네이버 로그인 구현도중 jwt로인하여 잠시멈춤///////////////////////////
+//public LoginResponseDTO NaverLoginService(String code) {
+//    String accessToken = getNaverAccessToken(code);
+//    log.info("token: {}", accessToken);
+//
+//    NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+//    log.info("naVerUserInfo: {}",naverUserInfo);
+//
+//    Optional<Member> byEmail = memberRepository.findByEmail(naverUserInfo.getResponse().getEmail());
+//    if (byEmail.isPresent()) {
+//        Member member = byEmail.get();
+//        LoginResponseDTO snsDto = new LoginResponseDTO(member);
+//        return snsDto;
+//      }else {
+//       Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
+//       return null;
+//      }
+//
+//
+//
+//
+//}///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
 
