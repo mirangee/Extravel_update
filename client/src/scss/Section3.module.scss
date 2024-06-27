@@ -26,7 +26,10 @@ html {
     .box1 {
       height: 100%;
       width: 35%;
-      background-color: #14505c;
+      background-image: url(../assets/img/underwater.jpg);
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -40,7 +43,6 @@ html {
 
       .minibox1Text {
         height: 50%;
-        background-color: #14505c;
         font-size: calc(1rem + 10%);
         padding: 10%;
         line-height: 2em;

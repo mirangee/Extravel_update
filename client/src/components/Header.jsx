@@ -125,7 +125,7 @@ const Header = () => {
               {isLoggedIn ? name + '님' : '오늘'}의 할일
             </li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/home'>패키지</Link>
+              <Link to='/api/v1/shopping/'>패키지</Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/main'>뉴스</Link>

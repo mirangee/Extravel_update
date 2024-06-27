@@ -8,7 +8,7 @@ const Section3 = () => {
       <div className={styles.section3InnerBox}>
         <motion.div
           className={styles.box1}
-          initial={{ y: 150 }}
+          initial={{ y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false }}
           transition={{
