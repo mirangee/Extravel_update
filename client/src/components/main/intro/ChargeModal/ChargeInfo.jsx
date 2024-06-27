@@ -8,15 +8,22 @@ import AuthContext from '../../../../utils/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
 
-const ChargeInfo = ({ setLoading }) => {
+const ChargeInfo = ({
+  setLoading,
+  setPointInfo,
+  setPayResult,
+}) => {
   const { id, grade, name } = useContext(AuthContext);
   const [calculatedNumber, setCalculatedNumber] =
     useState(0);
   const [chargePoint, setChargePoint] = useState(0);
   const [text, setText] = useState(0);
   const [currentEtp, setCurrentEtp] = useState(0);
+  const [isButtonDisabled, setIsButtonDisabled] =
+    useState(true);
 
   useEffect(() => {
+    setIsButtonDisabled(true);
     console.log('해당 유저의PK id 값 확인: ', id);
     console.log('해당 유저의 grade 확인: ', grade);
     async function fetchData() {
@@ -44,9 +51,22 @@ const ChargeInfo = ({ setLoading }) => {
       if (res.status === 200) {
         console.log(res.data);
         const result = res.data.status;
+
         switch (result) {
           case 'SUCCESS':
             alert('ET 포인트 충전이 완료되었습니다.');
+            setPayResult(true);
+            console.log('보유 포인트: ', res.data.etPoint);
+            console.log(
+              '적립 포인트: ',
+              res.data.plusPoint,
+            );
+            console.log('결제액: ', res.data.amount);
+            setPointInfo({
+              etPoint: res.data.etPoint,
+              plusPoint: res.data.plusPoint,
+              amount: res.data.amount,
+            });
             break;
           case 'CANCELED':
             alert('결제가 취소되었습니다!');
@@ -62,8 +82,6 @@ const ChargeInfo = ({ setLoading }) => {
             );
             break;
         }
-      } else {
-        // 결제 실패 시 새로운 페이지로 이동하며 상태 전달
       }
     } catch (error) {
       console.error(
@@ -77,7 +95,7 @@ const ChargeInfo = ({ setLoading }) => {
     const popup = window.open(
       popUrl,
       '카카오페이 결제',
-      'width=500,height=600',
+      `width=${500},height=${600},left=${400},top=${100}`,
     );
 
     const paymentCheck = setInterval(() => {
@@ -93,6 +111,7 @@ const ChargeInfo = ({ setLoading }) => {
     console.log('충전하기 버튼이 클릭됨!');
     console.log('text에 담긴 값: ', text);
     console.log('id에 담긴 값: ', id);
+
     setLoading(true);
     try {
       const res = await axios.post(
@@ -140,7 +159,14 @@ const ChargeInfo = ({ setLoading }) => {
 
   const handleChange = (e) => {
     const { value } = e.target;
+    console.log(value);
+    console.log(isButtonDisabled);
     const numberValue = Number(value.replace(/,/g, ''));
+
+    if (numberValue >= 1000) {
+      setIsButtonDisabled(false);
+      console.log(isButtonDisabled);
+    }
 
     if (!isNaN(numberValue)) {
       if (numberValue >= 0 && numberValue <= 100000000) {
@@ -231,6 +257,7 @@ const ChargeInfo = ({ setLoading }) => {
           <button
             className={styles.chargeBtn}
             onClick={payHandler}
+            disabled={isButtonDisabled}
           >
             충전하기
           </button>

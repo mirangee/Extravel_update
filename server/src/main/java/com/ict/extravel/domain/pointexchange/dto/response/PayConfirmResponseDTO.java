@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -29,7 +30,8 @@ public class PayConfirmResponseDTO {
 
     private PointCharge.Status status;
 
-    public static PayConfirmResponseDTO toDto(PointCharge pointCharge){
+    private BigDecimal etPoint;
+    public static PayConfirmResponseDTO toDto(PointCharge pointCharge, BigDecimal etPoint){
         PayConfirmResponseDTO payConfirmResponseDTO = PayConfirmResponseDTO.builder()
                 .tid(pointCharge.getTid())
                 .memberId(pointCharge.getMember().getId())
@@ -38,6 +40,7 @@ public class PayConfirmResponseDTO {
                 .createdAt(pointCharge.getCreatedAt())
                 .approvedAt(pointCharge.getApprovedAt())
                 .status(pointCharge.getStatus())
+                .etPoint(etPoint)
                 .build();
         return payConfirmResponseDTO;
     }
