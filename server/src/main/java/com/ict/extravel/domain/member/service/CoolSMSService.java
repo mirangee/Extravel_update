@@ -32,4 +32,18 @@ public class CoolSMSService {
         return flag;
         }
 
+
+    public boolean findIDPWservice(String phoneNumber) {
+
+        phoneNumber = phoneNumber.replaceAll("-", "");
+
+        boolean flag = memberRepository.existsByPhoneNumber(phoneNumber);
+
+        log.info("전화번호 존재 여부 {}", flag);
+
+
+        return flag;
+
+
+    }
 }
