@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+.RealTimeContainer {
+  margin-top: 150px;
+}
+
+
+
+.mainH3 {
+  font-family: "Black Han Sans";
+  font-size: 50px;
+  color: #14505C;
+  margin-left: 400px;
+  // font-weight: bold;
+}
+
+.mainH1 {
+  // font-family: "Black Han Sans";
+  font-size: 25px;
+  color: #14505C;
+  margin-left: 400px;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  // gap: 50px; /* 각 카드 사이의 간격을 조정 */
+  justify-content: center; /* 가로축 정렬 */
+  margin: 50px;
+  background: #1f535e;
+  border-radius: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: calc(20% - 15px); 
+  gap: 5px; /* 각 카드 사이의 세로 간격을 조정 */
+}
+
+// .cardContainer {
+//   perspective: 400px; /* 3D 효과를 위한 원근 설정 */
+// }
+
+
+
+.card {
+  // display: inline-block;
+  position: relative;
+  cursor: pointer;
+  margin: 30px;
+
+
+  &:before {
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    content: '';
+    top: 100%;
+    left: 5%;
+    height: 10px;
+    width: 90%;
+    opacity: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 80%); /* W3C */
+    transition-property: transform opacity;
+  }
+
+  &:hover {
+    transform: translateY(-12px);
+    animation-name: hover;
+    animation-duration: 1.5s;
+    // animation-delay: $defaultDuration;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+    &:before {
+      opacity: .4;
+      transform: translateY(12px);
+      animation-name: hover-shadow;
+      animation-duration: 1.5s;
+      animation-delay: .3s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+  }
+}
+
+@keyframes hover {
+  50% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes hover-shadow {
+  0% {
+    transform: translateY(6px);
+    opacity: .4;
+  }
+
+  50% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+
+  100% {
+    transform: translateY(6px);
+    opacity: .4;
+  }
+}
+
+@media (max-width: 1280px){
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: calc(33% - 15px); 
+    gap: 5px; /* 각 카드 사이의 세로 간격을 조정 */
+  }
+}
+
+
+@media (max-width: 640px){
+  .mainH3 {
+    margin-left: 30px;
+    // font-weight: bold;
+  }
+
+  
+  .mainH1 {
+    // font-family: "Black Han Sans";
+    font-size: 25px;
+    color: #14505C;
+    margin-left: 30px;
+}
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: calc(90% - 15px); 
+    gap: 5px; /* 각 카드 사이의 세로 간격을 조정 */
+  }
+}

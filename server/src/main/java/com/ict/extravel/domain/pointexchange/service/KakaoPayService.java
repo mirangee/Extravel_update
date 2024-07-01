@@ -76,13 +76,18 @@ public class KakaoPayService {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime createdAt = LocalDateTime.parse(createdAtStr, formatter);
 
+        // String으로 받은 price를 Integer로 변환
+        Integer amount = Integer.parseInt(payInfoDto.getPrice());
+
+        // plusPoint 계산
+        float plusPoint = calcTotalPoint(member.getId(), amount) - amount ;
 
         // 여기서 tbl_charge_history에 데이터 추가
         PointCharge pointCharge = PointCharge.builder()
                 .tid(payReadyResDto.getTid())
                 .member(member)
                 .amount(Integer.parseInt(payInfoDto.getPrice()))
-                .plusPoint(payInfoDto.getPlusPoint())
+                .plusPoint(plusPoint)
                 .createdAt(createdAt)
                 .approvedAt(null)
                 .status(PointCharge.Status.PENDING)
@@ -136,7 +141,12 @@ public class KakaoPayService {
         PointCharge pointCharge = pointChargeRepository.findById(tid).orElseThrow();
         log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
 
-        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge);
+        // wallet에서 해당 id의 보유 포인트를 조회해 dto에 같이 전달
+        Integer id = pointCharge.getMember().getId();
+        Wallet wallet = walletRepository.findById(id).orElseThrow();
+        log.info("wallet에서 꺼낸 et point 조회: {}", wallet.getEtPoint());
+
+        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge, wallet.getEtPoint());
         return dto;
     }
 

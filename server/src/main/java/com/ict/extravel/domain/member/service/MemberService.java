@@ -1,10 +1,11 @@
 package com.ict.extravel.domain.member.service;
 
-import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
+import com.ict.extravel.domain.member.dto.request.FindIDRequestDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
+import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
@@ -13,15 +14,20 @@ import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
-import jakarta.transaction.Transactional;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,18 +35,17 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private DefaultMessageService messageService;
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -59,6 +64,23 @@ public class MemberService {
     @Value("${kakao.client_secret}")
     private String KAKAO_CLIENT_SECRET;
 
+    @Value("${CoolSMS.api_key}")
+    private String API_KEY;
+    @Value("${CoolSMS.apiSecretKey}")
+    private String API_SECRET_KEY;
+    @Value("${CoolSMS.web}")
+    private String WEB;
+    @Value("${CoolSMS.phone_number}")
+    private int PHONE_NUMBER;
+
+    @PostConstruct //init 메서드가 sendOne 메서드 호출 시 자동으로 호출
+    private void init() {
+        // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
+        this.messageService = NurigoApp.INSTANCE.initialize(API_KEY, API_SECRET_KEY, "https://api.coolsms.co.kr");
+        log.info("CoolSMS Message Service initialized with API Key: {}, API_SECRET_KEY: {} ", API_KEY, API_SECRET_KEY);
+    }
+
+
     private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
         // 요청 uri
         String requestURI = "https://kapi.kakao.com/v2/user/me";
@@ -76,6 +98,15 @@ public class MemberService {
         KakaoUserDTO responseData = responseEntity.getBody();
 
         return responseData;
+    }
+
+
+    //이메일 중복검사
+    public boolean isDuplicate(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            log.warn("이메일이 중복되었습니다. - {}", email);
+            return true;
+        } else return false;
     }
 
     //자체 로그인
@@ -125,98 +156,83 @@ public class MemberService {
     }
 
 
-//풀리용 임시 주석 처리 06.27 진행중~ by종구
-    //자체 아이디 찾기
-//    public FindIDResponseDTO findEmail(FindIDRequestDTO requestDTO) {
-//        Optional<Member> id = memberRepository.findByID(requestDTO.getPhoneNumber(), requestDTO.getName());
-//
-//        if (id.isPresent()) {
-//            log.warn("아이디가 존재하지 않습니다: 전화번호 = {}, 이름 = {}", requestDTO.getPhoneNumber(), requestDTO.getName());
-//            return null;
-//        } else {
-//            Map<String, String> result = new HashMap<>();
-//            String realId = result.put(id.getName());
-//
-//            return realId;
-//        }
-//    }
+    //    자체 아이디 찾기
+    public FindIDResponseDTO findEmail(FindIDRequestDTO requestDTO) {
+        log.info("서비스의 {}", requestDTO);
 
-    //이메일 중복검사
-    public boolean isDuplicate(String email) {
-        if (memberRepository.existsByEmail(email)) {
-            log.warn("이메일이 중복되었습니다. - {}", email);
-            return true;
-        } else return false;
-    }
+        String phoneNumber = requestDTO.getPhoneNumber().replaceAll("-", "");
+        log.info("서비스의 폰넘버 가공{}", requestDTO);
 
+        List<Member> members = memberRepository
+                .findByPhoneNumberAndName(phoneNumber, requestDTO.getName()) //@@@ 순서
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다. 요청: " + requestDTO));
 
-    private String getNaverAccessToken(String code) {
+        log.info("서비스의 findByPhoneNumberAndName JPA {}", requestDTO);
 
-        String requestURI = "https://nid.naver.com/oauth2.0/token";
+        Member member = members.get(0);
+        FindIDResponseDTO findIDResponseDTO = new FindIDResponseDTO();
+        findIDResponseDTO.setEmail(member.getEmail());
 
-        HttpHeaders headers = new HttpHeaders();
+        log.info("컨트롤러의 member.getEmail{}", member.getEmail());
+        log.info("findIDResponseDTO 결과값 {}", findIDResponseDTO);
+        return findIDResponseDTO;
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("client_secret", client_secret);
-        params.add("code", code);
-        params.add("state", state);
-
-        log.info("params:{}",params);
-
-        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
-        log.info("requestEntity:{}",requestEntity);
-        RestTemplate template = new RestTemplate();
-
-        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
-
-        log.info("responseEntity:{}",responseEntity);
-
-        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
-        log.info("토큰 데이터: {}", responseData);
-
-//        return (String) Objects.requireNonNull(responseData).get("access_token");
-        return (String) responseData.get("access_token");
     }
 
 
 
+    // 이메일과 전화번호를 사용하여 비밀번호 업데이트
+    public void updatePassword(String email, String phoneNumber) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        int newPassword = generateRandomNumber();
+        String encodedPassword = passwordEncoder.encode(Integer.toString(newPassword));
+        log.info(" 서비스의 newPasswrodString : {}", encodedPassword);
 
-    public Member NaverLoginService(String code) {
+        // 비밀번호 업데이트
+        int updatedRows = memberRepository.updatePasswordByEmailAndPhoneNumber(email, phoneNumber, encodedPassword);
+
+        log.info("서비스의 updateRows : {} ", updatedRows);
+        if (updatedRows == 0) {
+            throw new NoSuchElementException("회원 정보를 찾을 수 없습니다. 이메일: " + email + ", 전화번호: " + phoneNumber);
+        }
+
+        sendNewPW(phoneNumber, newPassword);
+    }
+
+    public int generateRandomNumber() {
+        Random random = new Random();
+        int min = 100000;
+        int max = 999999;
+        return random.nextInt(max - min + 1) + min;
+    }
+
+
+
+    // 임시 비밀번호를 SMS로 전송하는 메서드
+    public void sendNewPW(String phoneNumber, int newPassword) {
+        // SMS 전송 로직 구현 (예: 외부 API 사용)
+        log.info("Sending SMS to: {} with new password: {}", phoneNumber, newPassword);
+        Message message = new Message();
+        message.setFrom("01021356409");
+        message.setTo(phoneNumber);
+        message.setText("[EXTRAVEL] 회원님의 임시 비밀번호는 [" + newPassword + "] 입니다!");
+
+
+        try {
+            MultipleDetailMessageSentResponse response = messageService.send(message);
+            log.info("SMS sent successfully: {}", response);
+        } catch (Exception e) {
+            log.error("Failed to send SMS", e);
+        }
+    }
+
+
+    public void NaverLoginService(String code) {
         String accessToken = getNaverAccessToken(code);
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
-        log.info("naVerUserInfo: {}", naverUserInfo);
-
-        Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
-
-        return member;
     }
-
-    ////////////////////////// 네이버 로그인 구현도중 jwt로인하여 잠시멈춤///////////////////////////
-//public LoginResponseDTO NaverLoginService(String code) {
-//    String accessToken = getNaverAccessToken(code);
-//    log.info("token: {}", accessToken);
-//
-//    NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
-//    log.info("naVerUserInfo: {}",naverUserInfo);
-//
-//    Optional<Member> byEmail = memberRepository.findByEmail(naverUserInfo.getResponse().getEmail());
-//    if (byEmail.isPresent()) {
-//        Member member = byEmail.get();
-//        LoginResponseDTO snsDto = new LoginResponseDTO(member);
-//        return snsDto;
-//      }else {
-//       Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
-//       return null;
-//      }
-
-
-
-
-//}///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
 
@@ -237,24 +253,6 @@ public class MemberService {
         return responseData;
     }
 
-
-
-    public Member saveMember(String name,String email) {
-       MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
-       dto.setEmail(email);
-       dto.setName(name);
-       dto.setPhoneNumber("1234");
-       dto.setPassword("몰라도됩니다");
-        Nation us = nationRepository.findById("US").orElseThrow();
-        Member saved = memberRepository.save(dto.toEntity(us));
-
-        log.info("dto에들어가는 saved:{}",saved);
-
-        return saved;
-
-    }
-
-
     public void kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
         System.out.println(KAKAO_CLIENT_ID);
@@ -264,14 +262,11 @@ public class MemberService {
         System.out.println(accessToken);
         // 토큰을 통해 사용자 정보를 가져오기
         KakaoUserDTO userDTO = getKakaoUserInfo(accessToken);
-        log.info("userDTO:{}", userDTO);
 
-        System.out.println("userDTO:" + userDTO);
-        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail());
+        System.out.println(userDTO);
+
 
     }
-
-
 
     private String getKakaoAccessToken(String code) {
         // 요청 uri
@@ -328,7 +323,31 @@ public class MemberService {
 
     }
 
+    private String getNaverAccessToken(String code) {
 
+        String requestURI = "https://nid.naver.com/oauth2.0/token";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
+        params.add("client_secret", client_secret);
+        params.add("code", code);
+        params.add("state", state);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<Map> responseEntity = template.exchange(requestURI, HttpMethod.POST, requestEntity, Map.class);
+
+
+        Map<String, Object> responseData = (Map<String, Object>) responseEntity.getBody();
+        log.info("토큰 데이터: {}", responseData);
+
+        return (String) Objects.requireNonNull(responseData).get("access_token");
+    }
 
 
     public @Size(max = 3) String UpdateNation(UpdateMemberNationRequestDTO dto) {
@@ -338,11 +357,6 @@ public class MemberService {
         Member save = memberRepository.save(member);
         return save.getNationCode().getNationCode();
 
-    }
-
-
-    public void googleService(GoogleUserInfoDTO googleUserInfoDTO) {
-        Member member = saveMember(googleUserInfoDTO.getName(), googleUserInfoDTO.getEmail());
     }
 
 

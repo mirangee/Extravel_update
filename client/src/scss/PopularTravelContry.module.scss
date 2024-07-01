@@ -1,6 +1,7 @@
 // * {
 //   box-sizing: border-box;
 // }
+
 // body {
 //   font-family: "Indie Flower";
 //   line-height: 1.618em;
@@ -10,89 +11,208 @@
 //   );
 //   background-size: 10px 10px;
 // }
+
+// @keyframes fadeIn {
+//   0% {
+//     opacity: 0;
+//     transform: translateY(20px);
+//   }
+//   100% {
+//     opacity: 1;
+//     transform: none;
+//   }
+// }
+
+.mainh3 {
+  font-size: 50px;
+  margin-left: 180px;
+  font-weight: bold;
+  font-family: 'Black Han Sans';
+  color: #14505c;
+  margin-top: 200px;
+  
+}
+
+
 img {
   max-width: 100%;
   height: auto;
 }
+
 .wrapper {
   width: 100%;
+  height: 800px;
   padding: 0 2rem;
+  margin: 20px;
   text-align: center;
+  position: relative;
 }
+
 .polaroid {
   background: #fff;
   padding: 1rem;
-  box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
 }
+
 .caption {
-  font-size: 1.125rem;
-  text-align: center;
+  font-size: 25px;
+  text-align: left;
   line-height: 2em;
+  font-weight: bold;
 }
+
 .item {
-  display: inline-block;
-  margin-top: 2rem;
-  filter: grayscale(100%);
+  position: absolute;
+  transition: transform 0.35s, z-index 0.35s;
+  cursor: pointer;
 }
+
 .item .polaroid:before {
   content: '';
   position: absolute;
   z-index: -1;
   transition: all 0.35s;
 }
-.item:nth-of-type(4n+1) {
+
+.item:nth-of-type(8n+1) {
   transform: scale(0.8, 0.8) rotate(5deg);
-  transition: all 0.35s;
+  top: 20px;
+  left: 480px;
 }
-.item:nth-of-type(4n+1) .polaroid:before {
+
+.item:nth-of-type(8n+1) .polaroid:before {
   transform: rotate(6deg);
   height: 20%;
   width: 47%;
   bottom: 30px;
   right: 12px;
-  box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.4);
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.4);
 }
-.item:nth-of-type(4n+2) {
+
+.item:nth-of-type(8n+2) {
   transform: scale(0.8, 0.8) rotate(-5deg);
-  transition: all 0.35s;
+  top: 120px;
+  left: 290px;
 }
-.item:nth-of-type(4n+2) .polaroid:before {
+
+.item:nth-of-type(8n+2) .polaroid:before {
   transform: rotate(-6deg);
   height: 20%;
   width: 47%;
   bottom: 30px;
   left: 12px;
-  box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.4);
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.4);
 }
-.item:nth-of-type(4n+4) {
-  transform: scale(0.8, 0.8) rotate(3deg);
-  transition: all 0.35s;
-}
-.item:nth-of-type(4n+4) .polaroid:before {
-  transform: rotate(4deg);
-  height: 20%;
-  width: 47%;
-  bottom: 30px;
-  right: 12px;
-  box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.3);
-}
-.item:nth-of-type(4n+3) {
+
+.item:nth-of-type(8n+3) {
   transform: scale(0.8, 0.8) rotate(-3deg);
-  transition: all 0.35s;
+  top: 440px;
+  left: 770px;
 }
-.item:nth-of-type(4n+3) .polaroid:before {
+
+.item:nth-of-type(8n+3) .polaroid:before {
   transform: rotate(-7deg);
   height: 20%;
   width: 47%;
   bottom: 30px;
   left: 12px;
-  box-shadow: 0 2.1rem 2rem rgba(0,0,0,0.3);
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+.item:nth-of-type(8n+4) {
+  transform: scale(0.8, 0.8) rotate(3deg);
+  top: 380px;
+  left: 400px;
+}
+
+.item:nth-of-type(8n+4) .polaroid:before {
+  transform: rotate(4deg);
+  height: 20%;
+  width: 47%;
+  bottom: 30px;
+  right: 12px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+.item:nth-of-type(8n+5) {
+  transform: scale(0.8, 0.8) rotate(3deg);
+  top: 130px;
+  right: 210px;
+}
+
+.item:nth-of-type(8n+5) .polaroid:before {
+  transform: rotate(4deg);
+  height: 20%;
+  width: 47%;
+  bottom: 50px;
+  right: 13px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+.item:nth-of-type(8n+6) {
+  transform: scale(0.8, 0.8) rotate(3deg);
+  top: 380px;
+  right: 320px;
+}
+
+.item:nth-of-type(8n+6) .polaroid:before {
+  transform: rotate(4deg);
+  height: 20%;
+  width: 47%;
+  bottom: 30px;
+  right: 17px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+.item:nth-of-type(8n+7) {
+  transform: scale(0.8, 0.8) rotate(3deg);
+  top: 280px;
+  left: 620px;
+}
+
+.item:nth-of-type(8n+7) .polaroid:before {
+  transform: rotate(4deg);
+  height: 20%;
+  width: 47%;
+  bottom: 30px;
+  right: 56px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+.item:nth-of-type(8n+7) {
+  transform: scale(0.8, 0.8) rotate(3deg);
+  top: 280px;
+  left: 650px;
+}
+
+.item:nth-of-type(8n+7) .polaroid:before {
+  transform: rotate(4deg);
+  height: 20%;
+  width: 47%;
+  bottom: 30px;
+  right: 56px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
+}
+.item:nth-of-type(8n+8) {
+  transform: scale(0.9, 0.9) rotate(2deg);
+  top: 50px;
+  left: 820px;
+}
+
+.item:nth-of-type(8n+8) .polaroid:before {
+  transform: rotate(-9deg);
+  height: 20%;
+  width: 47%;
+  bottom: 30px;
+  right: 56px;
+  box-shadow: 0 2.1rem 2rem rgba(0, 0, 0, 0.3);
 }
 .item:hover {
   filter: none;
   transform: scale(1, 1) rotate(0deg) !important;
+  z-index: 10;  // 마우스를 올렸을 때 해당 아이템이 최상단에 오도록 설정
   transition: all 0.35s;
 }
+
 .item:hover .polaroid:before {
   content: '';
   position: absolute;
@@ -102,6 +222,92 @@ img {
   width: 90%;
   bottom: 0%;
   right: 5%;
-  box-shadow: 0 1rem 3rem rgba(0,0,0,0.2);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
   transition: all 0.35s;
+}
+
+@media (max-width: 1280px) {
+  .mainh3{
+    margin-left: 15px;
+    font-size: 38px;
+  }
+  .wrapper {
+    width: 100%;
+    height: 800px;
+    padding: 0 2rem;
+    margin: 20px;
+    text-align: center;
+    position: relative;
+  }
+  .item:nth-of-type(8n+1){
+    left: 240px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+2){
+    left: 10px;
+    width: 40%;
+    // bottom: 10px;
+  }
+  .item:nth-of-type(8n+3){
+    left: 70px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+4){
+    left: 350px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+5){
+    left: 280px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+6){
+    left: 720px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+7){
+    left: 550px;
+    width: 40%;
+  }
+  .item:nth-of-type(8n+8){
+    left: 650px;
+    width: 40%;
+  }
+  
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    height: auto;
+    padding: 0 1rem;
+  }
+
+
+  .item {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    left: 0 !important;  /* 기존의 절대 위치 설정을 무시 */
+    top: 0 !important;   /* 기존의 절대 위치 설정을 무시 */
+    transform: none !important;  /* 회전 설정을 무시 */
+  }
+  .polaroid{
+    width: 500px;
+    margin: 10px;
+  }
+
+
+  .item .polaroid:before {
+    transform: none !important;  /* 회전 설정을 무시 */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);  /* 그림자 조정 */
+  }
+ 
+  .mainh3{
+    margin: 15px;
+    font-size: 38px;
+  }
+
 }

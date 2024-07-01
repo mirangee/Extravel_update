@@ -6,35 +6,43 @@ const DailyRatesTable = () => {
   const [rates, setRates] = useState([]);
 
   useEffect(() => {
-    const generateDates = () => {
-      const dates = [];
-      for (let i = 0; i < 30; i++) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        dates.push(date);
-      }
-      return dates;
-    };
-
-    /* 이건 그냥 불러오는 값넣으면 되는데 형식 보려고 랜덤으로 돌린거임 나중에 지울수도 */
     const generateRates = () => {
-      const dates = generateDates();
-      const ratesData = dates.map((date) => ({
-        date: date.toLocaleDateString(),
-        baseRate: (1100 + Math.random() * 100).toFixed(2),
+      const countries = [
+        'USA',
+        'Japan',
+        'China',
+        'Germany',
+        'UK',
+        'France',
+        'India',
+        'Brazil',
+        'Canada',
+        'Russia',
+        'Australia',
+        'Mexico',
+        'Italy',
+        'South Korea',
+        'Spain',
+        'Indonesia',
+        'Turkey',
+        'Saudi Arabia',
+        'Switzerland',
+        'Argentina',
+        'Netherlands',
+        'Sweden',
+      ];
+
+      const ratesData = countries.map((country, index) => ({
+        rank: index + 1,
+        country,
         changeFromPrev: (Math.random() * 10 - 5).toFixed(2),
-        fluctuationRate: (Math.random() * 2 - 1).toFixed(2),
-        cashBuy: (1100 + Math.random() * 100).toFixed(2),
-        cashSell: (1100 + Math.random() * 100).toFixed(2),
-        remittanceSend: (
-          1100 +
-          Math.random() * 100
-        ).toFixed(2),
-        remittanceReceive: (
-          1100 +
-          Math.random() * 100
-        ).toFixed(2),
+        currentRate: (1100 + Math.random() * 100).toFixed(
+          2,
+        ),
+        travelSearchRank:
+          Math.floor(Math.random() * 100) + 1,
       }));
+
       setRates(ratesData);
     };
 
@@ -63,12 +71,7 @@ const DailyRatesTable = () => {
   };
 
   return (
-    <Container
-      style={{
-        marginLeft: '50px',
-        // border: '1px solid black',
-      }}
-    >
+    <Container style={{ marginLeft: '50px' }}>
       <h1
         style={{
           marginTop: '300px',
@@ -93,31 +96,28 @@ const DailyRatesTable = () => {
               borderBottom: '3px solid black',
             }}
           >
-            <th>날짜</th>
-            <th>매매기준율</th>
-            <th>전일대비</th>
+            <th>순위</th>
+            <th>국가명</th>
             <th>등락률</th>
-            <th>현찰 살때</th>
-            <th>현찰 팔때</th>
-            <th>송금할때</th>
-            <th>송금 받을 때</th>
+            <th>현재환율</th>
+            <th>여행검색순위</th>
           </tr>
         </thead>
         <tbody
           style={{ fontSize: '15px', fontWeight: '400' }}
         >
-          {rates.map((rate, index) => (
-            <tr key={index}>
-              <td>{rate.date}</td>
-              <td>{rate.baseRate}</td>
+          {rates.map((rate) => (
+            <tr key={rate.rank}>
+              <td>{rate.rank}</td>
+              <td>{rate.country}</td>
               <td
+                className={getChangeColor(
+                  rate.changeFromPrev,
+                )}
                 style={{
                   fontWeight: 'bold',
                   fontSize: '20px',
                 }}
-                className={getChangeColor(
-                  rate.changeFromPrev,
-                )}
               >
                 {getChangeFromPrevText(rate.changeFromPrev)}
               </td>
@@ -136,12 +136,9 @@ const DailyRatesTable = () => {
                   fontSize: '20px',
                 }}
               >
-                {rate.fluctuationRate}
+                {rate.currentRate}
               </td>
-              <td>{rate.cashBuy}</td>
-              <td>{rate.cashSell}</td>
-              <td>{rate.remittanceSend}</td>
-              <td>{rate.remittanceReceive}</td>
+              <td>{rate.travelSearchRank}</td>
             </tr>
           ))}
         </tbody>
