@@ -152,5 +152,35 @@ html {
   }
 
 }
+@media (max-width: 640px) {
+  .section3container {
+    width: 100%;
+    height: auto;
 
-@media (max-width: 420px) {}
+    .section3InnerBox {
+      flex-direction: column;
+      width: 100%;
+
+      .box1, .box2, .box3 {
+        width: 100%;
+        margin-bottom: 20px;
+        height: auto;
+      }
+
+      .box1 {
+        min-height: 400px; /* Adjust as needed */
+        .minibox1Youtube{
+          height: 300px;
+        }
+      }
+
+      .box2 {
+        min-height: 400px; /* Adjust as needed */
+      }
+
+      .box3 {
+        min-height: 200px; /* Adjust as needed */
+      }
+    }
+  }
+}
