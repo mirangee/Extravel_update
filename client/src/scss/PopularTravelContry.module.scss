@@ -23,6 +23,17 @@
 //   }
 // }
 
+.mainh3 {
+  font-size: 50px;
+  margin-left: 180px;
+  font-weight: bold;
+  font-family: 'Black Han Sans';
+  color: #14505c;
+  margin-top: 200px;
+  
+}
+
+
 img {
   max-width: 100%;
   height: auto;
@@ -216,6 +227,10 @@ img {
 }
 
 @media (max-width: 1280px) {
+  .mainh3{
+    margin-left: 15px;
+    font-size: 38px;
+  }
   .wrapper {
     width: 100%;
     height: 800px;
@@ -258,4 +273,41 @@ img {
     width: 40%;
   }
   
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    height: auto;
+    padding: 0 1rem;
+  }
+
+
+  .item {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    left: 0 !important;  /* 기존의 절대 위치 설정을 무시 */
+    top: 0 !important;   /* 기존의 절대 위치 설정을 무시 */
+    transform: none !important;  /* 회전 설정을 무시 */
+  }
+  .polaroid{
+    width: 500px;
+    margin: 10px;
+  }
+
+
+  .item .polaroid:before {
+    transform: none !important;  /* 회전 설정을 무시 */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);  /* 그림자 조정 */
+  }
+ 
+  .mainh3{
+    margin: 15px;
+    font-size: 38px;
+  }
+
 }
