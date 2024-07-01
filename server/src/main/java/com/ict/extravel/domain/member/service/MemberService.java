@@ -1,9 +1,11 @@
 package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
+import com.ict.extravel.domain.member.dto.request.FindIDRequestDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
 import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
 import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
+import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
@@ -12,14 +14,20 @@ import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -27,8 +35,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,6 +45,7 @@ public class MemberService {
     private final NationRepository nationRepository;
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
+    private DefaultMessageService messageService;
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -56,6 +64,23 @@ public class MemberService {
     @Value("${kakao.client_secret}")
     private String KAKAO_CLIENT_SECRET;
 
+    @Value("${CoolSMS.api_key}")
+    private String API_KEY;
+    @Value("${CoolSMS.apiSecretKey}")
+    private String API_SECRET_KEY;
+    @Value("${CoolSMS.web}")
+    private String WEB;
+    @Value("${CoolSMS.phone_number}")
+    private int PHONE_NUMBER;
+
+    @PostConstruct //init 메서드가 sendOne 메서드 호출 시 자동으로 호출
+    private void init() {
+        // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
+        this.messageService = NurigoApp.INSTANCE.initialize(API_KEY, API_SECRET_KEY, "https://api.coolsms.co.kr");
+        log.info("CoolSMS Message Service initialized with API Key: {}, API_SECRET_KEY: {} ", API_KEY, API_SECRET_KEY);
+    }
+
+
     private static KakaoUserDTO getKakaoUserInfo(String accessToken) {
         // 요청 uri
         String requestURI = "https://kapi.kakao.com/v2/user/me";
@@ -73,6 +98,15 @@ public class MemberService {
         KakaoUserDTO responseData = responseEntity.getBody();
 
         return responseData;
+    }
+
+
+    //이메일 중복검사
+    public boolean isDuplicate(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            log.warn("이메일이 중복되었습니다. - {}", email);
+            return true;
+        } else return false;
     }
 
     //자체 로그인
@@ -122,29 +156,76 @@ public class MemberService {
     }
 
 
-//풀리용 임시 주석 처리 06.27 진행중~ by종구
-    //자체 아이디 찾기
-//    public FindIDResponseDTO findEmail(FindIDRequestDTO requestDTO) {
-//        Optional<Member> id = memberRepository.findByID(requestDTO.getPhoneNumber(), requestDTO.getName());
-//
-//        if (id.isPresent()) {
-//            log.warn("아이디가 존재하지 않습니다: 전화번호 = {}, 이름 = {}", requestDTO.getPhoneNumber(), requestDTO.getName());
-//            return null;
-//        } else {
-//            Map<String, String> result = new HashMap<>();
-//            String realId = result.put(id.getName());
-//
-//            return realId;
-//        }
-//    }
+    //    자체 아이디 찾기
+    public FindIDResponseDTO findEmail(FindIDRequestDTO requestDTO) {
+        log.info("서비스의 {}", requestDTO);
 
-    //이메일 중복검사
-    public boolean isDuplicate(String email) {
-        if (memberRepository.existsByEmail(email)) {
-            log.warn("이메일이 중복되었습니다. - {}", email);
-            return true;
-        } else return false;
+        String phoneNumber = requestDTO.getPhoneNumber().replaceAll("-", "");
+        log.info("서비스의 폰넘버 가공{}", requestDTO);
+
+        List<Member> members = memberRepository
+                .findByPhoneNumberAndName(phoneNumber, requestDTO.getName()) //@@@ 순서
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다. 요청: " + requestDTO));
+
+        log.info("서비스의 findByPhoneNumberAndName JPA {}", requestDTO);
+
+        Member member = members.get(0);
+        FindIDResponseDTO findIDResponseDTO = new FindIDResponseDTO();
+        findIDResponseDTO.setEmail(member.getEmail());
+
+        log.info("컨트롤러의 member.getEmail{}", member.getEmail());
+        log.info("findIDResponseDTO 결과값 {}", findIDResponseDTO);
+        return findIDResponseDTO;
+
     }
+
+
+
+    // 이메일과 전화번호를 사용하여 비밀번호 업데이트
+    public void updatePassword(String email, String phoneNumber) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        int newPassword = generateRandomNumber();
+        String encodedPassword = passwordEncoder.encode(Integer.toString(newPassword));
+        log.info(" 서비스의 newPasswrodString : {}", encodedPassword);
+
+        // 비밀번호 업데이트
+        int updatedRows = memberRepository.updatePasswordByEmailAndPhoneNumber(email, phoneNumber, encodedPassword);
+
+        log.info("서비스의 updateRows : {} ", updatedRows);
+        if (updatedRows == 0) {
+            throw new NoSuchElementException("회원 정보를 찾을 수 없습니다. 이메일: " + email + ", 전화번호: " + phoneNumber);
+        }
+
+        sendNewPW(phoneNumber, newPassword);
+    }
+
+    public int generateRandomNumber() {
+        Random random = new Random();
+        int min = 100000;
+        int max = 999999;
+        return random.nextInt(max - min + 1) + min;
+    }
+
+
+
+    // 임시 비밀번호를 SMS로 전송하는 메서드
+    public void sendNewPW(String phoneNumber, int newPassword) {
+        // SMS 전송 로직 구현 (예: 외부 API 사용)
+        log.info("Sending SMS to: {} with new password: {}", phoneNumber, newPassword);
+        Message message = new Message();
+        message.setFrom("01021356409");
+        message.setTo(phoneNumber);
+        message.setText("[EXTRAVEL] 회원님의 임시 비밀번호는 [" + newPassword + "] 입니다!");
+
+
+        try {
+            MultipleDetailMessageSentResponse response = messageService.send(message);
+            log.info("SMS sent successfully: {}", response);
+        } catch (Exception e) {
+            log.error("Failed to send SMS", e);
+        }
+    }
+
 
     public void NaverLoginService(String code) {
         String accessToken = getNaverAccessToken(code);

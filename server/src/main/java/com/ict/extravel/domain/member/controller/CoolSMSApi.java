@@ -54,46 +54,45 @@ public class CoolSMSApi {
     @ResponseBody
     @PostMapping("/send-one")
     public ResponseEntity<?> sendOne(@RequestBody Map<String, String> data) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
+        return handleSmsRequest(data, false);
+    }
 
+    @ResponseBody
+    @PostMapping("/findidpw")
+    public ResponseEntity<?> findIdPw(@RequestBody Map<String, String> data) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
+        return handleSmsRequest(data, true);
+    }
+
+    private ResponseEntity<?> handleSmsRequest(Map<String, String> data, boolean isFindIdPw) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         String phoneNumber = data.get("phoneNumber");
         log.info("요청 들어옴 {} ", phoneNumber);
 
-        boolean flag = coolSMSService.sendSmsToFindEmail(phoneNumber);
-
+        boolean isDuplicate = isFindIdPw ? coolSMSService.findIDPWservice(phoneNumber) : coolSMSService.sendSmsToFindEmail(phoneNumber);
         int verificationCode = generateRandomNumber();
 
+        if (isDuplicate && !isFindIdPw) {
+            log.error("중복된 번호입니다: {}", phoneNumber);
+            return ResponseEntity.badRequest().body("중복된 번호입니다.");
+        } else if (!isDuplicate && isFindIdPw) {
+            log.error("없는 번호입니다: {}", phoneNumber);
+            return ResponseEntity.badRequest().body("없는 번호입니다.");
+        }
 
         Message message = new Message();
-        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
         message.setFrom("01021356409");
         message.setTo(phoneNumber);
-        message.setText("[EXTRAVEL]" +
-                "아래의 인증번호를" +
-                "[" + verificationCode + "]" +
-                "입력해주세요!\n");
+        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
 
-        if(!flag){
-            MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
-            log.info("{}", messageSentResponse.toString());
-            log.info("SMS sent successfully to {}", phoneNumber);
-            return ResponseEntity.ok().body(verificationCode);
-        }
-        else{
-            // 발송 실패 시 예외 처리
-            log.error("SMS sending failed to {}", phoneNumber);
+        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
+        log.info("{}", messageSentResponse.toString());
+        log.info("SMS sent successfully to {}", phoneNumber);
 
-            return ResponseEntity.badRequest()
-                    .body("중복된 번호입니다.");
-        }
-
-
-
-        //return new SingleMessageSentResponse();
+        return ResponseEntity.ok().body(verificationCode);
     }
 
-    public int generateRandomNumber() {
+    private int generateRandomNumber() {
         Random random = new Random();
         int min = 100000;
         int max = 999999;

@@ -81,7 +81,7 @@ const Login = () => {
     },
     register: signUpRegister,
   } = useForm({
-    mode: 'onBlur', // 입력값이 변경될 때마다 유효성 검사를 수행
+    mode: 'onChange', // 입력값이 변경될 때마다 유효성 검사를 수행
   });
 
   const {
@@ -526,7 +526,7 @@ const Login = () => {
                                 : 'none',
                             }}
                           >
-                            인증번호 확인
+                            인증하기
                           </Button>
                           <div
                             style={{
