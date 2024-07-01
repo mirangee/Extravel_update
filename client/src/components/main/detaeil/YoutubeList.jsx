@@ -17,10 +17,10 @@ const YoutubeList = () => {
           pagination={{ clickable: true }} // 페이지네이션 활성화
           freeMode={false} // 무한 루프 설정
         >
-          <div className='youtubeSlider'>
+          <div className={styles.youtubeSlider}>
             <SwiperSlide>
               <iframe
-                className='youtube1'
+                className={styles.youtube1}
                 width='500'
                 height='280'
                 src='https://www.youtube.com/embed/IRG-MEF_IDY'
@@ -30,7 +30,7 @@ const YoutubeList = () => {
             </SwiperSlide>
             <SwiperSlide>
               <iframe
-                className='youtube2'
+                className={styles.youtube2}
                 width='500'
                 height='280'
                 src='https://www.youtube.com/embed/snW9W3rjeos'
@@ -40,7 +40,7 @@ const YoutubeList = () => {
             </SwiperSlide>
             <SwiperSlide>
               <iframe
-                className='youtube3'
+                className={styles.youtube3}
                 width='500'
                 height='280'
                 src='https://www.youtube.com/embed/ktu5LeQgDrE'
@@ -50,7 +50,7 @@ const YoutubeList = () => {
             </SwiperSlide>
             <SwiperSlide>
               <iframe
-                className='youtube1'
+                className={styles.youtube1}
                 width='500'
                 height='280'
                 src='https://www.youtube.com/embed/IRG-MEF_IDY'
@@ -60,7 +60,7 @@ const YoutubeList = () => {
             </SwiperSlide>
             <SwiperSlide>
               <iframe
-                className='youtube3'
+                className={styles.youtube3}
                 width='500'
                 height='280'
                 src='https://www.youtube.com/embed/ktu5LeQgDrE'

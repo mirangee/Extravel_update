@@ -18,7 +18,8 @@ import MyPage from './components/main/detaeil/MyPage';
 import MyPageModify from './components/main/detaeil/MyPageModify';
 import { Switch } from '@mui/material';
 import NaverShopping from './components/user/NaverShopping';
-import PopularTravelContry from './components/main/detaeil/PopularTravelContry';
+import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
+import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
 
 const App = () => {
   return (
@@ -52,13 +53,18 @@ const App = () => {
           ></Route>
           <Route path='/mypage' element={<MyPage />} />
           <Route
+            path='/main/exrates'
+            element={<RealTimeExchanges />}
+          />
+          <Route
             path='/mypage/modify'
             element={<MyPageModify />}
           />
         </Routes>
-        {/* <PopularTravelContry /> */}
 
         <Footer />
+        {/* <RealTimeExchanges /> */}
+        {/* <DailyRatesTable /> */}
         <ScrollToTopButton />
       </AuthContextProvider>
     </>
