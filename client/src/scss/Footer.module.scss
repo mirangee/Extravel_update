@@ -73,3 +73,22 @@
     
   }
 }
+
+@media (max-width: 1280px) {
+  .container{
+    margin: 0 30px;
+  }
+  .footer{
+    .inner{
+      justify-content: flex-start;
+      margin: 0;
+      width: 100%;
+      // font-size: 10px;
+    }
+    .logo{
+      p{
+        // font-size: 10px;
+      }
+    }
+  }
+}

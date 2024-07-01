@@ -1,0 +1,98 @@
+// MyPageCard.module.scss
+
+.myPageCardContainer {
+  width: 100%;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding-left: 500px;
+}
+
+.myExchangeHeader {
+  background: red;
+  font-size: 64px;
+  background-image: linear-gradient(to right top, #a6d2df, #0a4a58);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: bold;
+
+  .exchangeButton {
+    margin-left: 220px;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    background: #14505c;
+  }
+}
+
+.currentDate {
+  margin: 20px auto;
+  font-size: 32px;
+  font-weight: bold;
+  color: #14505C;
+}
+
+.cardContainer {
+  display: flex;
+  background-color: lightgray;
+  width: 800px;
+  border-radius: 20px;
+  box-shadow: 1px 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cardActions {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-weight: bold;
+
+  img {
+    width: 150px;
+    height: 100px;
+    margin: 10px auto;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin: 20px auto;
+  }
+
+  h3 {
+    margin: 20px auto;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 1280px) {
+  .myPageCardContainer {
+    
+    padding-left: 30px;
+  }
+}
+@media (max-width: 640px) {
+ 
+  .cardActions {
+    align-items: baseline;
+  }
+  .myPageCardContainer {
+    font-size: 14px;
+    padding-left: 1px;
+  }
+  .cardContainer {
+    
+    width: 450px;
+ 
+    h3 {
+      // margin: 20px auto;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}

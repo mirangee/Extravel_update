@@ -10,17 +10,7 @@ const PopularTravelContry = () => {
           height: '100%',
         }}
       >
-        <h3
-          style={{
-            fontSize: '50px',
-            marginLeft: '180px',
-            fontWeight: 'bold',
-            fontFamily: 'Black Han Sans',
-            color: '#14505C',
-            marginTop: '200px',
-            // background: 'red',
-          }}
-        >
+        <h3 className={styles.mainh3}>
           다양한 나라들을 여행해보세요 🚩
         </h3>
         <div className={styles.wrapper}>
