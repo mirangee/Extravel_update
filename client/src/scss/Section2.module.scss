@@ -149,13 +149,20 @@
 
   .section2Box {
     flex-direction: column; /* 수정된 부분: 플렉스 방향을 열로 변경 */
-    align-items: center; /* 중앙 정렬 */
     width: 1200px;
   }
 
   .countryCard {
-    margin: 10px 0; /* 위아래 여백 조정 */
     width: 90%; /* 카드의 너비를 늘림 */
-    align-self: flex-start; /* 카드가 왼쪽에 붙도록 설정 */
+
+    
   }
+  .rateContent{
+    flex-direction: column;
+  }
+  .upRate{
+    margin-top: 30px;
+    margin-right: 30px;
+  }
+
 }
