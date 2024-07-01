@@ -6,7 +6,7 @@ function AuthNumTimer({
   phoneNumber,
 }) {
   // 초기 타이머 시간 (초)을 정의함. 180초, 3분.
-  const initialTime = 60;
+  const initialTime = 10;
   // 남은 시간을 상태로 관리함.
   const [remainingTime, setRemainingTime] =
     useState(initialTime);
