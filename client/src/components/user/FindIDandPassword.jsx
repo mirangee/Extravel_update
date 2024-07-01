@@ -110,6 +110,17 @@ const FindIDandPassword = () => {
   const { sendSMS, checkSMS, handleTimeZero, isTimeZero } =
     useSMSUtils();
 
+  // useEffect를 사용하여 인증 번호 타이머 관리
+  useEffect(() => {
+    if (showAuthNumTimer) {
+      const timer = setTimeout(() => {
+        handleTimeZero();
+      }, 300000); // 5분 타이머
+
+      return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
+    }
+  }, [showAuthNumTimer]);
+
   // SMS 인증 확인 처리
   const handleSendSMS = () => {
     sendSMS(
@@ -208,6 +219,26 @@ const FindIDandPassword = () => {
     setShowAuthButton(true);
   };
 
+  // 인증 번호 확인 버튼 클릭 핸들러
+  const onCheckCodeConfirm = (e) => {
+    e.preventDefault();
+
+    if (!isTimeZero) {
+      checkSMS(
+        checkCode,
+        randomCode,
+        setIsAuthCompleted,
+        setResultMsg,
+      );
+    } else {
+      setResultMsg(
+        '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
+      );
+    }
+
+    setShowAuthNumTimer(false);
+  };
+
   const onChangeEmail = (e) => {
     console.log(e.target.value);
     dispatchFindPW({
@@ -260,6 +291,7 @@ const FindIDandPassword = () => {
     handleSendSMS(); // SMS 전송 처리 함수 호출
     setShowAuthNumInput(true);
     setShowAuthNumTimer(true);
+    setShowCompleteButton(true);
   };
 
   const isValidPhoneNumber = (phoneNumber) => {
@@ -302,17 +334,19 @@ const FindIDandPassword = () => {
         name,
         phoneNumber,
       );
+      /* eslint-disable prettier/prettier */
       const data = showIDSection
         ? {
-            name: findIDState.name,
-            phoneNumber: findIDState.phoneNumber,
-            checkCode: findIDState.checkCode,
-          }
+          name: findIDState.name,
+          phoneNumber: findIDState.phoneNumber,
+          checkCode: findIDState.checkCode,
+        }
         : {
-            email: findPWState.email,
-            phoneNumber: findPWState.phoneNumber,
-            checkCode: findPWState.checkCode,
-          };
+          email: findPWState.email,
+          phoneNumber: findPWState.phoneNumber,
+          checkCode: findPWState.checkCode,
+        };
+      /* eslint-disable prettier/prettier */
       console.log('onSubmitForm의 하단 data : ', data);
 
       const response = await axios.post(url, data);
@@ -465,18 +499,19 @@ const FindIDandPassword = () => {
               </div>
             </div>
 
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(false)}
-            >
-              혹시 아이디는 기억나고 비밀번호만 찾으시나요?
-            </a>
             {/* resultMsg를 화면에 표시 */}
             {resultMsg && (
               <div className={styles.resultMsg}>
                 {resultMsg}
               </div>
             )}
+
+            <a
+              className={styles.changeBtn}
+              onClick={() => setShowIDSection(false)}
+            >
+              혹시 아이디는 기억나고 비밀번호만 찾으시나요?
+            </a>
           </div>
         )}
 
@@ -579,18 +614,19 @@ const FindIDandPassword = () => {
                 )}
               </div>
             </div>
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(true)}
-            >
-              혹시 아이디가 기억이 나지 않으세요?
-            </a>
+
             {/* resultMsg를 화면에 표시 */}
             {resultMsg && (
               <div className={styles.resultMsg}>
                 {resultMsg}
               </div>
             )}
+            <a
+              className={styles.changeBtn}
+              onClick={() => setShowIDSection(true)}
+            >
+              혹시 아이디가 기억이 나지 않으세요?
+            </a>
           </div>
         )}
       </div>

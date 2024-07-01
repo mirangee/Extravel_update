@@ -155,7 +155,6 @@ public class MemberController {
         log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
         return ResponseEntity.ok().body(email);
-
     }
 
 
