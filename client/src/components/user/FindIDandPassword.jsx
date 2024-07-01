@@ -212,116 +212,122 @@ const FindIDandPassword = () => {
 
   return (
     <>
-      <div className={styles.all}>
-        {/* 아이디 찾기 */}
-        <CloseButton
-          className={styles.xButton}
-          onClick={onClickBtn}
-          type='button'
-        />
-        {showIDSection && (
-          <div className={styles.id}>
-            <div>아이디 찾기</div>
-            <Input
-              onChange={onChangeName}
-              ref={inputName}
-              placeholder='이름을 입력하세요.'
-            />
-
-            <Input
-              onChange={onChangePhoneNumber}
-              ref={inputPhoneNumber}
-              placeholder='전화번호를 입력하세요'
-            />
-            <Input
-              onChange={onChangeCheckCode}
-              ref={inputCheckCode}
-              placeholder='인증번호를 입력하세요'
-            />
-
-            <div className={styles.idbtn}>
-              <Button
-                onClick={onSubmitForm}
-                style={{ margin: '10px' }}
-                type='primary'
-              >
-                완료
-              </Button>
-              <AuthNumTimer
-              // onTimeZero={handleTimeZero} //@@@ 타이머가 0이 되었을 때 호출될 콜백 함수
-              // sendSMS={sendSMS}
-              // phoneNumber={phoneNumber}
+      <div className={styles.container}>
+        <div className={styles.all}>
+          {/* 아이디 찾기 */}
+          <CloseButton
+            className={styles.xButton}
+            onClick={onClickBtn}
+            type='button'
+          />
+          {showIDSection && (
+            <div className={styles.id}>
+              <h3 className={styles.Findid}>아이디 찾기</h3>
+              <Input
+                onChange={onChangeName}
+                ref={inputName}
+                placeholder='이름을 입력하세요.'
+                style={{ margin: '20px', width: '600px' }}
               />
-              <Button
-                color='primary'
-                size='lg'
-                onClick={() => {
-                  onAuthClick();
-                  // sendSMS(inputCheckCode);
-                }}
+              <Input
+                onChange={onChangePhoneNumber}
+                ref={inputPhoneNumber}
+                placeholder='전화번호를 입력하세요'
+                style={{ margin: '20px', width: '600px' }}
+              />
+              <Input
+                onChange={onChangeCheckCode}
+                ref={inputCheckCode}
+                placeholder='인증번호를 입력하세요'
+                style={{ margin: '20px', width: '600px' }}
+              />
+              <div className={styles.idbtn}>
+                <Button
+                  onClick={onSubmitForm}
+                  style={{ margin: '20px', width: '600px' }}
+                  type='primary'
+                >
+                  완료
+                </Button>
+                <AuthNumTimer
+                // onTimeZero={handleTimeZero} //@@@ 타이머가 0이 되었을 때 호출될 콜백 함수
+                // sendSMS={sendSMS}
+                // phoneNumber={phoneNumber}
+                />
+                <Button
+                  color='primary'
+                  size='lg'
+                  onClick={() => {
+                    onAuthClick();
+                    // sendSMS(inputCheckCode);
+                  }}
+                >
+                  {IDClickState.authClickCount > 0
+                    ? '재인증'
+                    : '인증하기'}
+                </Button>
+              </div>
+              <a
+                className={styles.changeBtn}
+                onClick={() => setShowIDSection(false)}
               >
-                {IDClickState.authClickCount > 0
-                  ? '재인증'
-                  : '인증하기'}
-              </Button>
+                혹시 아이디는 기억나고 비밀번호만
+                찾으시나요?
+              </a>
             </div>
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(false)}
-            >
-              혹시 아이디는 기억나고 비밀번호만 찾으시나요?
-            </a>
-          </div>
-        )}
-
-        {/* 비밀번호 찾기 */}
-        {!showIDSection && (
-          <div className={styles.pw}>
-            <div>비밀번호 찾기</div>
-            <Input
-              onChange={onChangeEmail}
-              ref={inputEmail}
-              placeholder='이메일을 입력하세요.'
-            />
-
-            <Input
-              onChange={onChangePhoneNumber}
-              ref={inputPhoneNumber}
-              placeholder='전화번호를 입력하세요'
-            />
-            <Input
-              onChange={onChangeCheckCode}
-              ref={inputCheckCode}
-              placeholder='인증번호를 입력하세요'
-            />
-            <div className={styles.pwbtn}>
-              <Button
-                onClick={onSubmitForm}
-                style={{ margin: '10px' }}
-                type='primary'
+          )}
+          {/* 비밀번호 찾기 */}
+          {!showIDSection && (
+            <div className={styles.pw}>
+              <div>비밀번호 찾기</div>
+              <Input
+                onChange={onChangeEmail}
+                ref={inputEmail}
+                placeholder='이메일을 입력하세요.'
+              />
+              <Input
+                onChange={onChangePhoneNumber}
+                ref={inputPhoneNumber}
+                placeholder='전화번호를 입력하세요'
+              />
+              <Input
+                onChange={onChangeCheckCode}
+                ref={inputCheckCode}
+                placeholder='인증번호를 입력하세요'
+              />
+              <div className={styles.pwbtn}>
+                <Button
+                  onClick={onSubmitForm}
+                  style={{ margin: '10px', width: '40px' }}
+                  type='primary'
+                >
+                  완료
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: 'red',
+                    fontSize: '18px',
+                    padding: '10px 20px',
+                  }}
+                  size='lg'
+                  onClick={() => {
+                    onAuthClick();
+                  }}
+                >
+                  {PWClickState.authClickCount > 0
+                    ? '재인증'
+                    : '인증하기'}
+                </Button>
+              </div>
+              <a
+                className={styles.changeBtn}
+                onClick={() => setShowIDSection(true)}
               >
-                완료
-              </Button>
-              <Button
-                color='primary'
-                size='lg'
-                onClick={() => {
-                  onAuthClick();
-                }}
-              >
-                {PWClickState.authClickCount > 0
-                  ? '재인증'
-                  : '인증하기'}
-              </Button>
+                혹시 아이디가 기억이 나지 않으세요?
+              </a>
             </div>
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(true)}
-            >
-              혹시 아이디가 기억이 나지 않으세요?
-            </a>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
