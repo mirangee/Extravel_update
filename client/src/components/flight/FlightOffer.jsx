@@ -25,8 +25,8 @@ import FlightHeader from './FlightHeader';
 import LinearProgress from '@mui/material/LinearProgress';
 import FlightOffterRoundCard from './FlightOfferRoundCard';
 
-const ID = 'F3GgEe8qEzwbw5IGpJlAGjP9AXxRqXB8';
-const SECRET = '829Gh7AN4lL1mvez';
+const ID = process.env.REACT_APP_FLIGHT_API_ID;
+const SECRET = process.env.REACT_APP_FLIGHT_API_SECRET;
 const drawerWidth = 500;
 const Counter = ({
   label,
@@ -82,7 +82,6 @@ const FlightOffer = () => {
   const [token, setToken] = useState('');
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-  console.log(data);
 
   const handleClass = (e) => {
     setFlyClass(e.target.value);
