@@ -1,5 +1,7 @@
 package com.ict.extravel.domain.nation.controller;
 
+import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.nation.repository.NationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
