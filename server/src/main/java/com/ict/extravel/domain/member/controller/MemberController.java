@@ -184,9 +184,13 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        memberService.NaverLoginService(code);
+        Member member = memberService.NaverLoginService(code);
+        if(member == null){
+            return ResponseEntity.ok().body("duplicate");
+        }else{
+            return ResponseEntity.ok().body("SUCCESS");
+        }
 
-        return ResponseEntity.ok().body("SUCCESS");
     }
 
     @GetMapping("/kakaologin")
