@@ -1,5 +1,6 @@
 package com.ict.extravel.domain.member.service;
 
+import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.FindIDRequestDTO;
 import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
@@ -15,6 +16,7 @@ import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -227,11 +229,18 @@ public class MemberService {
     }
 
 
-    public void NaverLoginService(String code) {
+    @Transactional
+    public Member NaverLoginService(String code) {
         String accessToken = getNaverAccessToken(code);
         log.info("token: {}", accessToken);
 
         NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
+        log.info("naverUserInfo:{}",naverUserInfo);
+
+        Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
+        log.info("member {}",member);
+        return member;
+
     }
 
     private NaverUserDTO getNaverUserInfo(String accessToken) {
@@ -250,8 +259,27 @@ public class MemberService {
         NaverUserDTO responseData = responseEntity.getBody();
         log.info("user profile: {}", responseData);
 
+
         return responseData;
     }
+
+
+    @Transactional
+   public Member saveMember(String name,String email){
+        MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
+        dto.setEmail(email);
+        dto.setName(name);
+        dto.setPhoneNumber("112");
+        dto.setPassword("sns는 비공개");
+        Nation us = nationRepository.findById("US").orElseThrow();
+        Member saved = memberRepository.save(dto.toEntity(us));
+
+        log.info("dto에 들어가는saved{}",saved);
+        return saved;
+   }
+
+
+
 
     public void kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
@@ -264,7 +292,7 @@ public class MemberService {
         KakaoUserDTO userDTO = getKakaoUserInfo(accessToken);
 
         System.out.println(userDTO);
-
+        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail());
 
     }
 
@@ -358,6 +386,10 @@ public class MemberService {
         return save.getNationCode().getNationCode();
 
     }
+    public void googleService(GoogleUserInfoDTO googleUserInfoDTO) {
+        Member member = saveMember(googleUserInfoDTO.getName(), googleUserInfoDTO.getEmail());
+    }
+
 
 
 }
