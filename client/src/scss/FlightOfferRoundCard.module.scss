@@ -1,24 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 .container {
-  width: 100%;
-  border-radius: 5px;
-  margin: 10px 0;
   display: flex;
   justify-content: space-around;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  padding: 30px;
-  font-family: 'Nanum Gothic', sans-serif;
-  cursor: pointer;
-  &:hover {
-    background-color: rgb(249, 247, 247);
-  }
+  width: 100%;
+}
+.mainContainer {
+  width: 80%;
 }
 
 .airline {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+.direct {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .airlineText {
   display: flex;
@@ -68,5 +67,30 @@
   .price {
     color: #275963;
     font-weight: bold;
+  }
+}
+.offerinfo2 {
+  visibility: hidden;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  .price {
+    color: #275963;
+    font-weight: bold;
+  }
+}
+.box {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin: 10px 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 30px;
+  font-family: 'Nanum Gothic', sans-serif;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(249, 247, 247);
   }
 }

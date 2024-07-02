@@ -48,8 +48,18 @@
     width: 100%;
   }
 }
+.mainRender2 {
+  margin-top: 80px;
+  img {
+    width: 100%;
+  }
+}
 .firstRender {
   display: flex;
+  justify-content: center;
+  font-size: 30px;
+  height: 950px; /* Adjust height to maintain the aspect ratio */
+  overflow: hidden;
   .p1 {
     position: absolute;
     top: 20%;
@@ -66,7 +76,17 @@
     font-family: 'Black Han Sans';
     font-size: 30px;
   }
+  img {
+    object-fit: cover;
+    width: 100%; /* Makes the image width fill the container */
+    height: 100%; /* Makes the image height fill the container */
+    object-fit: cover; /* Ensures the image covers the entire container while maintaining aspect ratio */
+    display: block;
+  }
 }
 .buttonBox {
   position: relative;
+}
+.cardContainer {
+  margin-top: 80px;
 }

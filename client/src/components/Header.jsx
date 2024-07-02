@@ -95,9 +95,6 @@ const Header = () => {
 
   const handleCountryChange = (selectedOption) => {
     setCountry(selectedOption.value);
-    if (selectedOption) {
-      navigate(`/${selectedOption.value}`);
-    }
   };
 
   const toggleSidebar = () => {
@@ -213,8 +210,7 @@ const Header = () => {
           </ul>
         </nav>
       </header>
-<<<<<<< HEAD
-=======
+
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}
       >
@@ -270,7 +266,6 @@ const Header = () => {
           </ul>
         </nav>
       </div>
->>>>>>> f2031164733804e7955b0b5eead3463255b6c509
     </>
   );
 };

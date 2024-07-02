@@ -21,6 +21,9 @@ import dayjs from 'dayjs';
 import FlightOffterCard from './FlightOffterCard';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
+import FlightHeader from './FlightHeader';
+import LinearProgress from '@mui/material/LinearProgress';
+import FlightOffterRoundCard from './FlightOfferRoundCard';
 
 const ID = 'F3GgEe8qEzwbw5IGpJlAGjP9AXxRqXB8';
 const SECRET = '829Gh7AN4lL1mvez';
@@ -66,8 +69,8 @@ const Counter = ({
 const FlightOffer = () => {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState(undefined);
+  const [endDate, setEndDate] = useState(undefined);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
@@ -79,6 +82,7 @@ const FlightOffer = () => {
   const [token, setToken] = useState('');
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  console.log(data);
 
   const handleClass = (e) => {
     setFlyClass(e.target.value);
@@ -131,6 +135,19 @@ const FlightOffer = () => {
   }, []);
 
   const searchFlight = async () => {
+    if (!from) {
+      alert('출발 공항을 선택하세요.');
+      return;
+    } else if (!to) {
+      alert('도착 공항을 선택하세요.');
+      return;
+    } else if (!startDate) {
+      alert('출발일을 선택하세요.');
+      return;
+    } else if (value && !endDate) {
+      alert('도착일을 선택하세요.');
+      return;
+    }
     setLoading(true);
     const query = {
       from: from.IATA,
@@ -145,9 +162,10 @@ const FlightOffer = () => {
       direct,
       flyClass,
     };
-    let url = `https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${query.from}&destinationLocationCode=${query.to}&departureDate=${query.startDate}&currencyCode=KRW&adults=${query.adults}&children=${query.children}&infants=${query.infants}&nonStop=${query.direct}&max=10`;
+
+    let url = `https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${query.from}&destinationLocationCode=${query.to}&departureDate=${query.startDate}&currencyCode=KRW&adults=${query.adults}&children=${query.children}&infants=${query.infants}&nonStop=${query.direct}&max=50`;
     if (query.endDate) {
-      url = url + `&returnData=${query.endDate}`;
+      url = url + `&returnDate=${query.endDate}`;
     }
     if (query.flyClass) {
       url = url + `&travelClass=${query.flyClass}`;
@@ -163,16 +181,43 @@ const FlightOffer = () => {
   };
   const mainRender = () => {
     if (data) {
-      return data.data.map((item) => (
-        <FlightOffterCard key={item.key} item={item} />
-      ));
+      if (data.errors) {
+        return (
+          <>
+            <div className={Styles.firstRender}>
+              <div>조회 된 항공권이 없습니다.</div>
+            </div>
+          </>
+        );
+      }
+      if (data.meta.count === 0) {
+        return (
+          <>
+            <div className={Styles.firstRender}>
+              <div>조회 된 항공권이 없습니다.</div>
+            </div>
+          </>
+        );
+      }
+
+      const { itineraries } = data.data[0];
+      if (itineraries.length > 1) {
+        return data.data.map((item) => (
+          <FlightOffterRoundCard
+            key={item.key}
+            item={item}
+          />
+        ));
+      } else {
+        return data.data.map((item) => (
+          <FlightOffterCard key={item.key} item={item} />
+        ));
+      }
     } else {
       return (
         <>
           <div className={Styles.firstRender}>
             <img src={MainImg} />
-            <p className={Styles.p1}>Extravel</p>
-            <p className={Styles.p2}>항공권 검색</p>
           </div>
         </>
       );
@@ -352,13 +397,10 @@ const FlightOffer = () => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
         }}
-        style={{ backgroundColor: '#275963' }}
+        style={{ backgroundColor: 'rgb(255,255,255,0.0)' }}
       >
-        <Toolbar>
-          <Typography variant='h6' noWrap component='div'>
-            설레이는 여행의 시작
-          </Typography>
-        </Toolbar>
+        <FlightHeader loading={data} />
+        {loading && <LinearProgress />}
       </AppBar>
       <Box
         component='nav'
@@ -389,7 +431,12 @@ const FlightOffer = () => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <div className={Styles.mainRender}>
+        {' '}
+        <div
+          className={
+            data ? Styles.mainRender2 : Styles.mainRender
+          }
+        >
           {mainRender()}
         </div>
       </Box>

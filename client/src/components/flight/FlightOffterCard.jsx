@@ -8,7 +8,11 @@ const FlightOffterCard = ({ item }) => {
   const { segments, duration } = itineraries[0];
   const uniqueAirLine = [
     ...new Set(
-      segments.map((item) => item.operating.carrierCode),
+      segments.map((item) =>
+        item.operating
+          ? item.operating.carrierCode
+          : item.carrierCode,
+      ),
     ),
   ];
   const caltime = () => {
@@ -37,7 +41,12 @@ const FlightOffterCard = ({ item }) => {
       <div className={Styles.airline}>
         {uniqueAirLine.map((carrierCode, index) => (
           <div key={index} className={Styles.airlineText}>
-            {carrierCode}
+            {AirLineList[carrierCode] && (
+              <img src={AirLineList[carrierCode].img} />
+            )}
+            {AirLineList[carrierCode]
+              ? AirLineList[carrierCode].title
+              : carrierCode}
           </div>
         ))}
       </div>

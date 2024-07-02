@@ -1,5 +1,10 @@
 import React from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  Link,
+  useLocation,
+} from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
@@ -20,10 +25,12 @@ import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
 import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
 
 const App = () => {
+  const location = useLocation();
+  const isFlight = location.pathname !== '/flight';
   return (
     <>
       <AuthContextProvider>
-        <Header />
+        {isFlight && <Header />}
         <Routes>
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
@@ -61,7 +68,7 @@ const App = () => {
           />
         </Routes>
 
-        <Footer />
+        {isFlight && <Footer />}
         {/* <RealTimeExchanges /> */}
         {/* <DailyRatesTable /> */}
         <ScrollToTopButton />
