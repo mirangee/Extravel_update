@@ -96,6 +96,7 @@ const Header = () => {
   const handleCountryChange = (selectedOption) => {
     onChangeNation(selectedOption.value);
     setCountry(selectedOption.value);
+
     // if (selectedOption) {
     //   navigate(`/${selectedOption.value}`);
     // }
@@ -214,6 +215,7 @@ const Header = () => {
           </ul>
         </nav>
       </header>
+
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}
       >

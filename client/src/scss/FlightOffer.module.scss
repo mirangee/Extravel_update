@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+.logoBox {
+  display: flex;
+  justify-content: center;
+  img {
+    width: 300px;
+    height: 100px;
+  }
+}
+.selectbox1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 0;
+}
+.selectbox2 {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0 20px;
+}
+.selectbox3 {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 50px;
+}
+.disableText {
+  color: red;
+  position: fixed;
+}
+.selectbox4 {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
+  p {
+    padding-top: 15px;
+    margin-right: 20px;
+  }
+}
+.classBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 0;
+}
+.mainRender {
+  img {
+    width: 100%;
+  }
+}
+.mainRender2 {
+  margin-top: 80px;
+  img {
+    width: 100%;
+  }
+}
+.firstRender {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  height: 950px; /* Adjust height to maintain the aspect ratio */
+  overflow: hidden;
+  .p1 {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 50px;
+  }
+  .p2 {
+    position: absolute;
+    top: 27%;
+    left: 48%;
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 30px;
+  }
+  img {
+    object-fit: cover;
+    width: 100%; /* Makes the image width fill the container */
+    height: 100%; /* Makes the image height fill the container */
+    object-fit: cover; /* Ensures the image covers the entire container while maintaining aspect ratio */
+    display: block;
+  }
+}
+.buttonBox {
+  position: relative;
+}
+.cardContainer {
+  margin-top: 80px;
+}

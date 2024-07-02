@@ -80,4 +80,5 @@ public class Member {
 
     @Column(name = "refresh_token_expiry_date")
     private LocalDate refreshTokenExpiryDate;
+
 }

@@ -33,6 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class KakaoPayService {
+
     private final MakePayRequest makePayRequest;
     private final MemberRepository memberRepository;
     private final PointChargeRepository pointChargeRepository;
