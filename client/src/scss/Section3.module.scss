@@ -12,6 +12,7 @@ html {
   align-items: center;
   background-size: cover;
   background-position: center;
+  margin-top: 150px;
 
   .section3InnerBox {
     display: flex;
@@ -143,14 +144,13 @@ html {
 }
 
 @media (max-width: 1280px) {
-  .section3container{
+  .section3container {
     width: 1600px;
     height: 1200px;
     justify-content: space-between;
     margin-left: 30px;
     // align-items: baseline;
   }
-
 }
 @media (max-width: 640px) {
   .section3container {
@@ -161,7 +161,9 @@ html {
       flex-direction: column;
       width: 100%;
 
-      .box1, .box2, .box3 {
+      .box1,
+      .box2,
+      .box3 {
         width: 100%;
         margin-bottom: 20px;
         height: auto;
@@ -169,7 +171,7 @@ html {
 
       .box1 {
         min-height: 400px; /* Adjust as needed */
-        .minibox1Youtube{
+        .minibox1Youtube {
           height: 300px;
         }
       }

@@ -6,7 +6,7 @@ function AuthNumTimer({
   phoneNumber,
 }) {
   // 초기 타이머 시간 (초)을 정의함. 180초, 3분.
-  const initialTime = 10;
+  const initialTime = 180;
   // 남은 시간을 상태로 관리함.
   const [remainingTime, setRemainingTime] =
     useState(initialTime);
@@ -63,7 +63,14 @@ function AuthNumTimer({
   };
 
   return (
-    <div>
+    <div
+      style={{
+        // padding: '10px 20px',
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+      }}
+    >
       {/* 인증번호 유효 시간을 화면에 출력. */}
       <h1 style={{ fontSize: '16px' }}>
         인증번호 유효 시간:{' '}
@@ -84,7 +91,6 @@ function AuthNumTimer({
             border: 'none',
             borderRadius: '5px',
             cursor: 'pointer',
-            marginTop: '10px',
           }}
         >
           재전송

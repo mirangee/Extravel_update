@@ -1,5 +1,8 @@
 package com.ict.extravel.domain.nation.controller;
 
+import com.ict.extravel.domain.nation.entity.Nation;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,9 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,7 +33,7 @@ public class NaverShoppingController {
         String Url = "https://openapi.naver.com/v1/search/shop.json";
 
         URI uri = UriComponentsBuilder.fromUriString(Url)
-                .queryParam("query", "아프리카 여행")
+                .queryParam("query",    "일본 여행")
                 .queryParam("display" , 100)
                 .queryParam("filter", "naverpay")
                 .queryParam("start",1)
@@ -53,8 +54,6 @@ public class NaverShoppingController {
 
         log.info("쇼핑API 요청 : {}" ,ShoppingResponse);
         return ShoppingResponse;
-
-
 
     }
 }

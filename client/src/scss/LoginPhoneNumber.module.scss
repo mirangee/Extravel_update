@@ -1,0 +1,91 @@
+.login {
+  white-space: pre-wrap;
+  background: #f6f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 130vh;
+  margin: -20px 0 50px;
+  background-image: url('../assets/img/loginbg.jpg');
+  background-size: cover;
+  z-index: -1;
+
+  .toplogo {
+    background-image: url('../assets/img/logo_white.png');
+    z-index: 1;
+    font-size: 52px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: white;
+    animation: fadeIn 0.8s ease-in forwards;
+  }
+
+  .container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.25),
+      0 10px 10px rgba(0, 0, 0, 0.22);
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    width: 1000px;
+    max-width: 100%;
+    min-height: 800px;
+    animation: fadeIn 0.8s ease-in forwards;
+
+    .form-container {
+      top: 0;
+      height: 100%;
+      transition: all 0.6s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      border-radius: 10px;
+      padding: 50px 10px;
+      //   background: blue;
+      box-shadow:
+        0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+
+      .phoneCertification {
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        z-index: 200;
+        margin-top: 10%;
+        text-align: center;
+      }
+
+      .textButton {
+        display: flex;
+        margin-top: 50px;
+        justify-content: space-evenly;
+
+        .textField {
+          width: 400px;
+          // height: 35px;
+          //   margin: 0 0 10px 20px;
+          padding: 10px;
+
+          input {
+            border-color: #14505c;
+          }
+        }
+
+        .phoneNumberCheck {
+          color: #14505c;
+          width: 100px;
+          height: 35px;
+          font-size: 15px;
+          cursor: pointer;
+
+          &:hover {
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
