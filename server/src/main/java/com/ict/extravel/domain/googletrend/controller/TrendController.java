@@ -4,6 +4,7 @@ import com.ict.extravel.domain.curexchage.dto.NationDateExchangeDataResponseDTO;
 import com.ict.extravel.domain.googletrend.dto.SearchTrendResponseDto;
 import com.ict.extravel.domain.googletrend.entity.SearchTrend;
 import com.ict.extravel.domain.googletrend.repository.GoogleTrendRepository;
+import com.ict.extravel.domain.googletrend.service.GoogleTrendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,11 @@ import java.util.List;
 @RequestMapping("/api/trend")
 @RequiredArgsConstructor
 public class TrendController {
-
-    private final GoogleTrendRepository gtRepository;
+    private final GoogleTrendService googleTrendService;
 
     @GetMapping("/data")
     public ResponseEntity<?> googleTrendData() {
-        List<SearchTrend> searchTrendInOrder = gtRepository.getSearchTrendInOrder();
-        SearchTrendResponseDto responseDto = SearchTrendResponseDto.builder().searchTrendList(searchTrendInOrder).build();
-
-        return ResponseEntity.ok(responseDto);
+        List<SearchTrendResponseDto> dtoList = googleTrendService.getTrendData();
+        return ResponseEntity.ok(dtoList);
     }
 }
