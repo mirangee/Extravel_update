@@ -9,6 +9,8 @@ import AuthContext from '../../../../src/utils/AuthContext';
 import goldMedal from '../../../assets/img/gold.png';
 import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
+import MyPagePointCard from './MyPagePointCard';
+import MyPagePointCard2 from './MyPagePointCard2';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -92,6 +94,8 @@ const MyPage = () => {
         </Button> */}
       </motion.div>
       <MyPageCard />
+      <MyPagePointCard />
+      <MyPagePointCard2 />
     </>
   );
 };
