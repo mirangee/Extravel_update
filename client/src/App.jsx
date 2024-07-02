@@ -13,6 +13,7 @@ import MainIntro from './components/main/intro/MainIntro';
 import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
 import NaverNews from './components/main/detaeil/NaverNews';
+import FlightOffer from './components/flight/FlightOffer';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/flight' element={<FlightOffer />} />
           <Route
             path='/user/auth/naver'
             element={<NaverLoginHandler />}

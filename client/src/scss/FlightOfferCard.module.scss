@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+.container {
+  width: 100%;
+  border-radius: 5px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 30px;
+  font-family: 'Nanum Gothic', sans-serif;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(249, 247, 247);
+  }
+}
+
+.airline {
+  display: flex;
+
+  justify-content: center;
+  flex-direction: column;
+}
+
+.timeInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.timeInfoText {
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+  .time {
+    font-size: 18px;
+    margin: 0 2px 0 5px;
+  }
+  .code {
+    font-size: 13px;
+    color: rgb(84, 165, 246);
+    margin: 0 5px 0 0;
+    padding-top: 4px;
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.calTime {
+  display: flex;
+  align-items: center;
+}
+
+.offerinfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  .price {
+    color: #275963;
+    font-weight: bold;
+  }
+}

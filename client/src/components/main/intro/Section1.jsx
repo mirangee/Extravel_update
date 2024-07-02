@@ -45,7 +45,9 @@ const Section1 = () => {
           <img src={rectangle} />
         </div>
       </div>
-      {modalOpen && <ChargeModal />}
+      {modalOpen && (
+        <ChargeModal setModalOpen={setModalOpen} />
+      )}
     </>
   );
 };
