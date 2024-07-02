@@ -14,11 +14,13 @@ const NaverLoginHandler = () => {
   ).searchParams.get('code');
   //
   useEffect(() => {
-    const NaverLogin = async () => {
+    const NaverLogin = () => {
       console.log('code: ', code);
-      const res = await fetch(
-        REQUEST_URI + '/naverlogin?code=' + code,
-      );
+      fetch(REQUEST_URI + '/naverlogin?code=' + code)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
     };
 
     NaverLogin();
