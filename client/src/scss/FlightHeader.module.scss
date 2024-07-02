@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+.header {
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+  animation: fadeIn 0.8s ease-in forwards; /* animation 속성 추가 */
+  .span1 {
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 50px;
+  }
+  .span2 {
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 35px;
+    margin-left: 20px;
+  }
+  .headerText {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 10px;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* 반응형 웹 디자인 */
+  @media (max-width: 1280px) {
+    .nav {
+      display: none; /* 작은 화면에서 네비게이션 숨기기 */
+    }
+
+    .hamburger {
+      display: block; /* 햄버거 아이콘 표시 */
+      cursor: pointer;
+      margin-right: 20px; /* 원하는 간격으로 조정 */
+      color: white;
+
+      &:hover {
+        opacity: 0.8; /* 호버 효과 추가 */
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    justify-content: space-around;
+
+    .logo {
+      width: 200px;
+      height: auto;
+      padding-left: 5px; /* 수정된 부분: 좌측 패딩을 줄임 */
+      cursor: pointer;
+    }
+  }
+}
+
+.header2 {
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #14505c;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+  animation: fadeIn 0.8s ease-in forwards; /* animation 속성 추가 */
+  .span1 {
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 50px;
+  }
+  .span2 {
+    color: white;
+    font-family: 'Black Han Sans';
+    font-size: 35px;
+    margin-left: 20px;
+  }
+  .headerText {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 10px;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* 반응형 웹 디자인 */
+  @media (max-width: 1280px) {
+    .nav {
+      display: none; /* 작은 화면에서 네비게이션 숨기기 */
+    }
+
+    .hamburger {
+      display: block; /* 햄버거 아이콘 표시 */
+      cursor: pointer;
+      margin-right: 20px; /* 원하는 간격으로 조정 */
+      color: white;
+
+      &:hover {
+        opacity: 0.8; /* 호버 효과 추가 */
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    justify-content: space-around;
+
+    .logo {
+      width: 200px;
+      height: auto;
+      padding-left: 5px; /* 수정된 부분: 좌측 패딩을 줄임 */
+      cursor: pointer;
+    }
+  }
+}

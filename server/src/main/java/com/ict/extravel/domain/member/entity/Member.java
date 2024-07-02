@@ -1,5 +1,6 @@
 package com.ict.extravel.domain.member.entity;
 
+import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.entity.Wallet;
@@ -79,4 +80,5 @@ public class Member {
 
     @Column(name = "refresh_token_expiry_date")
     private LocalDate refreshTokenExpiryDate;
+
 }

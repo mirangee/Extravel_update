@@ -6,6 +6,7 @@ import com.ict.extravel.domain.member.dto.request.*;
 import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
 import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.service.CoolSMSService;
 import com.ict.extravel.domain.member.service.MemberService;
 import jakarta.annotation.PostConstruct;
@@ -39,6 +40,7 @@ public class MemberController {
     private final MemberService memberService;
     private final CoolSMSService coolSMSService;
     private DefaultMessageService messageService;
+
 
 
     @Value("${CoolSMS.api_key}")
@@ -183,7 +185,8 @@ public class MemberController {
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
         memberService.NaverLoginService(code);
-        return null;
+
+        return ResponseEntity.ok().body("SUCCESS");
     }
 
     @GetMapping("/kakaologin")
@@ -197,6 +200,7 @@ public class MemberController {
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
+        memberService.googleService(googleUserInfoDTO);
         return ResponseEntity.ok().body("SUCCESS");
     }
 

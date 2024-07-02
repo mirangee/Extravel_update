@@ -76,12 +76,6 @@ const Section2 = () => {
             </div>
           </div>
         </div>
-        <div className={styles.section2Box2}>
-          <div className={styles.searchTableBox}>
-            <VirualEx />
-          </div>
-          <div className={styles.searchTextBox}></div>
-        </div>
       </div>
     </>
   );

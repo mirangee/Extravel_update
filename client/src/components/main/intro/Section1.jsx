@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import styles from '../../../scss/Section1.module.scss';
 import rectangle from '../../../assets/img/home2.jpg';
 import { motion } from 'framer-motion';
-
 import { useNavigate } from 'react-router-dom';
 
 const Section1 = () => {

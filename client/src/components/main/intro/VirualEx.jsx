@@ -1,7 +1,8 @@
 import React from 'react';
-// import Styles from '../../../scss/VirualEx.module.scss';
+
+import Styles from '../../../scss/VirualEx.module.scss';
 const VirualEx = () => {
-  return <div>g</div>;
+  return <div className={Styles.boxOne}>g</div>;
 };
 
 export default VirualEx;
