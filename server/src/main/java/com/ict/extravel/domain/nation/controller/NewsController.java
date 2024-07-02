@@ -36,9 +36,9 @@ public class NewsController {
     public ResponseEntity<String> getYouTubeVideos() {
         String reqUrl = "https://openapi.naver.com/v1/search/news.json";
 
-        int display = 5;
+        int display = 10;
         URI uri = UriComponentsBuilder.fromUriString(reqUrl)
-                .queryParam("query", "주식")
+                .queryParam("query", "환율")
                 .queryParam("display", display)
                 .queryParam("start", 1)
                 .encode()
@@ -56,14 +56,14 @@ public class NewsController {
 
         log.info("요청 headers {}", headers);
 
-    HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-    ResponseEntity<String> response = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            entity,
-            String.class
-    );
+        ResponseEntity<String> response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
 
         log.info("리턴: response : {}" , response);
         return response;

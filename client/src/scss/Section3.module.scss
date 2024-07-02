@@ -1,153 +1,186 @@
-@font-face {
-  font-family: 'TTLaundryGothicB';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-@font-face {
-  font-family: 'Ownglyph_jooreeletter-Rg';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/Ownglyph_jooreeletter-Rg.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
+.section3container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
 
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    
-  }
-  
-  .section3container {
+  .section3InnerBox {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
-    background-image: url('../assets/img/123.jpg'); 
-    background-size: cover;
-    background-position: center;
-  
-  
-  .box1 {
+    background: white;
+    width: 70%;
     height: 70%;
-    width: calc(80% / 3); 
-    margin: 0 0.3%; 
-    background-color: rgba(255, 255, 255); 
-    overflow: hidden;
-    
-    .minibox1Youtube, .minibox1Text {
-      height: 50%;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+
+    .box1 {
+      height: 100%;
+      width: 35%;
+      background-image: url(../assets/img/underwater.jpg);
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+      overflow: hidden;
       display: flex;
-      justify-content: center;
-      
-    
-    }
-    
-    .minibox1Youtube {
-       margin: 30px;
-      
-    }
-    
-    .minibox1Text {
-      background-color: white; 
-      text-align: left; 
-      flex-direction: column; 
-      justify-content: flex-start; 
-      color: black;
-      font-family: 'Ownglyph_jooreeletter-Rg';
-      font-size: 25px;
-      padding-left: 10px; 
-      text-align: left;
-  
-  }
-  
-  .minibox1Text h1 {
-      margin: 0; 
-      padding-bottom: 10px; 
-      font-family: 'TTLaundryGothicB'; 
-      color: black;   
-  }
-  }
-  .box2{
-    height: 70%;
-    width: calc(80% / 3); 
-    margin: 0 0.3%; 
-    background-color: rgba(255, 255, 255);
-    background-image: url('../assets/img/a5.jpg');
-    background-size: cover;
-    background-position: center;
-    align-items: center;
-
-    .minibox2Text {
-      text-align: left; 
-      flex-direction: column; 
-      justify-content: flex-start; 
-      color: black;
-      font-family: 'Ownglyph_jooreeletter-Rg';
-      font-size: 25px;
-      padding-left: 10px; 
-      padding-top: 76%;
+      flex-direction: column;
       color: white;
-    }
-    .minibox2Text h1 {
-      color: white;
-      font-size: 30px;
-    }
-  }
-  .box3 {
-    height: 70%;
-    width: calc(50% / 3); 
-    margin: 0 0.3%; 
-    background-color: rgba(255, 255, 255);
-    overflow: hidden;
 
-    .minibox3Text {
-      background-color: white; 
-      text-align: left; 
-      flex-direction: column; 
-      justify-content: flex-start; 
-      color: black;
-      font-family: 'Ownglyph_jooreeletter-Rg';
-      font-size: 25px;
-      padding-left: 10px;
-      text-align: left;
+      .minibox1Youtube {
+        height: 50%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .minibox1Text {
+        height: 50%;
+        font-size: calc(1rem + 10%);
+        padding: 10%;
+        line-height: 2em;
+
+        h1 {
+          margin: 0;
+          font-size: calc(1rem + 70%);
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+      }
     }
-    .minibox3Text h1 {
-      color: black;
-      font-size: 25px;
-      
-    }
-    .minibox3Picture {
-      background-image: url('../assets/img/a6.jpg');
-    border-radius: 50%;
-    margin-left: 15px;
-      margin-right: 15px;
-    margin-top: 10px;
-    background-repeat: no-repeat;
-    background-position: center;
-    align-items: center;
-    }
-    .minibox3Picture, .minibox3Text {
-      height: 50%;
+
+    .box2 {
+      height: 100%;
+      width: 35%;
+      background-image: url('../assets/img/sapporoSnow.jpg');
+      background-size: cover;
+      background-position: bottom;
       display: flex;
-      justify-content: center;
-      
-      
-     
+      flex-direction: column;
+      justify-content: flex-end;
+
+      .minibox2Text {
+        height: 50%;
+        text-align: left;
+        font-size: calc(1rem + 10%);
+        padding: 10%;
+        overflow: hidden;
+        line-height: 2em;
+        color: #14505c;
+
+        h1 {
+          font-size: calc(1rem + 40%);
+          font-weight: bold;
+          color: #14505c;
+        }
+      }
+    }
+
+    .box3 {
+      height: 100%;
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      overflow: hidden;
+      padding: 10px;
+
+      .minibox3Text {
+        background-color: white;
+        flex-direction: column;
+        justify-content: flex-start;
+        color: black;
+        font-size: calc(1rem + 10%);
+        padding: 10px;
+        text-align: left;
+        height: 60%;
+        display: flex;
+        justify-content: center;
+        line-height: 2em;
+        padding: 10%;
+        color: #14505c;
+
+        h1 {
+          color: black;
+          font-size: calc(1rem + 40%);
+          font-weight: bold;
+          margin-bottom: 20px;
+          color: #14505c;
+        }
+      }
+
+      .minibox3Picture {
+        background-image: url('../assets/img/sapporo3.jpg');
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        align-items: center;
+        height: 50%;
+        margin: 0 10%;
+        box-sizing: border-box;
+      }
     }
   }
-  
-  .spacer {
-    flex-grow: 1;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .section3container{
+    width: 1600px;
+    height: 1200px;
+    justify-content: space-between;
+    margin-left: 30px;
+    // align-items: baseline;
   }
 
-  
-  h1 {
-    font-family: 'TTLaundryGothicB';
-    font-size: 30px;
-  }
+}
+@media (max-width: 640px) {
+  .section3container {
+    width: 100%;
+    height: auto;
 
-  
- 
+    .section3InnerBox {
+      flex-direction: column;
+      width: 100%;
+
+      .box1, .box2, .box3 {
+        width: 100%;
+        margin-bottom: 20px;
+        height: auto;
+      }
+
+      .box1 {
+        min-height: 400px; /* Adjust as needed */
+        .minibox1Youtube{
+          height: 300px;
+        }
+      }
+
+      .box2 {
+        min-height: 400px; /* Adjust as needed */
+      }
+
+      .box3 {
+        min-height: 200px; /* Adjust as needed */
+      }
+    }
+  }
 }

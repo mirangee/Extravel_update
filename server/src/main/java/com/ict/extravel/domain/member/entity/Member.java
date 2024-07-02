@@ -1,6 +1,8 @@
 package com.ict.extravel.domain.member.entity;
 
 import com.ict.extravel.domain.nation.entity.Nation;
+import com.ict.extravel.domain.pointexchange.entity.PointCharge;
+import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,10 +13,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor @NoArgsConstructor
+@ToString @EqualsAndHashCode
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "member")
 public class Member {
@@ -51,8 +52,32 @@ public class Member {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Size(max = 50)
-    @Column(name = "grade", length = 50)
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade", nullable = false, length = 50)
+    private Grade grade;
+
+    public enum Grade {
+        BRONZE, SILVER, GOLD
+    }
+
+    @Size(max = 255)
+    @ColumnDefault("default_value")
+    @Column(name = "path")
+    private String path;
+
+    @Size(max = 255)
+    @Column(name = "tid")
+    private String tid;
+
+    @Size(max = 255)
+    @Column(name = "access_token")
+    private String accessToken;
+
+    @Size(max = 255)
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_expiry_date")
+    private LocalDate refreshTokenExpiryDate;
 
 }

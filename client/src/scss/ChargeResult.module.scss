@@ -1,0 +1,78 @@
+.container {
+  width: 100%;
+  padding: 10px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0px 10px;
+  // background-color: rgba(20, 80, 92, 0.2);
+  // background-image: url('../assets/img/logo_white.png');
+  // background-repeat: no-repeat;
+  // background-blend-mode: lighten;
+
+    .chargeSuccess {
+      font-size: 25px;
+      text-align: center;
+      color: #14505c;
+      margin-top: 100px;
+    }
+    
+    .innerContainer{
+      width: 450px;
+      margin: 70px auto;
+      // background-color: aqua;
+
+      .pointOuterContainer{
+        display: flex;
+        justify-content: end;
+        align-items: center;
+
+        .chargeAmountTitle {
+          margin-top: 20px;
+          margin-right: 20px;
+        }          
+        .pointContainer {
+          margin-top: 10px;
+          margin-right: 10px;
+          display: flex;
+    
+          .point {
+            width: 250px;
+            border: 2px solid #14505c;
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 2px;
+            text-align: right;
+            padding: 0 10px;
+    
+            &:hover {
+              background: rgba($color: #14505c, $alpha: 0.2);
+            }
+          }
+        }    
+      }
+      
+  }
+}
+
+
+.chargeBtn {
+  width: 40%;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  background: #14505c;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  margin-top: 30px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background: white;
+    color: black;
+    border: 2px solid #14505c;
+  }
+}

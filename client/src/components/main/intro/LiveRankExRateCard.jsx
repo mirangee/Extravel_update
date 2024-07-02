@@ -14,19 +14,19 @@ const LiveRankExRateCard = (item) => {
     if (changeRate > 0) {
       return (
         <div style={{ color: 'red', marginTop: '5px' }}>
-          ▲ {Math.abs(c).toFixed(2)} {}%
+          ▲ {Math.abs(c).toFixed(2)} {''}%
         </div>
       );
     } else if (changeRate < 0) {
       return (
         <div style={{ color: 'blue', marginTop: '5px' }}>
-          ▼ {Math.abs(c).toFixed(2)} {}%
+          ▼ {Math.abs(c).toFixed(2)} {''}%
         </div>
       );
     } else {
       return (
         <div style={{ color: 'gray', marginTop: '5px' }}>
-          {Math.abs(c).toFixed(2)} {}%
+          {Math.abs(c).toFixed(2)} {''}%
         </div>
       );
     }

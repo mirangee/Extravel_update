@@ -1,0 +1,48 @@
+.youtubeContainer {
+  align-items: center;
+  // background-color: #ff0000;
+
+  .youtube1 {
+    padding-left: 10px;
+  }
+  .youtube2 {
+    padding-left: 10px;
+  }
+  .youtube3 {
+    padding-left: 10px;
+  }
+  iframe {
+    margin-left: 100px;
+  }
+}
+
+// .youtubeContainer {
+//   width: 100%;
+//   margin: 30px auto;
+// }
+
+// Swiper 슬라이더의 스타일
+.youtubeSlider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Swiper 네비게이션 버튼 스타일
+.swiper-button-prev {
+  color: #275963; // 이전 버튼의 색상을 원하는 값으로 설정합니다.
+  font-size: 24px; // 이전 버튼의 글꼴 크기를 설정합니다.
+  margin-right: 10px; // 이전 버튼의 오른쪽 여백을 설정합니다.
+}
+
+// Swiper 네비게이션 버튼 스타일
+.swiper-button-next {
+  color: #275963; // 다음 버튼의 색상을 원하는 값으로 설정합니다.
+  font-size: 24px; // 다음 버튼의 글꼴 크기를 설정합니다.
+  margin-left: 10px; // 다음 버튼의 왼쪽 여백을 설정합니다.
+}
+
+.swiper-pagination-bullet-active{
+  background: #275963;
+}
+

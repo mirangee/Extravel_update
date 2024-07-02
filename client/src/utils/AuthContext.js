@@ -18,6 +18,8 @@ export const AuthContextProvider = (props) => {
   const [userName, setUserName] = useState('');
   const [nation, setNation] = useState('');
   const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
+  const [grade, setGrade] = useState('');
   const navi = useNavigate();
 
   const loginHandler = (res) => {
@@ -25,11 +27,15 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('NAME', res.name);
     localStorage.setItem('NATION', res.nationCode);
     localStorage.setItem('EMAIL', res.email);
+    localStorage.setItem('ID', res.id);
+    localStorage.setItem('GRADE', res.grade);
     // localStorage.setItem('ROLE', role);
     setIsLoggedIn(true);
     setUserName(res.name);
     setEmail(res.email);
     setNation(res.nationCode);
+    setId(res.id);
+    setGrade(res.grade);
   };
   const nationHandler = (nationCode) => {
     if (email === '') {
@@ -58,10 +64,14 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem('NATION');
     localStorage.removeItem('EMAIL');
     localStorage.removeItem('ROLE');
+    localStorage.removeItem('ID');
+    localStorage.removeItem('GRADE');
     setIsLoggedIn(false);
     setUserName('');
     setEmail('');
     setNation('');
+    setId('');
+    setGrade('');
   };
 
   //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
@@ -71,6 +81,8 @@ export const AuthContextProvider = (props) => {
       setUserName(localStorage.getItem('NAME'));
       setNation(localStorage.getItem('NATION'));
       setEmail(localStorage.getItem('EMAIL'));
+      setId(localStorage.getItem('ID'));
+      setGrade(localStorage.getItem('GRADE'));
     }
   }, []);
 
@@ -78,9 +90,11 @@ export const AuthContextProvider = (props) => {
     //컨텍스트 값 -> 하위 컴포넌트에 제공
     <AuthContext.Provider
       value={{
-        inLoggedIn: isLoggedIn,
+        isLoggedIn,
         name: userName,
         nation,
+        id,
+        grade,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,

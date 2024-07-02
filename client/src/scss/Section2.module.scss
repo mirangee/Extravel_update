@@ -78,7 +78,7 @@
 
 .section2Box2 {
   width: 100%;
-  height: 100%px;
+  height: 100%;
   border: 1px solid black;
   display: flex;
   justify-content: center;
@@ -94,4 +94,70 @@
   width: 50%;
   background-color: blueviolet;
   height: 100%;
+}
+
+@media (max-width: 1280px) {
+  .section2Wrapper {
+    width: 100%;
+  }
+  .titleBox {
+    width: 50%;
+    color: #275963;
+    padding: 70px 70px;
+    h1 {
+      font-family: 'Black Han Sans';
+      font-size: 38px;
+    }
+    span {
+      font-family: 'Noto sans KR';
+      font-size: 18px;
+    }
+  }
+  .section2Container {
+    width: 100%;
+  }
+  .section2Box {
+    width: 100%;
+    margin: auto -50px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .section2Wrapper {
+    width: 100%;
+  }
+
+  .titleBox {
+    flex-direction: column;
+    width: 100%;
+    color: #275963;
+    padding: 70px 70px;
+    h1 {
+      font-family: 'Black Han Sans';
+      font-size: 38px;
+    }
+    span {
+      font-family: 'Noto sans KR';
+      font-size: 15px;
+    }
+  }
+
+  .section2Box {
+    flex-direction: column; /* 수정된 부분: 플렉스 방향을 열로 변경 */
+    width: 1200px;
+  }
+
+  .countryCard {
+    width: 90%; /* 카드의 너비를 늘림 */
+  }
+  .rateContent {
+    flex-direction: column;
+  }
+  .upRate {
+    margin-top: 30px;
+    margin-right: 30px;
+  }
 }

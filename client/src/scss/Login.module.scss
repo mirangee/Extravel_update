@@ -1,5 +1,19 @@
 * {
   box-sizing: border-box;
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+body {
+      font-family: 'Noto Sans KR', sans-serif; }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .login {
@@ -9,10 +23,10 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
-  height: 100vh;
+  // font-family: 'Montserrat', sans-serif;
+  height: 130vh;
   margin: -20px 0 50px;
-  background-image: url('../assets/img/a7.jpg');
+  background-image: url('../assets/img/loginbg.jpg');
   background-size: cover;
   z-index: -1;
 }
@@ -20,11 +34,18 @@
 .login .toplogo {
   background-image: url('../assets/img/logo_white.png');
   z-index: 1;
+  font-size: 52px;
+  font-weight: bold;
+  // margin-top: 50px;
+  margin-bottom: 50px;
+  color: white;
+  animation: fadeIn 0.8s ease-in forwards;
+
 }
 
 .login h1 {
   font-weight: bold;
-  margin: 0;
+  padding: 10px;
 }
 
 .login h2 {
@@ -40,7 +61,8 @@
 }
 
 .login span {
-  font-size: 12px;
+  padding: 15px;
+  font-size: 15px;
 }
 
 .login a {
@@ -52,15 +74,16 @@
 
 .login button {
   border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
+  border: 1px solid rgb(48, 43, 43);
+  background-color: rgb(48, 43, 43);
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
-  padding: 12px 45px;
+  padding: 12px 35px;
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
+  margin: 15px;
 }
 
 .login button:active {
@@ -77,24 +100,35 @@
 }
 
 .login form {
+  width: 95%;
   background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 0 50px;
-  height: 100%;
+  height: 99%;
   text-align: center;
   margin: 10px 0 10px 0;
 }
 
 .login input {
-  background-color: #eee;
-  border: none;
+  // background-color: #eee;
+  // border: none;
   padding: 12px 15px;
   margin: 8px 0;
   width: 100%;
+  // height: 25px;
 }
+
+
+
+input::placeholder {
+  font-size: 16px; /* 원하는 크기로 조절하세요 */
+  color: gray; /* 색상도 변경할 수 있습니다 */
+}
+
+
 
 .container {
   background-color: #fff;
@@ -104,9 +138,10 @@
     0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
-  width: 768px;
+  width: 1000px;
   max-width: 100%;
   min-height: 800px;
+  animation: fadeIn 0.8s ease-in forwards;
 }
 
 .form-container {
@@ -170,18 +205,28 @@
 }
 
 .overlay {
-  background: #ff416c;
+  background: #355358;
   background: -webkit-linear-gradient(
     to right,
-    #ff0000,
-    #2600ff,
-    #ffffff
+    #355358,
+    #3d6e6e,
+    #498586,
+    #56a89f,
+    #4ea798,
+    #14505C,
+    #14505C,
+
   );
   background: linear-gradient(
     to right,
-    #1f2186,
-    #b1db4f,
-    #6b1b1b
+    #355358,
+    #3d6e6e,
+    #498586,
+    #4a8d85,
+    #4f978f,
+    #3d6e6e,
+    #14505C,
+
   );
   background-repeat: no-repeat;
   background-size: cover;
@@ -288,9 +333,16 @@ footer {
   ); /* 마우스 호버 시 배경색 변경 */
 }
 
+.login .phoneNumberCheck {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: black;
+}
+
 .login .CheckButton {
-  margin-top: 6px;
-  width: 80%;
+  margin-top: 15px;
+  width: 45%;
   flex-direction: column;
   text-align: center;
   opacity: 0.5;
