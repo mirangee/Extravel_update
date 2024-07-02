@@ -16,7 +16,7 @@ import java.time.Instant;
 @Table(name = "search_trend")
 public class SearchTrend {
     @Id
-    @Column(name = "nation_code", columnDefinition = "CHAR(3)")
+    @Column(name = "nation_code")
     private String nationCode;
 
     @MapsId
