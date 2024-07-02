@@ -19,12 +19,12 @@ import lombok.*;
 public class Nation {
     @Id
     @Size(max = 3)
-    @Column(name = "nation_code", nullable = false, columnDefinition = "char(3)")
+    @Column(name = "nation_code", nullable = false, length = 3,columnDefinition = "char(3)")
     private String nationCode;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50,columnDefinition = "char(3)")
     private String name;
 
     @Column(name = "flag")

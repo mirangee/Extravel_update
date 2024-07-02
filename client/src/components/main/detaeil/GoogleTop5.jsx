@@ -14,8 +14,8 @@ const GoogleTop5 = () => {
     const res = await axios.get(
       API_BASE_URL + '/api/trend/data',
     );
-    console.log(res.data);
-    setTrendList(res.data);
+    console.log(res.data.searchTrendList);
+    setTrendList(res.data.searchTrendList);
   };
   return (
     <>

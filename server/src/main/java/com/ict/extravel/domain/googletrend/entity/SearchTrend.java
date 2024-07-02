@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -16,7 +15,8 @@ import java.time.Instant;
 @Table(name = "search_trend")
 public class SearchTrend {
     @Id
-    @Column(name = "nation_code")
+    @Size(max = 3)
+    @Column(name = "nation_code", nullable = false, length = 3)
     private String nationCode;
 
     @MapsId
@@ -35,7 +35,7 @@ public class SearchTrend {
     @Column(name = "total_searches")
     private Integer totalSearches;
 
-    @CreationTimestamp
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
 
