@@ -184,7 +184,7 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        Member member = memberService.NaverLoginService(code);
+        memberService.NaverLoginService(code);
 
         return ResponseEntity.ok().body("SUCCESS");
     }
@@ -200,6 +200,7 @@ public class MemberController {
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
+        memberService.googleService(googleUserInfoDTO);
         return ResponseEntity.ok().body("SUCCESS");
     }
 
