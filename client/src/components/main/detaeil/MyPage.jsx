@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '@mui/material';
 import '../../../scss/MyPage.scss';
 import MyPageCard from './MyPageCard';
+import MyPagePointCard from './MyPagePointCard';
+import MyPagePointCard2 from './MyPagePointCard2';
 
 const MyPage = () => {
   const location = useLocation();
@@ -86,6 +88,8 @@ const MyPage = () => {
         </Button>
       </motion.div>
       <MyPageCard />
+      <MyPagePointCard />
+      <MyPagePointCard2 />
     </>
   );
 };

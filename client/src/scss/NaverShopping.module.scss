@@ -198,3 +198,38 @@
     }
   }
 }
+
+@media (max-width: 640px) {
+  .shoppingHeader {
+    .headerBox {
+      width: 100%;
+      height: 70%;
+      
+      .swiperBox {
+        .slideContent {
+          .overlay {
+            h3 {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+    
+    .topFive {
+      font-size: 28px;
+    }
+  }
+
+  .naverShoppingBox {
+    width: 90%;
+    margin-left: 5%;
+    // font-size: 8px;
+
+    .listUl {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      // font-size: 8px;
+    }
+  }
+}
