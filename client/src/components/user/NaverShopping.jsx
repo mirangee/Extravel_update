@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from '../../scss/NaverShopping.module.scss';
 import Pagination from 'react-js-pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,6 +17,7 @@ import {
 } from 'swiper/modules';
 import { FaPlay, FaPause } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
+import AuthContext from '../../utils/AuthContext';
 
 const NaverShopping = () => {
   const [article, setArticle] = useState([]);
@@ -19,9 +25,11 @@ const NaverShopping = () => {
   const [activePage, setActivePage] = useState(1);
   const itemsPerPage = 12;
   const swiperRef = useRef(null);
+  const { nation } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch('http://localhost:8181/api/v1/shopping')
+    console.log('설정국가: ', nation);
+    fetch('http://localhost:8181/api/v1/shopping/' + nation)
       .then((response) => response.json())
       .then((data) => {
         const items = data.items;
@@ -37,7 +45,7 @@ const NaverShopping = () => {
       .catch((error) =>
         console.error('Error fetching data : ', error),
       );
-  }, []);
+  }, [nation]);
 
   const formatPrice = (lprice) => {
     return new Intl.NumberFormat('ko-KR').format(lprice);
