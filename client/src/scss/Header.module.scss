@@ -72,16 +72,25 @@
       align-items: center;
     }
 
+    .login{
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 20px;
+    }
+
     .logout {
       text-decoration: none;
       color: white;
       font-weight: bold;
       font-size: 18px;
-      margin-left: 10px;
+      margin-left: 20px;
     }
 
     .countrySelect {
-      padding: 5px;
+      padding: 30px;
+
       font-size: 13px;
       font-weight: bold;
       color: black;
@@ -142,6 +151,15 @@
     transform: translateX(0);
   }
 
+  .closeButton{
+    color: #14505c;
+    margin: 5px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+    text-align: right;
+    cursor: pointer;
+  }
+
   .nav {
     display: flex;
     flex-direction: column;
@@ -168,6 +186,7 @@
           &:hover {
             background-color: #3d6c72;
             color: #fff;
+            border-radius: 20px;
           }
         }
       }
@@ -204,4 +223,6 @@
       cursor: pointer;
     }
   }
+
+
 }

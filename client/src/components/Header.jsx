@@ -139,12 +139,6 @@ const Header = () => {
             >
               {isLoggedIn ? name + '님 안녕하세요' : ''}
             </li>
-            <button
-              className={styles.closeButton}
-              onClick={toggleSidebar}
-            >
-              X
-            </button>
             <motion.li whileHover={{ scale: 1.2 }}>
               <Link to='/api/v1/shopping/'>패키지</Link>
             </motion.li>
@@ -208,7 +202,12 @@ const Header = () => {
                 </li>
               ) : (
                 <>
-                  <Link to='/login'>로그인</Link>
+                  <Link
+                    to='/login'
+                    className={styles.login}
+                  >
+                    로그인
+                  </Link>
                 </>
               )}
             </ul>
@@ -219,6 +218,12 @@ const Header = () => {
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}
       >
+        <div
+          className={styles.closeButton}
+          onClick={toggleSidebar}
+        >
+          <FontAwesomeIcon icon={faBars} size='2x' />
+        </div>
         <nav className={styles.nav}>
           <ul className={styles.menu}>
             <li>
