@@ -1,27 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '@mui/material';
 import '../../../scss/MyPage.scss';
 import MyPageCard from './MyPageCard';
+import AuthContext from '../../../../src/utils/AuthContext';
+import goldMedal from '../../../assets/img/gold.png';
+import silverMedal from '../../../assets/img/silver.png';
+import bronzeMedal from '../../../assets/img/bronze.png';
+import MyPagePointCard from './MyPagePointCard';
+import MyPagePointCard2 from './MyPagePointCard2';
 
 const MyPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const state = location.state || {};
+  const { email, grade, name, nation, phoneNumber } =
+    useContext(AuthContext);
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const state = location.state || {};
 
-  const email = state.email || 'wlqdprkrhtlvek@naver.com';
-  const phone = state.phone || '01030847234';
-  const name = state.name || '김상진';
-  const nation = state.nation || '미국(United States)';
-  const profileImage = state.profileImage || null; // 프로필 이미지 추가
+  // const email = state.email || 'wlqdprkrhtlvek@naver.com';
+  // const phone = state.phone || '01030847234';
+  // const name = state.name || '김상진';
+  // const nation = state.nation || '미국(United States)';
+  // const profileImage = state.profileImage || null; // 프로필 이미지 추가
 
-  const handleEdit = () => {
-    navigate('/mypage/modify', {
-      state: { email, phone, name, nation },
-    });
-  };
+  // const handleEdit = () => {
+  //   navigate('/mypage/modify', {
+  //     state: { email, phone, name, nation },
+  //   });
+  // };
 
   return (
     <>
@@ -32,8 +40,8 @@ const MyPage = () => {
       >
         <h1 className='PageHeader'>My Profile🛫</h1>
         <div className='ProfileHeader'>
-          {profileImage ? (
-            <img src={profileImage} alt='Profile' />
+          {grade === 'BRONZE' ? (
+            <img src={bronzeMedal} alt='Profile' />
           ) : (
             <img
               src='https://images-ext-1.discordapp.net/external/KpbnAh7zOI7Bt793FppLAb4fVT164XaRBF7sEmIYYNQ/https/flagcdn.com/w320/us.png?format=webp&quality=lossless'
@@ -56,7 +64,7 @@ const MyPage = () => {
           <Input
             fullWidth
             disabled
-            value={phone}
+            value={phoneNumber}
             style={{
               width: '700px',
               height: '72px',
@@ -73,7 +81,7 @@ const MyPage = () => {
             style={{ width: '700px', height: '72px' }}
           />
         </div>
-        <Button
+        {/* <Button
           onClick={handleEdit}
           style={{
             width: '150px',
@@ -83,9 +91,11 @@ const MyPage = () => {
           }}
         >
           프로필 수정하기
-        </Button>
+        </Button> */}
       </motion.div>
       <MyPageCard />
+      <MyPagePointCard />
+      <MyPagePointCard2 />
     </>
   );
 };

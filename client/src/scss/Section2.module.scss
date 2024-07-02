@@ -3,7 +3,7 @@
 .section2 {
   font-size: 14px;
   color: #000;
-  margin: 100px 0;
+  margin: 200px 0;
   width: 100%;
 }
 .section2Wrapper {
@@ -97,7 +97,7 @@
 }
 
 @media (max-width: 1280px) {
-  .section2Wrapper{
+  .section2Wrapper {
     width: 100%;
   }
   .titleBox {
@@ -123,15 +123,13 @@
     justify-content: space-between;
     margin-bottom: 100px;
   }
- 
-
 }
 
 @media (max-width: 640px) {
   .section2Wrapper {
     width: 100%;
   }
-  
+
   .titleBox {
     flex-direction: column;
     width: 100%;
@@ -154,15 +152,12 @@
 
   .countryCard {
     width: 90%; /* 카드의 너비를 늘림 */
-
-    
   }
-  .rateContent{
+  .rateContent {
     flex-direction: column;
   }
-  .upRate{
+  .upRate {
     margin-top: 30px;
     margin-right: 30px;
   }
-
 }

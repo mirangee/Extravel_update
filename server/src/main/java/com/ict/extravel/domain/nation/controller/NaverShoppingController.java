@@ -1,8 +1,5 @@
 package com.ict.extravel.domain.nation.controller;
 
-import com.ict.extravel.domain.member.repository.MemberRepository;
-import com.ict.extravel.domain.nation.entity.Nation;
-import com.ict.extravel.domain.nation.repository.NationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,8 +36,9 @@ public class NaverShoppingController {
         Nation findNation = nationRepository.findById(nation).orElseThrow();
 
         String Url = "https://openapi.naver.com/v1/search/shop.json";
+
         URI uri = UriComponentsBuilder.fromUriString(Url)
-                .queryParam("query", findNation.getName() + "여행")
+                .queryParam("query", "아프리카 여행")
                 .queryParam("display" , 100)
                 .queryParam("filter", "naverpay")
                 .queryParam("start",1)

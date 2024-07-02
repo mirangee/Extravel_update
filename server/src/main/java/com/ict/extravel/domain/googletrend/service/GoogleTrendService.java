@@ -3,6 +3,7 @@ package com.ict.extravel.domain.googletrend.service;
 import com.ict.extravel.domain.googletrend.dto.SearchTrendResponseDto;
 import com.ict.extravel.domain.googletrend.entity.SearchTrend;
 import com.ict.extravel.domain.googletrend.repository.GoogleTrendRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class GoogleTrendService {
     private final GoogleTrendRepository gtRepository;

@@ -337,15 +337,15 @@ const FindIDandPassword = () => {
       /* eslint-disable prettier/prettier */
       const data = showIDSection
         ? {
-          name: findIDState.name,
-          phoneNumber: findIDState.phoneNumber,
-          checkCode: findIDState.checkCode,
-        }
+            name: findIDState.name,
+            phoneNumber: findIDState.phoneNumber,
+            checkCode: findIDState.checkCode,
+          }
         : {
-          email: findPWState.email,
-          phoneNumber: findPWState.phoneNumber,
-          checkCode: findPWState.checkCode,
-        };
+            email: findPWState.email,
+            phoneNumber: findPWState.phoneNumber,
+            checkCode: findPWState.checkCode,
+          };
       /* eslint-disable prettier/prettier */
       console.log('onSubmitForm의 하단 data : ', data);
 
@@ -394,241 +394,264 @@ const FindIDandPassword = () => {
   //컴포넌트가 언마운트될 때(즉, DOM에서 제거될 때) 이전의 효과를 정리(clean-up)하는 기능도 제공
   //useEffect를 사용하면 사용자가 인증 버튼을 클릭할 때마다 authClickCount의 값이 콘솔에 기록되어, 몇 번의 인증 시도를 했는지 추적할 수 있음
 
+  const [isRightPanelActive, setIsRightPanelActive] =
+    useState(false);
+
   return (
     <>
-      <div className={styles.all}>
-        {/* 아이디 찾기 */}
-        <CloseButton
-          className={styles.xButton}
-          onClick={onClickBtn}
-          type='button'
-        />
-        {showIDSection && (
-          <div className={styles.id}>
-            <div>아이디 찾기</div>
-            <Input
-              onChange={onChangeName}
-              ref={inputName}
-              placeholder='이름을 입력하세요.'
-            />
+      <div className={styles.login}>
+        <h2 className={styles.toplogo}>EXTRAVEL</h2>
 
-            <Input
-              onChange={onChangePhoneNumber}
-              ref={inputPhoneNumber}
-              placeholder='전화번호를 입력하세요'
-            />
-            {showAuthNumInput && (
-              <Input
-                onChange={onChangeCheckCode}
-                ref={inputCheckCode}
-                placeholder='인증번호를 입력하세요'
-              />
-            )}
-
-            <div className={styles.idbtn}>
-              {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
-                <Button
-                  color='success'
-                  className={styles.submitButton}
-                  onClick={onSubmitForm}
-                >
-                  완료
-                </Button>
-              )}
-
-              {showAuthButton && (
-                <Button
-                  color='primary'
-                  size='lg'
-                  onClick={onAuthClick}
-                >
-                  인증하기
-                </Button>
-              )}
-
-              {showAuthNumInput && (
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-
-                    if (!isTimeZero) {
-                      console.log(
-                        '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
-                        randomAuthCode,
-                        isTimeZero,
-                      );
-                      checkSMS(
-                        checkCode,
-                        randomCode,
-                        setIsAuthCompleted,
-                        setResultMsg,
-                      ); // 입력된 인증코드 검증
-                      console.log(
-                        '인증번호 확인 클릭  : checkCode',
-                        checkCode,
-                      );
-                    } else {
-                      alert(
-                        '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
-                      );
-                    }
-                  }}
-                  variant='contained'
-                  color='success'
-                  style={{
-                    marginTop: 10,
-                    marginLeft: '100px',
-                    background: 'black',
-                    display: !isAuthCompleted
-                      ? 'block'
-                      : 'none',
-                  }}
-                >
-                  인증번호 확인
-                </Button>
-              )}
-              <div>
-                {' '}
-                {showAuthNumTimer && (
-                  <AuthNumTimer
-                    onTimeZero={handleTimeZero}
-                    sendSMS={sendSMS}
-                    phoneNumber={phoneNumber}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* resultMsg를 화면에 표시 */}
-            {resultMsg && (
-              <div className={styles.resultMsg}>
-                {resultMsg}
-              </div>
-            )}
-
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(false)}
+        <div
+          className={`${styles.container} ${isRightPanelActive ? styles['right-panel-active'] : ''}`}
+        >
+          <div className={styles.container}>
+            <div
+              className={`${styles['form-container']} ${styles['sign-up-container']}`}
             >
-              혹시 아이디는 기억나고 비밀번호만 찾으시나요?
-            </a>
-          </div>
-        )}
-
-        {/* ### */}
-        {/* 비밀번호 찾기 */}
-        {!showIDSection && (
-          <div className={styles.pw}>
-            <div>비밀번호 찾기</div>
-            <Input
-              onChange={onChangeEmail}
-              ref={inputEmail}
-              placeholder='이메일을 입력하세요.'
-            />
-
-            <Input
-              onChange={onChangePhoneNumber}
-              ref={inputPhoneNumber}
-              placeholder='전화번호를 입력하세요'
-            />
-            {showAuthNumInput && (
-              <Input
-                onChange={onChangeCheckCode}
-                ref={inputCheckCode}
-                placeholder='인증번호를 입력하세요'
+              {/* 아이디 찾기 */}
+              <CloseButton
+                className={styles.xButton}
+                onClick={onClickBtn}
+                type='button'
               />
-            )}
+              {showIDSection && (
+                <div className={styles.id}>
+                  <div className={styles.findId}>
+                    아이디 찾기
+                  </div>
+                  <Input
+                    onChange={onChangeName}
+                    ref={inputName}
+                    placeholder='이름을 입력하세요.'
+                  />
 
-            <div className={styles.pwbtn}>
-              {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
-                <Button
-                  color='success'
-                  className={styles.submitButton}
-                  onClick={onSubmitForm}
-                >
-                  완료
-                </Button>
+                  <Input
+                    onChange={onChangePhoneNumber}
+                    ref={inputPhoneNumber}
+                    placeholder='전화번호를 입력하세요.'
+                  />
+                  <div className={styles.certifiedTag}>
+                    {showAuthNumInput && (
+                      <Input
+                        className={styles.certifiedNumber}
+                        onChange={onChangeCheckCode}
+                        ref={inputCheckCode}
+                        placeholder='인증번호를 입력하세요.'
+                      />
+                    )}
+
+                    {showAuthNumInput && (
+                      <Button
+                        className={styles.confirmNumber}
+                        onClick={(e) => {
+                          e.preventDefault();
+
+                          if (!isTimeZero) {
+                            console.log(
+                              '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
+                              randomAuthCode,
+                              isTimeZero,
+                            );
+                            checkSMS(
+                              checkCode,
+                              randomCode,
+                              setIsAuthCompleted,
+                              setResultMsg,
+                            ); // 입력된 인증코드 검증
+                            console.log(
+                              '인증번호 확인 클릭  : checkCode',
+                              checkCode,
+                            );
+                          } else {
+                            alert(
+                              '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
+                            );
+                          }
+                        }}
+                        variant='contained'
+                        // style={{
+                        //   marginTop: 10,
+                        //   marginLeft: '100px',
+                        //   background: 'black',
+                        //   display: !isAuthCompleted
+                        //     ? 'block'
+                        //     : 'none',
+                        // }}
+                      >
+                        인증번호 확인
+                      </Button>
+                    )}
+                  </div>
+
+                  <div className={styles.idbtn}>
+                    {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
+                      <Button
+                        color='success'
+                        className={styles.submitButton}
+                        onClick={onSubmitForm}
+                      >
+                        완료
+                      </Button>
+                    )}
+
+                    {showAuthButton && (
+                      <Button
+                        className={styles.certifiedBtn}
+                        size='mid'
+                        onClick={onAuthClick}
+                      >
+                        인증하기
+                      </Button>
+                    )}
+
+                    <div>
+                      {' '}
+                      {showAuthNumTimer && (
+                        <AuthNumTimer
+                          onTimeZero={handleTimeZero}
+                          sendSMS={sendSMS}
+                          phoneNumber={phoneNumber}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* resultMsg를 화면에 표시 */}
+                  {resultMsg && (
+                    <div className={styles.resultMsg}>
+                      {resultMsg}
+                    </div>
+                  )}
+
+                  <a
+                    className={styles.changeBtn}
+                    onClick={() => setShowIDSection(false)}
+                  >
+                    혹시 아이디는 기억나고 비밀번호만
+                    찾으시나요?
+                  </a>
+                </div>
               )}
-              {showAuthButton && (
-                <Button
-                  color='primary'
-                  size='lg'
-                  onClick={onAuthClick}
-                >
-                  {/* {PWClickState.authClickCount > 0
+
+              {/* ### */}
+              {/* 비밀번호 찾기 */}
+              {!showIDSection && (
+                <div className={styles.pw}>
+                  <div className={styles.findId}>
+                    비밀번호 찾기
+                  </div>
+                  <Input
+                    onChange={onChangeEmail}
+                    ref={inputEmail}
+                    placeholder='이메일을 입력하세요.'
+                  />
+
+                  <Input
+                    onChange={onChangePhoneNumber}
+                    ref={inputPhoneNumber}
+                    placeholder='전화번호를 입력하세요'
+                  />
+                  {showAuthNumInput && (
+                    <Input
+                      onChange={onChangeCheckCode}
+                      ref={inputCheckCode}
+                      placeholder='인증번호를 입력하세요'
+                    />
+                  )}
+
+                  <div className={styles.pwbtn}>
+                    {showAuthButton && (
+                      <Button
+                        className={styles.certifiedBtn}
+                        size='mid'
+                        onClick={onAuthClick}
+                      >
+                        {/* {PWClickState.authClickCount > 0
                   ? '재인증'
                   : '인증하기'} */}
-                  인증하기
-                </Button>
-              )}
+                        인증하기
+                      </Button>
+                    )}
 
-              {showAuthNumInput && (
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
+                    {showAuthNumInput && (
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
 
-                    if (!isTimeZero) {
-                      console.log(
-                        '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
-                        randomAuthCode,
-                        isTimeZero,
-                      );
-                      checkSMS(
-                        checkCode,
-                        randomCode,
-                        setIsAuthCompleted,
-                        setResultMsg,
-                      ); // 입력된 인증코드 검증
-                      console.log(
-                        '인증번호 확인 클릭  : checkCode',
-                        checkCode,
-                      );
-                    } else {
-                      setResultMsg(
-                        '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
-                      );
-                    }
-                  }}
-                  variant='contained'
-                  color='success'
-                  style={{
-                    marginTop: 10,
-                    marginLeft: '100px',
-                    background: 'black',
-                    display: !isAuthCompleted
-                      ? 'block'
-                      : 'none',
-                  }}
-                >
-                  인증번호 확인
-                </Button>
+                          if (!isTimeZero) {
+                            console.log(
+                              '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
+                              randomAuthCode,
+                              isTimeZero,
+                            );
+                            checkSMS(
+                              checkCode,
+                              randomCode,
+                              setIsAuthCompleted,
+                              setResultMsg,
+                            ); // 입력된 인증코드 검증
+                            console.log(
+                              '인증번호 확인 클릭  : checkCode',
+                              checkCode,
+                            );
+                          } else {
+                            setResultMsg(
+                              '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
+                            );
+                          }
+                        }}
+                        variant='contained'
+                        color='success'
+                        style={{
+                          marginTop: 10,
+                          marginLeft: '100px',
+                          background: 'black',
+                          display: !isAuthCompleted
+                            ? 'block'
+                            : 'none',
+                        }}
+                      >
+                        인증번호 확인
+                      </Button>
+                    )}
+                    <div>
+                      {' '}
+                      {showAuthNumTimer && (
+                        <AuthNumTimer
+                          onTimeZero={handleTimeZero}
+                          sendSMS={sendSMS}
+                          phoneNumber={phoneNumber}
+                        />
+                      )}
+                      {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
+                        <Button
+                          className={styles.submitButton}
+                          onClick={onSubmitForm}
+                        >
+                          완료
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* resultMsg를 화면에 표시 */}
+                  {resultMsg && (
+                    <div className={styles.resultMsg}>
+                      {resultMsg}
+                    </div>
+                  )}
+                  <a
+                    className={styles.changeBtn}
+                    onClick={() => setShowIDSection(true)}
+                  >
+                    혹시 아이디가 기억이 나지 않으세요?
+                  </a>
+                </div>
               )}
-              <div>
-                {' '}
-                {showAuthNumTimer && (
-                  <AuthNumTimer
-                    onTimeZero={handleTimeZero}
-                    sendSMS={sendSMS}
-                    phoneNumber={phoneNumber}
-                  />
-                )}
-              </div>
             </div>
-
-            {/* resultMsg를 화면에 표시 */}
-            {resultMsg && (
-              <div className={styles.resultMsg}>
-                {resultMsg}
-              </div>
-            )}
-            <a
-              className={styles.changeBtn}
-              onClick={() => setShowIDSection(true)}
-            >
-              혹시 아이디가 기억이 나지 않으세요?
-            </a>
           </div>
-        )}
+        </div>
       </div>
     </>
   );
