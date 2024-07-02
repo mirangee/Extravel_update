@@ -723,7 +723,7 @@ const Login = () => {
                 />
 
                 <Link to='/login/FindIDandPassword'>
-                  아이디/비밀번호 찾기!!!!!!!!!!!!!!
+                  아이디/비밀번호 찾기
                 </Link>
                 {/* @@@ */}
 
@@ -731,7 +731,7 @@ const Login = () => {
                   className={styles.button}
                   type='submit'
                 >
-                  로그인1
+                  로그인
                 </Button>
               </form>
             </div>
