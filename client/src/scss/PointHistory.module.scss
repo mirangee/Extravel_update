@@ -1,0 +1,26 @@
+.title {
+  width: 42%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 100px;
+  margin-left: 600px;
+  // background-color: yellow;
+
+  .pageHeader{
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(to right top, #a6d2df, #0a4a58);
+    color: transparent;
+    -webkit-background-clip: text;  
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+
+
