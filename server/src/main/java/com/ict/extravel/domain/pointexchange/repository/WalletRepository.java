@@ -19,6 +19,6 @@ public interface WalletRepository extends JpaRepository<Wallet, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Wallet (member_id, et_point) VALUES (?1, ?2)", nativeQuery = true)
+    @Query(value = "INSERT INTO wallet (member_id, et_point) VALUES (?1, ?2)", nativeQuery = true)
     void insertWallet(Integer memberId, BigDecimal etPoint);
 }

@@ -2,10 +2,7 @@ package com.ict.extravel.domain.member.service;
 
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
-import com.ict.extravel.domain.member.dto.request.FindIDRequestDTO;
-import com.ict.extravel.domain.member.dto.request.LoginRequestDTO;
-import com.ict.extravel.domain.member.dto.request.MemberSignUpRequestDTO;
-import com.ict.extravel.domain.member.dto.request.UpdateMemberNationRequestDTO;
+import com.ict.extravel.domain.member.dto.request.*;
 import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
 import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
 import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
@@ -391,7 +388,14 @@ public class MemberService {
     }
 
 
-
+    public String exchangeCheck(ExchangeCheckRequestDTO dto) {
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
+        if(Objects.equals(dto.getPhoneNum(), member.getPhoneNumber())){
+            return "200";
+        }else {
+            return "400";
+        }
+    }
 }
 
 

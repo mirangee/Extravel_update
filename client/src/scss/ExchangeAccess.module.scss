@@ -1,0 +1,44 @@
+.title {
+  font-size: 20px;
+  margin: 20px 0;
+}
+.buttonBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.exchangeBt {
+  width: 45%;
+  background-color: #275963 !important;
+  border-radius: 10px;
+}
+.accessBtBox {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 20px;
+  width: 100%;
+}
+.accessBt {
+  width: 100%;
+  height: 50px;
+  margin: 2px;
+}
+.redirectBt {
+  width: 45%;
+  background-color: gray !important;
+  border-radius: 10px;
+}
+.accessPhoneBox {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  width: 100%;
+}
+.timer {
+  color: red;
+  margin-top: 15px;
+}
+.accessP {
+  color: red;
+}

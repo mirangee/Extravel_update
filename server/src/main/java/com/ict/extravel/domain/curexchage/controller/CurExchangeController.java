@@ -3,6 +3,7 @@ package com.ict.extravel.domain.curexchage.controller;
 
 import com.ict.extravel.domain.curexchage.dto.LiveRankExchangeResponseDTO;
 import com.ict.extravel.domain.curexchage.dto.NationDateExchangeDataResponseDTO;
+import com.ict.extravel.domain.curexchage.dto.NationExChangeResponseDTO;
 import com.ict.extravel.domain.curexchage.repository.CurrentExchangeRepository;
 import com.ict.extravel.domain.curexchage.service.CurExchangeService;
 import com.ict.extravel.domain.monthexchage.repository.MonthExchangeRepository;
@@ -32,5 +33,10 @@ public class CurExchangeController {
         List<LiveRankExchangeResponseDTO> nationLiveExchangeData = curExchangeService.getNationLiveExchangeData();
         return ResponseEntity.ok(nationLiveExchangeData);
 
+    }
+    @GetMapping("/exchange")
+    public ResponseEntity<?> exchangeRate(String nation) {
+        NationExChangeResponseDTO nationExChangeResponseDTO = curExchangeService.exchangeRate(nation);
+        return ResponseEntity.ok(nationExChangeResponseDTO);
     }
 }

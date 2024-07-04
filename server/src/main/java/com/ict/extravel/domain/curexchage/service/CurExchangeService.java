@@ -3,6 +3,7 @@ package com.ict.extravel.domain.curexchage.service;
 
 import com.ict.extravel.domain.curexchage.dto.LiveRankExchangeResponseDTO;
 import com.ict.extravel.domain.curexchage.dto.NationDateExchangeDataResponseDTO;
+import com.ict.extravel.domain.curexchage.dto.NationExChangeResponseDTO;
 import com.ict.extravel.domain.curexchage.entity.CurrentExchangeRate;
 import com.ict.extravel.domain.curexchage.repository.CurrentExchangeRepository;
 import com.ict.extravel.domain.monthexchage.entity.MonthlyPastExchangeRate;
@@ -68,5 +69,19 @@ public class CurExchangeService {
                 .subtract(x.getPreExchangeRateValue())
                 .divide(x.getPreExchangeRateValue(), 4, RoundingMode.HALF_UP)
                 .multiply(new BigDecimal(100));
+    }
+
+    public NationExChangeResponseDTO exchangeRate(String nation) {
+        Nation nationCode = nationRepository.findById(nation).orElseThrow();
+        CurrentExchangeRate byNationCode = currentExchangeRepository.findByNationCode(nationCode);
+        return NationExChangeResponseDTO.builder()
+                .nation(byNationCode.getNationCode())
+                .currencyCode(byNationCode.getCurrencyCode().getCurrencyCode())
+                .currencySymbol(byNationCode.getCurrencyCode().getCurrencySymbol())
+                .currencyKorean(byNationCode.getCurrencyCode().getCurrencyKorean())
+                .exchangeRate(byNationCode.getExchangeRateValue())
+                .preExchangeRate(byNationCode.getPreExchangeRateValue())
+                .updateDate(byNationCode.getUpdateDate())
+                .build();
     }
 }
