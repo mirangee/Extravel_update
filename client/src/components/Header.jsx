@@ -31,6 +31,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { isLoggedIn, name, onLogout, onChangeNation } =
     useContext(AuthContext);
+  const { nation } = useContext(AuthContext);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const redirection = useNavigate();
@@ -94,13 +95,15 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (nation) {
+      setCountry(nation);
+    }
+  }, [nation]);
+
   const handleCountryChange = (selectedOption) => {
     onChangeNation(selectedOption.value);
-
     setCountry(selectedOption.value);
-    // if (selectedOption) {
-    //   navigate(`/${selectedOption.value}`);
-    // }
   };
 
   const toggleSidebar = () => {
@@ -256,10 +259,10 @@ const Header = () => {
             <li>
               <Select
                 value={countryOptions.find(
-                  (option) => option.value === country,
+                  (option) => option.value === nation,
                 )}
                 onChange={handleCountryChange}
-                options={countryOptions}
+                options={nation}
                 className={styles.countrySelect}
                 classNamePrefix={styles.reactSelect}
               />
