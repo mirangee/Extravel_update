@@ -58,11 +58,13 @@ const PointHistory = () => {
         </p>
       </div>
 
-      {history.map((item, key) => (
-        <MyPagePointCard key={key} item={item} />
-      ))}
-
-      <MyPagePointCard2 />
+      {history.map((item, key) =>
+        item.status === 'USED' ? (
+          <MyPagePointCard2 key={key} item={item} />
+        ) : (
+          <MyPagePointCard key={key} item={item} />
+        ),
+      )}
     </div>
   );
 };

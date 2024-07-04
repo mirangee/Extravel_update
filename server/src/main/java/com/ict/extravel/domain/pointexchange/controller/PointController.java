@@ -22,6 +22,6 @@ public class PointController {
         log.info("/history/point/{id} 요청 들어옴! {}", id);
         List<HistoryResponseDto> historyList = pointService.getPointHistory(id);
         log.info(historyList.toString());
-        return ResponseEntity.status(HttpStatus.OK).body(historyList);
+        return ResponseEntity.ok().body(historyList);
     }
 }

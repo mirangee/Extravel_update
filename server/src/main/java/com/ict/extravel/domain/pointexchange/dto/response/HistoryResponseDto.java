@@ -20,12 +20,15 @@ public class HistoryResponseDto {
 
     private LocalDateTime createdAt;
 
+    private PointCharge.Status status;
+
     private Float sum;
 
     public HistoryResponseDto(PointCharge p) {
         this.amount = p.getAmount();
         this.plusPoint = p.getPlusPoint();
         this.createdAt = p.getCreatedAt();
+        this.status = p.getStatus();
         this.sum = this.amount + this.plusPoint;
     }
 }

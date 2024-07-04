@@ -24,6 +24,8 @@ public class PointService {
         List<PointCharge> pointHistoryList = pointChargeRepository.findAllByMemberId(id);
 
         List<HistoryResponseDto> dtoList = new ArrayList<>();
+
+
         for (PointCharge p : pointHistoryList) {
             HistoryResponseDto responseDto = new HistoryResponseDto(p);
             dtoList.add(responseDto);

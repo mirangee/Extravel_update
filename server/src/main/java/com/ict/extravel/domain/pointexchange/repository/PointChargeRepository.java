@@ -13,23 +13,19 @@ import java.util.List;
 
 public interface PointChargeRepository extends JpaRepository<PointCharge, String> {
 
-    @Modifying
     @Transactional
+    @Modifying
     @Query("UPDATE PointCharge p SET p.approvedAt = :approvedAt, p.status = :status, p.inUse = :inUse WHERE p.tid = :tid")
     void updatePointChargeBy(@Param("tid") String tid, @Param("approvedAt") LocalDateTime approvedAt,
                              @Param("status") PointCharge.Status status, @Param("inUse") boolean inUse);
-
-    @Modifying
     @Transactional
+    @Modifying
     @Query("UPDATE PointCharge p SET p.inUse = false WHERE p.tid = :tid")
     void updateInUseByTid(@Param("tid") String tid);
 
-    @Transactional
     @Query("SELECT p.tid FROM PointCharge  p WHERE p.member.id = :id AND p.inUse = true")
     String findCurrentTidbyId(@Param("id") Integer id);
 
-    @Transactional
-    @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND p.status = 'SUCCESS' ORDER BY p.createdAt DESC")
+    @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND (p.status = 'SUCCESS' OR p.status = 'USED') ORDER BY p.createdAt DESC")
     List<PointCharge> findAllByMemberId(@Param("memberId") Integer id);
-
 }
