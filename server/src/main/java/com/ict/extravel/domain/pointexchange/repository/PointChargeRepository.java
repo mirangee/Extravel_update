@@ -9,6 +9,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface PointChargeRepository extends JpaRepository<PointCharge, String> {
 
@@ -26,5 +27,9 @@ public interface PointChargeRepository extends JpaRepository<PointCharge, String
     @Transactional
     @Query("SELECT p.tid FROM PointCharge  p WHERE p.member.id = :id AND p.inUse = true")
     String findCurrentTidbyId(@Param("id") Integer id);
+
+    @Transactional
+    @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND p.status = 'SUCCESS' ORDER BY p.createdAt DESC")
+    List<PointCharge> findAllByMemberId(@Param("memberId") Integer id);
 
 }

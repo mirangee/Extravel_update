@@ -24,8 +24,6 @@ const ChargeInfo = ({
 
   useEffect(() => {
     setIsButtonDisabled(true);
-    console.log('해당 유저의PK id 값 확인: ', id);
-    console.log('해당 유저의 grade 확인: ', grade);
     async function fetchData() {
       try {
         const response = await axios.post(

@@ -20,17 +20,18 @@ export const AuthContextProvider = (props) => {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
   const [grade, setGrade] = useState('');
-  const [phonNumber, setPhonNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const navi = useNavigate();
 
   const loginHandler = (res) => {
+    console.log(res.phoneNumber);
     // localStorage.setItem('ACCESS_TOKEN', token);
     localStorage.setItem('NAME', res.name);
     localStorage.setItem('NATION', res.nationCode);
     localStorage.setItem('EMAIL', res.email);
     localStorage.setItem('ID', res.id);
     localStorage.setItem('GRADE', res.grade);
-    localStorage.setItem('PHONE', res.phonNumber);
+    localStorage.setItem('PHONE', res.phoneNumber);
     // localStorage.setItem('ROLE', role);
     setIsLoggedIn(true);
     setUserName(res.name);
@@ -38,7 +39,7 @@ export const AuthContextProvider = (props) => {
     setNation(res.nationCode);
     setId(res.id);
     setGrade(res.grade);
-    setPhonNumber(res.phonNumber);
+    setPhoneNumber(res.phoneNumber);
   };
   const nationHandler = (nationCode) => {
     if (email === '') {
@@ -76,7 +77,7 @@ export const AuthContextProvider = (props) => {
     setNation('');
     setId('');
     setGrade('');
-    setPhonNumber('');
+    setPhoneNumber('');
   };
 
   //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
@@ -88,6 +89,7 @@ export const AuthContextProvider = (props) => {
       setEmail(localStorage.getItem('EMAIL'));
       setId(localStorage.getItem('ID'));
       setGrade(localStorage.getItem('GRADE'));
+      setPhoneNumber(localStorage.getItem('PHONE'));
     }
   }, []);
 
@@ -99,8 +101,9 @@ export const AuthContextProvider = (props) => {
         name: userName,
         nation,
         id,
+        email,
         grade,
-        phonNumber,
+        phoneNumber,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,
