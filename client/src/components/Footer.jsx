@@ -12,11 +12,11 @@ const Footer = () => {
   return (
     <div className={styles.wrap}>
       <div className={styles.container}>
-        <img src={logo0} alt='description' />
+        {/* <img src={logo0} alt='description' />
         <img src={logo1} alt='description' />
         <img src={logo2} alt='description' />
         <img src={logo3} alt='description' />
-        <img src={logo4} alt='description' />
+        <img src={logo4} alt='description' /> */}
       </div>
 
       <div className={styles.footer}>
