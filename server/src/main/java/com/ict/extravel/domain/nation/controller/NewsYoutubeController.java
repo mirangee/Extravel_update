@@ -1,6 +1,7 @@
 package com.ict.extravel.domain.nation.controller;
 
 
+import com.ict.extravel.domain.nation.dto.VideoResponseDTO;
 import com.ict.extravel.domain.nation.service.NewsYoutubeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,19 +13,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/youtube")
 @RequiredArgsConstructor
 @Slf4j
 public class NewsYoutubeController {
-  NewsYoutubeService newsYoutubeService;
+  private final NewsYoutubeService newsYoutubeService;
 
   @GetMapping("/{nation}")
-    public ResponseEntity<String> getYoutubeLink(@PathVariable String nation){
+    public ResponseEntity<?> getYoutubeLink(@PathVariable String nation){
     log.info("리액트에서 8181로 nation 값 넘어옴! {}", nation);
-    newsYoutubeService.getYoutubeLinkByNation(nation);
+    List<VideoResponseDTO> dtoList = newsYoutubeService.getYoutubeLinkByNation(nation);
+    log.info("유튜브링크담은dto:{}",dtoList);
 
 
-    return null;
+    return ResponseEntity.ok().body(dtoList);
 }
 }
