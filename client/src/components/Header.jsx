@@ -31,6 +31,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { isLoggedIn, name, onLogout, onChangeNation } =
     useContext(AuthContext);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const redirection = useNavigate();
 
@@ -95,8 +96,8 @@ const Header = () => {
 
   const handleCountryChange = (selectedOption) => {
     onChangeNation(selectedOption.value);
-    setCountry(selectedOption.value);
 
+    setCountry(selectedOption.value);
     // if (selectedOption) {
     //   navigate(`/${selectedOption.value}`);
     // }

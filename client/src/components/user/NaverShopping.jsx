@@ -26,13 +26,13 @@ const NaverShopping = () => {
   const itemsPerPage = 12;
   const swiperRef = useRef(null);
   const { nation } = useContext(AuthContext);
-
   useEffect(() => {
-    console.log('설정국가: ', nation);
+    console.log('설정국가:{}', nation);
     fetch('http://localhost:8181/api/v1/shopping/' + nation)
       .then((response) => response.json())
       .then((data) => {
         const items = data.items;
+
         const transformArticle = items.map((item) => ({
           title: item.title.replace(/(<([^>]+)>)/gi, ''),
           link: item.link,
@@ -86,7 +86,6 @@ const NaverShopping = () => {
         <div className={styles.topFive}>
           Top 5 추천 패키지
         </div>
-
         <div className={styles.headerBox}>
           <Swiper
             ref={swiperRef}

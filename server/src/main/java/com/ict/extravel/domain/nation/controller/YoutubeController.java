@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class YoutubeController {
     @Value("${Youtube.api_key}")
     private String YOUTUBE_API_KEY;
-
     private UriComponentsBuilder search;
 
     @GetMapping("/videos")
@@ -35,7 +34,6 @@ public class YoutubeController {
                 .queryParam("maxResults", maxResults)
                 .queryParam("regionCode", regionCode)
                 .queryParam("key", YOUTUBE_API_KEY);
-
         // RestTemplate을 사용하여 GET 요청 보내기
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(builder.toUriString(), String.class);
@@ -43,9 +41,6 @@ public class YoutubeController {
         log.info("유튜브API요청결과 :{}", response.getBody());
         return response;
     }
-
-
-
 
     @GetMapping("/search")
     public ResponseEntity<String> searchVideo() {
@@ -55,14 +50,12 @@ public class YoutubeController {
         String maxResult = "3";
         String q = "japan";
 
-
         UriComponentsBuilder search = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("part" , part)
                 .queryParam("maxResults", maxResult)
                 .queryParam("q", "vlog")
                 .queryParam("type", type)
                 .queryParam("key" , YOUTUBE_API_KEY);
-
 
         // RestTemplate을 사용하여 GET 요청 보내기
         RestTemplate restTemplate = new RestTemplate();

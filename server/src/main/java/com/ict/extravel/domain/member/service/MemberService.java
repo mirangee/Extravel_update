@@ -263,19 +263,24 @@ public class MemberService {
         return responseData;
     }
 
-
-    @Transactional
+   @Transactional
    public Member saveMember(String name,String email){
-        MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
-        dto.setEmail(email);
-        dto.setName(name);
-        dto.setPhoneNumber("112");
-        dto.setPassword("sns는 비공개");
-        Nation us = nationRepository.findById("US").orElseThrow();
-        Member saved = memberRepository.save(dto.toEntity(us));
+       boolean duplicate = isDuplicate(email);
+       if(!duplicate){
+           MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
+           dto.setEmail(email);
+           dto.setName(name);
+           dto.setPhoneNumber("sns");
+           dto.setPassword("sns는 비공개");
+           Nation us = nationRepository.findById("US").orElseThrow();
+           Member saved = memberRepository.save(dto.toEntity(us));
 
-        log.info("dto에 들어가는saved{}",saved);
-        return saved;
+           log.info("dto에 들어가는saved{}",saved);
+           return saved;
+       }else{
+           return null;
+       }
+
    }
 
 
