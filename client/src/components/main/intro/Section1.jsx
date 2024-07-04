@@ -61,7 +61,7 @@ const Section1 = () => {
       </div>
       <div
         ref={bottomRef}
-        style={{ height: '100px', background: 'lightgray' }}
+        // style={{ height: '100px', background: 'lightgray' }}
       >
         {/* 이 요소는 스크롤할 목표 요소입니다 */}
       </div>

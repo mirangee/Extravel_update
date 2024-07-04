@@ -11,6 +11,7 @@ import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import MyPagePointCard from './MyPagePointCard';
 import MyPagePointCard2 from './MyPagePointCard2';
+import Header2 from './Header2';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -33,6 +34,7 @@ const MyPage = () => {
 
   return (
     <>
+      <Header2 />
       <motion.div
         className='PageBox'
         animate={{ x: 100 }}
