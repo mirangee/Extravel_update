@@ -4,6 +4,8 @@ import RealTimeExchangesCard from '../intro/RealTimeExchangesCard';
 import styles from '../../../scss/RealTimeExchanges.module.scss';
 import { Card } from 'reactstrap';
 import GoogleTop5 from './GoogleTop5';
+import Header from '../../Header';
+import Header2 from './Header2';
 
 const RealTimeExchanges = () => {
   const [liveData, setLiveData] = useState([]);
@@ -30,6 +32,7 @@ const RealTimeExchanges = () => {
 
   return (
     <>
+      <Header2 />
       <div className={styles.RealTimeContainer}>
         <h3 className={styles.mainH3}>22개국 환율 정보</h3>
         <h1 className={styles.mainH1}>

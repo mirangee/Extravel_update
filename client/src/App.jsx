@@ -71,7 +71,6 @@ const App = () => {
 
         {isFlight && <Footer />}
         {/* <RealTimeExchanges /> */}
-        {/* <DailyRatesTable /> */}
         <ScrollToTopButton />
       </AuthContextProvider>
     </>
