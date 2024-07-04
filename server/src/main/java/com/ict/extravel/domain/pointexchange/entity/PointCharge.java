@@ -45,7 +45,7 @@ public class PointCharge {
     private Status status;
 
     public enum Status {
-        PENDING, SUCCESS, FAILED, CANCELED
+        PENDING, SUCCESS, FAILED, CANCELED, USED
     }
 
     @Column(name = "in_use")

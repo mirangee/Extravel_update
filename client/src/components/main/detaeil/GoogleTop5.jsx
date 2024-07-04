@@ -22,6 +22,7 @@ const GoogleTop5 = () => {
         <h3 className={styles.mainH3}>
           구글 검색 트렌드 Top 6
         </h3>
+
         <div className={styles.sectionFluidMain}>
           <div className={styles.sectionRow}>
             {trendList.map((item, index) => (

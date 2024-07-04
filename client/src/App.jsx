@@ -17,8 +17,8 @@ import MainDetail from './components/main/detaeil/MainDetail';
 import NaverLoginHandler from './components/user/NaverLoginHandler';
 import NaverNews from './components/main/detaeil/NaverNews';
 import FlightOffer from './components/flight/FlightOffer';
-import MyPage from './components/main/detaeil/MyPage';
-import MyPageModify from './components/main/detaeil/MyPageModify';
+import MyPage from './components/user/my_page/MyPage';
+import MyPageModify from './components/user/my_page/MyPageModify';
 import { Switch } from '@mui/material';
 import NaverShopping from './components/user/NaverShopping';
 import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
@@ -53,6 +53,7 @@ const App = () => {
             path='/main/news'
             element={<NaverNews />}
           ></Route>
+
           <Route
             path='api/v1/shopping'
             element={<NaverShopping />}
@@ -70,7 +71,6 @@ const App = () => {
 
         {isFlight && <Footer />}
         {/* <RealTimeExchanges /> */}
-        {/* <DailyRatesTable /> */}
         <ScrollToTopButton />
       </AuthContextProvider>
     </>

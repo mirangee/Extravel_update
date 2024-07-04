@@ -27,15 +27,17 @@
   flex-wrap: wrap;
   // gap: 50px; /* 각 카드 사이의 간격을 조정 */
   justify-content: center; /* 가로축 정렬 */
-  margin: 50px;
+  margin: 50px auto;
+  width: 70%;
   background: #1f535e;
   border-radius: 20px;
+  padding-top: 30px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
-  flex-basis: calc(20% - 15px); 
+  flex-basis: calc(25% - 15px); 
   gap: 5px; /* 각 카드 사이의 세로 간격을 조정 */
 }
 
@@ -49,7 +51,7 @@
   // display: inline-block;
   position: relative;
   cursor: pointer;
-  margin: 30px;
+  margin: 20px;
 
 
   &:before {

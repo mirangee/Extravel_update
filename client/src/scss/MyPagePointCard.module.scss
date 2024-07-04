@@ -1,4 +1,4 @@
-.PageBox{
+.pageBox{
   // background-color: red;
   width: 100%;
   display: flex;
@@ -6,119 +6,8 @@
   margin-top: 50px;
   padding-left: 500px;
 }
-.PageHeader{
-  // background: violet;
-  // text-align: center;
-  font-size: 48px;
-  font-weight: bold;
-  background: linear-gradient(to right top, #a6d2df, #0a4a58);
-  color: transparent;
-  -webkit-background-clip: text;
-  // padding-left: 300px;
-  height: 130px;
-  margin-top: 100px;
-}
 
-.ProfileHeader {
-  display: flex;
-
-}
-
-.ProfileHeader img {
-  width: 80px;
-  height: 80px;
-}
-
-.ProfileHeader p {
-  padding-left: 40px;
-
-  font-size: 24px;
-  font-weight: 700;
-
-}
-
-.ProfileHeader .grade {
-
-
-  font-size: 18px;
-  font-weight: 400;
-
-}
-
-.EmailBox {
-  // background-color: pink;
-  margin-top: 40px;
-  margin-bottom: 30px;
-  color: #14505c;
-  display: flex;
-  flex-direction: column;
-
-}
-
-.EmailBox span {
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 10px;
-
-}
-
-.EmailBox input {
-  // padding-top: 30px;
-  font-size: 26px;
-  font-weight: bold;
-  // margin-top: 50px;
-}
-
-
-.PhoneBox {
-  // margin-top: 40px;
-  margin-bottom: 30px;
-  color: #14505c;
-  display: flex;
-  flex-direction: column;
-}
-
-.PhoneBox span {
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 10px;
-  // margin-bottom: 50px;
-}
-
-.PhoneBox input {
-  // padding-top: 30px;
-  font-size: 26px;
-  font-weight: bold;
-  // margin-top: 50px;
-}
-
-.NationBox {
-  margin-bottom: 30px;
-  color: #14505c;
-  display: flex;
-  flex-direction: column;
-}
-
-.NationBox span {
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 10px;
-  // margin-bottom: 50px;
-}
-
-.NationBox input {
-  // padding-top: 30px;
-  font-size: 26px;
-  font-weight: bold;
-  // margin-top: 50px;
-}
-
-// Point Card
-.mainH1{
-  display: flex;
-  flex-direction: column;
-}
-.PointBox {
+.pointBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -131,10 +20,10 @@
   border-left: none;             // 좌측 보더 제거
   border-right: none;  
   border-radius: 5px;
-  // background-color: #f9f9f9;
+  // background-color: yellow;
   background-color: #fff;
 
-  .Point {
+  .point {
     // '충전' 텍스트 스타일
     // flex: 1;
     background: black;
@@ -158,12 +47,6 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    // margin: 10px;
-
 
     li {
       padding-left: 20px;
@@ -179,10 +62,12 @@
     text-align: right;
     margin: 15px;
     font-weight: bold;
+    font-size: 22px;
+    color: red;
   }
 }
 
-.PointBox2 {
+.pointBox2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -198,7 +83,7 @@
   // background-color: #f9f9f9;
   background-color: #fff;
 
-  .Point {
+  .point {
     // '충전' 텍스트 스타일
     // flex: 1;
     background: #fff;
@@ -249,7 +134,7 @@
 
 
 @media (max-width: 1280px) {
-  .PageBox{
+  .pageBox{
     padding-left: 30px;
   }
 }

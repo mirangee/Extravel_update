@@ -59,10 +59,7 @@ const Section1 = () => {
           <img src={rectangle} />
         </motion.div>
       </div>
-      <div
-        ref={bottomRef}
-        style={{ height: '100px', background: 'lightgray' }}
-      >
+      <div ref={bottomRef}>
         {/* 이 요소는 스크롤할 목표 요소입니다 */}
       </div>
     </>

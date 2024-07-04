@@ -18,6 +18,7 @@ public class LoginResponseDTO {
     private String name;
     private String nationCode;
     private Member.Grade grade;
+    private String phoneNumber;
 
     public LoginResponseDTO(Member member) {
         this.id = member.getId();
@@ -25,5 +26,6 @@ public class LoginResponseDTO {
         this.name = member.getName();
         this.nationCode = member.getNationCode().getNationCode();
         this.grade = member.getGrade();
+        this.phoneNumber = member.getPhoneNumber();
     }
 }

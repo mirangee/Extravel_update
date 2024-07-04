@@ -16,12 +16,13 @@
 
   .topFive {
     width: 50%;
-    font-size: 30px;
-    font-weight: 600;
+    font-size: 40px;
+
     color: white;
     margin-bottom: 20px;
     text-align: center;
     margin-top: 50px;
+    font-family: Black Han Sans;
   }
 
   .headerBox {
@@ -36,14 +37,11 @@
     background: white;
     overflow: hidden;
     border: 10px solid white;
+    font-family: Black Han Sans;
 
     .swiperBox {
       width: 100%;
       height: 100%;
-
-      .next {
-        font-size: 100px;
-      }
 
       .swiperSlide {
         position: relative;
@@ -195,6 +193,41 @@
         border-radius: 10px;
         transition: background-color 0.3s;
       }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .shoppingHeader {
+    .headerBox {
+      width: 100%;
+      height: 70%;
+      
+      .swiperBox {
+        .slideContent {
+          .overlay {
+            h3 {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+    
+    .topFive {
+      font-size: 28px;
+    }
+  }
+
+  .naverShoppingBox {
+    width: 90%;
+    margin-left: 5%;
+    // font-size: 8px;
+
+    .listUl {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      // font-size: 8px;
     }
   }
 }

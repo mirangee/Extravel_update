@@ -26,9 +26,8 @@ const NaverShopping = () => {
   const itemsPerPage = 12;
   const swiperRef = useRef(null);
   const { nation } = useContext(AuthContext);
-
   useEffect(() => {
-    console.log('설정국가: ', nation);
+    console.log('설정국가:{}', nation);
     fetch('http://localhost:8181/api/v1/shopping/' + nation)
       .then((response) => response.json())
       .then((data) => {

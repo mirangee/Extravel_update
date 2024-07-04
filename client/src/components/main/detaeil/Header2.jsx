@@ -5,10 +5,10 @@ import React, {
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import styles from '../scss/Header.module.scss';
-import logoImage from '../assets/img/logo_white.png';
+import styles from '../../../scss/Header2.module.scss';
+import logoImage from '../../../assets/img/logo_white.png';
 import axios from 'axios';
-import AuthContext from '../utils/AuthContext';
+import AuthContext from '../../../utils/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMoneyCheckDollar,
@@ -21,9 +21,9 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from 'reactstrap';
-import ChargeModal from './main/intro/ChargeModal/ChargeModal';
+import ChargeModal from '../.././main/intro/ChargeModal/ChargeModal';
 
-const Header = () => {
+const Header2 = () => {
   const [scrolled, setScrolled] = useState(false);
   const [countryOptions, setCountryOptions] = useState([]);
   const [country, setCountry] = useState('US');
@@ -31,8 +31,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { isLoggedIn, name, onLogout, onChangeNation } =
     useContext(AuthContext);
-  const { nation } = useContext(AuthContext);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const redirection = useNavigate();
 
@@ -95,15 +93,13 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (nation) {
-      setCountry(nation);
-    }
-  }, [nation]);
-
   const handleCountryChange = (selectedOption) => {
     onChangeNation(selectedOption.value);
     setCountry(selectedOption.value);
+
+    // if (selectedOption) {
+    //   navigate(`/${selectedOption.value}`);
+    // }
   };
 
   const toggleSidebar = () => {
@@ -259,10 +255,10 @@ const Header = () => {
             <li>
               <Select
                 value={countryOptions.find(
-                  (option) => option.value === nation,
+                  (option) => option.value === country,
                 )}
                 onChange={handleCountryChange}
-                options={nation}
+                options={countryOptions}
                 className={styles.countrySelect}
                 classNamePrefix={styles.reactSelect}
               />
@@ -284,4 +280,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header2;

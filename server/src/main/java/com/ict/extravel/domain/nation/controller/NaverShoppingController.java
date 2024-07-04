@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class NaverShoppingController {
         Nation findNation = nationRepository.findById(nation).orElseThrow();
 
         String Url = "https://openapi.naver.com/v1/search/shop.json";
+
         URI uri = UriComponentsBuilder.fromUriString(Url)
                 .queryParam("query", findNation.getName() + "여행")
                 .queryParam("display" , 100)
@@ -59,5 +61,8 @@ public class NaverShoppingController {
 
         log.info("쇼핑API 요청 : {}" ,ShoppingResponse);
         return ShoppingResponse;
+
+
+
     }
 }
