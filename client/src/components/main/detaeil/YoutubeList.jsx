@@ -24,9 +24,7 @@ const YoutubeList = () => {
           `http://localhost:8181/api/v1/youtube/` + nation,
         )
         .then((response) => {
-          console.log('response:', response);
           setYoutubeLink(response.data);
-          console.log('responseData:{}', youtubeLink);
         })
         .catch((error) => {
           console.error('Error', error);
@@ -46,56 +44,18 @@ const YoutubeList = () => {
           freeMode={false} // 무한 루프 설정
         >
           <div className={styles.youtubeSlider}>
-            <SwiperSlide>
-              <iframe
-                className={styles.youtube1}
-                width='500'
-                height='280'
-                src='https://www.youtube.com/embed/snW9W3rjeos'
-                title='YouTube video 1'
-                style={{ marginLeft: '75px' }}
-              ></iframe>
-            </SwiperSlide>
-            <SwiperSlide>
-              <iframe
-                className={styles.youtube2}
-                width='500'
-                height='280'
-                src='https://www.youtube.com/embed/snW9W3rjeos'
-                title='YouTube video 2'
-                style={{ marginLeft: '50px' }}
-              ></iframe>
-            </SwiperSlide>
-            <SwiperSlide>
-              <iframe
-                className={styles.youtube3}
-                width='500'
-                height='280'
-                src='https://www.youtube.com/embed/ktu5LeQgDrE'
-                title='YouTube video 3'
-                style={{ marginLeft: '50px' }}
-              ></iframe>
-            </SwiperSlide>
-            <SwiperSlide>
-              <iframe
-                className={styles.youtube1}
-                width='500'
-                height='280'
-                src='https://www.youtube.com/embed/IRG-MEF_IDY'
-                title='YouTube video 1'
-                style={{ marginLeft: '50px' }}
-              ></iframe>
-            </SwiperSlide>
-            <SwiperSlide>
-              <iframe
-                className={styles.youtube3}
-                width='500'
-                height='280'
-                src='https://www.youtube.com/embed/ktu5LeQgDrE'
-                title='YouTube video 3'
-                style={{ marginLeft: '50px' }}
-              ></iframe>
-            </SwiperSlide>
+            {youtubeLink.map((item) => (
+              <SwiperSlide>
+                <iframe
+                  className={styles.youtube1}
+                  width='500'
+                  height='280'
+                  title='YouTube video 1'
+                  src={item.youtubeVideoLink}
+                  style={{ marginLeft: '75px' }}
+                ></iframe>
+              </SwiperSlide>
+            ))}
           </div>
         </Swiper>
       </div>
