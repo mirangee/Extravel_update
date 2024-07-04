@@ -5,10 +5,10 @@ import React, {
 } from 'react';
 import MyPagePointCard from './MyPagePointCard';
 import MyPagePointCard2 from './MyPagePointCard2';
-import styles from '../../../scss/PointHistory.module.scss';
+import styles from '../../../../scss/PointHistory.module.scss';
 import axios from 'axios';
-import { API_BASE_URL } from '../../../config/host-config';
-import AuthContext from '../../../utils/AuthContext';
+import { API_BASE_URL } from '../../../../config/host-config';
+import AuthContext from '../../../../utils/AuthContext';
 
 const PointHistory = () => {
   const { id } = useContext(AuthContext);

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../scss/MyPagePointCard2.module.scss';
+import styles from '../../../../scss/MyPagePointCard2.module.scss';
 import { motion } from 'framer-motion';
 
 const MyPagePointCard2 = ({ key, item }) => {
