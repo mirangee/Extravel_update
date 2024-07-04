@@ -213,5 +213,10 @@ public class MemberController {
         String s = memberService.UpdateNation(dto);
         return ResponseEntity.ok(s);
     }
+    @PostMapping("/exchange/check")
+    public ResponseEntity<?> exchangeCheck(@RequestBody ExchangeCheckRequestDTO dto) {
+        String result = memberService.exchangeCheck(dto);
+        return ResponseEntity.ok().body(result);
+    }
 }
 
