@@ -74,7 +74,7 @@ export const AuthContextProvider = (props) => {
     setIsLoggedIn(false);
     setUserName('');
     setEmail('');
-    setNation('');
+    setNation('US');
     setId('');
     setGrade('');
     setPhoneNumber('');
