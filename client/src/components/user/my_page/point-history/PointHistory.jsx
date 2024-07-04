@@ -14,14 +14,16 @@ const PointHistory = () => {
   const { id } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [currentEtp, setCurrentEtp] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id) return;
     const fetchData = async () => {
+      console.log('가지고 있는 id 값:', id);
       try {
         const res = await axios.post(
           API_BASE_URL + '/history/point/' + id,
         );
-        console.log(res.data);
         setHistory(res.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -34,17 +36,22 @@ const PointHistory = () => {
           API_BASE_URL + '/payment/pointInfo',
           { id },
         );
-        console.log(response.data);
         setCurrentEtp(response.data.etPoint);
       } catch (error) {
         console.error('Error:', error);
+      } finally {
+        setLoading(false);
       }
     }
 
     // 비동기 함수 호출
     fetchCurrentPoint();
     fetchData();
-  }, []);
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
