@@ -19,6 +19,7 @@ import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -218,5 +220,16 @@ public class MemberController {
         String result = memberService.exchangeCheck(dto);
         return ResponseEntity.ok().body(result);
     }
+
+    @PutMapping("/remove/{id}")
+    public ResponseEntity<?> remove(@PathVariable Integer id) {
+        memberService.deleteId(id);
+        log.info("id입니다: {}", id);
+
+
+        return ResponseEntity.ok("회원탈퇴성공!");
+    }
+
+
 }
 
