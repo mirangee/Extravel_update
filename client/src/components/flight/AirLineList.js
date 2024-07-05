@@ -451,4 +451,136 @@ export const AirLineList = {
     title: '라탐 칠레 항공',
     img: 'https://i.namu.wiki/i/fu7hcNlkeeYfHYVb3OOpcisgqLx6CxkPXUomaUqC4MsTRy68rAHdgna021EtujfPuANQ8d1aDDcyJDlCb6nTtSRgEfFDXGg8tJ4YIvueNK7F-FyuwUjOQ9RIrj86fb_3Bs08HDxBLnXzrvZoIO2vxQ.svg',
   },
+  JH: {
+    title: '후지 드림 항공',
+    img: 'https://i.namu.wiki/i/_HvEnVZaoi5d-KsmcQScDQ-p_z_8ps2NNQXpXcUSJjtVrCGahIVphphatsBTtdHX1ARP8XnZ6DG0fpAeCyymreQUnINSAX6AQDg28jQfWP318fAHZP5CBiC0H_gGCwbKfv10AXHIMIAQahQAKaeEfQ.svg',
+  },
+  WY: {
+    title: '오만 에어',
+    img: 'https://i.namu.wiki/i/ZXX3EqvtcRBoxZCByWRNP9-hNY12Pnmp-6ALFc9kGnlsaLRGWVtOMuFV-f3YA1vcJQ1TVMVK8Zf_WMwI0WfBMgyx0S2hCO4aM7w-k8Pjoob_7tNmIvZaj3cZ1iclXIfaguU-e5P0r3YJ-pjQE_tD-g.svg',
+  },
+  XQ: {
+    title: '선 익스프레스',
+    img: 'https://i.namu.wiki/i/8mhJN7LNVijRrez5jxIYV0SCpZnsAEi8TfBfTpRpBiIoWp9FsRc-P5lEsJLkzSSEFCXih_zCMZTtGW-P6yrOzv487UwhgDGM4z7fP2Jwm_7RhNTdWavzWt8Laz1gERdl93SPnGIwo07ZtVTBm_Z2eQ.webp',
+  },
+  RJ: {
+    title: '로얄 요르단 항공',
+    img: 'https://i.namu.wiki/i/_WESvAS4ZmIGOp1XOwO-j4340a0Tz_p3P32SNlIuVO99m8VF3l8XHhkgf6f-LAp6xGvBSX9INT2svFH5IxMd3I4-BOdf_YB2GrGEAEtQXS6T4JHhY8ZwFVJ-VpTCRonUslkiLXRLGYnJJ8xVwm0bIg.svg',
+  },
+  A3: {
+    title: '에게 항공',
+    img: 'https://i.namu.wiki/i/U5WPp8_NFHTablFn9S6uZ_KfU0qk2fsQpvvLDFGbR0jq1TT4EkRkFAfoEMTDp8-DvwRQNF4Fn7cDOxWBkvqWSDvHG49RGLKXthksAEeMKjV3GBvo9Jn2Us68UKIvuduf50EhuvHKatk_pGMbkGhhMw.svg',
+  },
+  ME: {
+    title: '중동 항공',
+    img: 'https://i.namu.wiki/i/Huqbn9gmbfAlx8j7iknPYjTtBbbV-Y4VVThGX4CbdUf3NRGxC7RrMF3-YK3AIh_Q2K3Bt9D_Ed1oxRCfnHGNQKgj7KFtsJncQGqmA4bRL8NyoX7S5yqHQNfxK_xeDxpMgelvueYnSOdiPodyEkZHqA.svg',
+  },
+  PC: {
+    title: '페가수스 항공',
+    img: 'https://i.namu.wiki/i/5IxFHxLoHySY-XG3noUT_WGhocf39f7DnzxMl7TnbHa1V_9uvxJhXNuObSec5KdMItNytM1zySVXoiuDILIGrLz6ToL-sjTuQxGTAsGlh-TD9QLSo3vN9WI0YZ7hB73x4ojnAeiwgDM6ChnPBy1kXA.webp',
+  },
+  TP: {
+    title: 'TAP 포르투갈 항공',
+    img: 'https://i.namu.wiki/i/rFkYbIyaU3CDAh4DIqShR1chYBiD4xSOFyuwGLtbGGJdTJ7hPLFPoA71R1YJ3vnd7ua_AyEcU84CxbO1i3b8dw.svg',
+  },
+  AT: {
+    title: '로얄 모로코 항공',
+    img: 'https://i.namu.wiki/i/c_tFlgzYD9iq-AoH7ladJ12IX4KArnwncIHnJBvVpxgkekD0e5bQdhkOGDP55nuX40I4j7XbAvXzPi9bMgtHnbkDnNYA7E_NZusmU0TAbqs9-LuNG8wzYToT8BpULAI6h_HJ0mDYK1bf31Jenq4UVg.svg',
+  },
+  TU: {
+    title: '튀니지 에어',
+    img: 'https://i.namu.wiki/i/OIoYLb2XAeGPri7Rt3ZTSJCa2CtgcLx5YpcoDbmrKC9J7i8bCkZiG9jTE_T6fLins_ZrKOxi31tf96a-7ARkVxy7qkop9NlJkpffEz2iul7u6h8Rf-u6ft-WoWjlGoPLlIk6awlVRj3SIB74nv6mpw.svg',
+  },
+  AH: {
+    title: '에어 알제리',
+    img: 'https://i.namu.wiki/i/i-Yed0gxlcdXk3kTTIDCkhp7XrIJU1LlrnGvXNPnaSfL3UOeBdXPHjoSg5Afjf2e4mPA6Is-8nisPK_MPGY6Ndu1pnFQoE6G_UWEo6T5rPiXjV0YlI4pTNwgkGPCUL2nzx9txoSY2iqLmE7WKFBeFA.svg',
+  },
+  KM: {
+    title: '에어 몰타',
+    img: 'https://i.namu.wiki/i/IfBn1vhg586rFq21y_DEsIh9CFEa6q6XDyAo9HPEiUnhbuCgofH0t3T6_pp-hWejOGAXAvll3PMHPIzQDX0b_vM_ChrJ63tZa48fsXhlIDwZRXOWGKpQq7UwNdMG3PoWTd6aYug1kZ880TigUC1B-Q.svg',
+  },
+  NI: {
+    title: 'TAP 포르투갈 항공',
+    img: 'https://i.namu.wiki/i/rFkYbIyaU3CDAh4DIqShR1chYBiD4xSOFyuwGLtbGGJdTJ7hPLFPoA71R1YJ3vnd7ua_AyEcU84CxbO1i3b8dw.svg',
+  },
+  J2: {
+    title: '아제르바이잔 항공',
+    img: 'https://i.namu.wiki/i/6fCPaQGAhgOD75dVWIjNpk4YI-2uQttc6eR297ovsWQCYYpUnPF1NaHjASOdKgWhlykbm6UhlZI5k49ZRstdsg.svg',
+  },
+  OU: {
+    title: '크로아티아 항공',
+    img: 'https://i.namu.wiki/i/BUJQ6BCofLRSznf4Xmyzut0aEd8KxwIOf2lsPoZ78fD-6yxDzHDBvkOg3j7t9tU5hTEYmHd9eSjZyd6vm1tNX3pYunkih_PWszGWvSxx-cYGNGg9_rKyPiYtIWsRwV_ny0fDQVCToWxPS7V1uhD3ug.svg',
+  },
+  DE: {
+    title: '콘도르 항공',
+    img: 'https://i.namu.wiki/i/mLrXjS4XN2XGtvg68Mlj76cBJLNSl3AA75r6YQLrLZ0QuGUZETVRGDXQS__kJBiHUoE9uzTIWnT3QxaCVxLT1-xYcuVe07w9BdZwahmLdBRSaMhghUe-lbbkGfNGbmMLfFujNwJJJ365BkCTwASBEg.svg',
+  },
+  JU: {
+    title: '에어 세르비아',
+    img: 'https://i.namu.wiki/i/O6GphR6go-vod_DFa65rLjE1qpcPy7KXkCB9nP5ywlzR1LmBg4bcF85Z8uvfEY4EHgMKaO-kwguLt53yz7Z4yg.svg',
+  },
+  HV: {
+    title: '트랜스아비아 항공',
+    img: 'https://i.namu.wiki/i/4w_STZnOjdRe-P7e03H8MY7i5bazGx350sjNGUUYOKYBvsv6d7sUtSyLnodqcyxkZ3IHcMs4c-5dYQQQmIuC_nqBDWzmLo5hPa-lm0S7yoY8TEGytH56ZPHXbOUKhcamAdoJny0y232XSkH6_1wXzg.svg',
+  },
+  EB: {
+    title: '와모스 항공',
+    img: 'https://i.namu.wiki/i/R6_pF0MgvCRRFycShpK1TI981zQ3WjOFj2HFEG9m8dDuNuKlTgLSGUasVTuCCJNMIv586SaSzJtoIu1naWnc2DSGTgFrS6HteFxo6dcNKGtUU5JwWOXiPUOROtIFWFHBvby9IyQyLsXBjM9LbN-Lsw.webp',
+  },
+  CM: {
+    title: '코파 항공',
+    img: 'https://i.namu.wiki/i/KexdZcpnUUYMjOMLcef1t-c79E86T-XXsLLrMmb3auoGiLRZQZhv8kElsbevDQWL6Ma0Sci5cS0ICcToy5iUrTf80G9yn8lFdC6U3zRp-Ux5yQsvc0VIrTa6fwb8f1BByQweRhw6_S04MYyrQIKLdA.svg',
+  },
+  KQ: {
+    title: '케냐 항공',
+    img: 'https://i.namu.wiki/i/0Da_lztnC0HcSapeXU1k3pmbcEP8KXDntuwda6xNR0uO_Sy8VHYtr1gfu77fr-e90O89QVkJnzoofdz1NecNLwoAD0RQcp3YaHpnVPLOyk5TbLgpv36yupifjZJ5NGO-sdSl2TeVYVBD9i9BwaHOxA.svg',
+  },
+  H9: {
+    title: '히말라야 항공',
+    img: 'https://i.namu.wiki/i/M-Ingpt3IT_d9sSJ30QzBfJPdjqZq6t_wFPhG3sqLCdp1xfLaMo7wR3msJ_baRxv6dx_WnabudBrZMZxeynqYr-K8yvl77vbT3-iHqbXBtXUjbKhY6hiKzSMs51BRdp2CwjPlJrFBVZIHVAhtLPUSA.webp',
+  },
+  PD: {
+    title: '포터 항공',
+    img: 'https://i.namu.wiki/i/jmNn9JlWbhErOR-30AUcXS_eA8UqEzUK29BveHqLFkKkvhGWRLabV_SZSi-RUDYwZSLG23QvWPJHIrQ7CgYS0Tuu8d8waSWFVLvxpxYFpjsD7VQ_wXBgaO-9IoEVz11RkhobHg5AdhpKpFnXQF6l1Q.webp',
+  },
+  UK: {
+    title: '비스타라 항공',
+    img: 'https://i.namu.wiki/i/SnNvc2tDl48pXIXdTLjlA_1vqoSVKZvqOgEu9okB0AiH5YOV9BxeWnL2GmKHuV7w4SADbslNnLlTMIrjMesV38KtjuGRdTd_ln9hwnW23KIFUPvb4-ijRH5-AsEHP7JXUVO7EPS_XXHWS30Ku08j2w.webp',
+  },
+  SG: {
+    title: '스파이스 젯',
+    img: 'https://i.namu.wiki/i/Ii66NpCIU_ouamRKkGS_j5kdJy-a4vqvETtHIs6iGijgy3yOEAnoE61nhrJ0i9yrG_Xw_oc5ImgyxuZENAx5ok9c5OOouklBLcHIjhw7bGUb_IK9L_WUPqSEpV5TxakLT_EIwoyiLt8mBEfY9YsN-Q.svg',
+  },
+  BG: {
+    title: '비만 방글라데시 항공',
+    img: 'https://i.namu.wiki/i/5gAYGozdGl6aqrqKKvf6nRVgiMMYaagyJ_1K2jHXsxeVQ8FPx79lB3trDijKF7AmiHrwqoCLmXTIhUOQRAs03A.svg',
+  },
+  RA: {
+    title: '네팔 항공',
+    img: 'https://i.namu.wiki/i/WNQj5KIzLPctVzpqcJwhuavfURq31GfmW2XDPJwxQ4ePCm459Jr8qbqBqFqGXHbxnDGXssKT7jTZ5lXOkHHDoUbhTlOpzonx_g5amp96YdKaZdDAX4_ZB2n2HA4_xTXWqMn3T5meAFU94fPk_sJc-A.webp',
+  },
+  XY: {
+    title: '플라이나스 항공',
+    img: 'https://i.namu.wiki/i/EOFCo2Cm-2NA5dj7wpqpkyUdRdRgNzQwGsHm2jidINlUUPh0KQTXxYwidiuRjndwIB8KjQf3oAP-ItrxmaStqbT9SFFJ53OaCMrG5OGGid8BzOWNlOaQov0sPCkwaPpv4gAUblSYNE1jCmTfRxscLA.svg',
+  },
+  V3: {
+    title: '카르파 타이르 항공',
+    img: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/Carpatair_logo.svg/1280px-Carpatair_logo.svg.png',
+  },
+  I2: {
+    title: '이베리아 익스프레스',
+    img: 'https://i.namu.wiki/i/a8sNYCThp8DYOiLwLtOjcJLfw_9SnyEsoLFCNefg2bMggBnxRBZ610E7ZVJ3G0FGUPAv4yfXpldPdIn7XIc_FYbC6o6NBFwIAdVKyxLmfSH_8C9U60r2x0hIdPDfGFGKuHgvP3i9zuzx8K4Z9IV_WQ.svg',
+  },
+  EI: {
+    title: '에어 링구스',
+    img: 'https://i.namu.wiki/i/y3xLfgmOjMq9WM1_T_QB8h1eEtDULVyPbAchvCfIZTNLzkV52w2pLZmY_s8AWpPRcUD8KKsEXRXDFv5RC3jp-Z-ENxtw3zm-SxGAGuQn9ZZV21y99nDweLwg4lw7C46Z3At_OpLGSWZJ3vZ5mrvQFQ.svg',
+  },
+  F3: {
+    title: '플라이어 딜',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flyadeal_Logo.svg/1280px-Flyadeal_Logo.svg.png',
+  },
+  QK: {
+    title: '재즈 항공',
+    img: 'https://i.namu.wiki/i/xdl4cwS3TDIVVsZXQIJSADEugUqW7aJKqtfPVSkNXy_d_ukHHL6xE-JDXvmHBN_e9yQ7LL2jMNdl5BMG9yN5CFMwulTiVDpdao6XBb8wFvLMAAsvPxUVYesNQuWLOtK7JJHiUI5juIQXMH3vcnXgPw.svg',
+  },
 };

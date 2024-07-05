@@ -4,9 +4,11 @@ import com.ict.extravel.domain.currency.entity.Currency;
 import com.ict.extravel.domain.nation.entity.Nation;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -36,7 +38,8 @@ public class WalletExchange {
     @Column(name = "exchange_amount", precision = 10, scale = 4)
     private BigDecimal exchangeAmount;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private LocalDateTime updatedAt;
 
 }

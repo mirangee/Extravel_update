@@ -1,40 +1,23 @@
 // MyPageCard.module.scss
 
+
 .myPageCardContainer {
   width: 100%;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 0px;
+  margin-bottom: 50px;
   padding-left: 500px;
 }
 
-.myExchangeHeader {
-  background: red;
-  font-size: 48px;
-  background-image: linear-gradient(to right top, #a6d2df, #0a4a58);
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  font-weight: bold;
-
-  .exchangeButton {
-    margin-left: 220px;
-    width: 150px;
-    height: 50px;
-    text-align: center;
-    background: #14505c;
-  }
-}
-
 .currentDate {
-  margin: 20px auto;
-  font-size: 22px;
+  margin: 20px auto 5px;
+  font-size: 18px;
   font-weight: bold;
   color: #14505C;
 }
 
 .cardContainer {
   display: flex;
-  background-color: lightgray;
+  background-color: rgb(235, 235, 235);
   width: 800px;
   border-radius: 20px;
   box-shadow: 1px 8px 16px rgba(0, 0, 0, 0.1);
@@ -48,30 +31,47 @@
   padding: 20px;
   font-weight: bold;
 
-  img {
+  .etpLogo {
+    margin-top: 25px;
+    margin-left: 30px;
+    
+    img {
+      // margin-top: 15px;
+      width: 150px;
+      margin-left: 10px;
+    }
+ 
+    p {
+      font-size: 14px;
+      color: rgb(129, 129, 129);
+      margin-top: 10px;
+      text-align: center;
+    }
+  
+    h3 {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  }
+
+  .flag {
     width: 150px;
-    height: 100px;
-    margin: 10px auto;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    margin: 20px auto;
-  }
-
-  h3 {
-    margin: 20px auto;
-    font-weight: bold;
+    // height: 100px;
+    margin-top: 25px;
+  
+    h3 {
+      text-align: center;
+      margin: 20px auto;
+      font-weight: bold;
+      font-size: 20px;
+    }    
   }
 }
 
 @media (max-width: 1280px) {
   .myPageCardContainer {
-    
     padding-left: 30px;
   }
 }

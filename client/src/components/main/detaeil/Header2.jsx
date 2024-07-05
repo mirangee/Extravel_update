@@ -40,6 +40,17 @@ const Header2 = () => {
 
   const goToIntro = () => {
     navigate('/');
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
   };
 
   // 로그아웃 핸들러
@@ -140,16 +151,30 @@ const Header2 = () => {
               {isLoggedIn ? name + '님 안녕하세요' : ''}
             </li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/api/v1/shopping/'>패키지</Link>
+              <Link
+                to='/api/v1/shopping/'
+                onClick={scrollToTop}
+              >
+                패키지
+              </Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/main'>뉴스</Link>
+              <Link to='/main' onClick={scrollToTop}>
+                뉴스
+              </Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/main/exrates'>환율 정보</Link>
+              <Link
+                to='/main/exrates'
+                onClick={scrollToTop}
+              >
+                환율 정보
+              </Link>
             </motion.li>
             <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/mypage'>내&nbsp;&nbsp;정보</Link>
+              <Link to='/mypage' onClick={scrollToTop}>
+                내&nbsp;&nbsp;정보
+              </Link>
             </motion.li>
             {isLoggedIn && (
               <Dropdown
@@ -205,6 +230,7 @@ const Header2 = () => {
                   <Link
                     to='/login'
                     className={styles.login}
+                    onClick={scrollToTop}
                   >
                     로그인
                   </Link>

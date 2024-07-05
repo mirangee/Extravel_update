@@ -81,13 +81,13 @@ public class KakaoPayService {
         Integer amount = Integer.parseInt(payInfoDto.getPrice());
 
         // plusPoint 계산
-        float plusPoint = calcTotalPoint(member.getId(), amount) - amount ;
+        BigDecimal plusPoint = BigDecimal.valueOf(calcTotalPoint(member.getId(), amount) - amount);
 
         // 여기서 tbl_charge_history에 데이터 추가
         PointCharge pointCharge = PointCharge.builder()
                 .tid(payReadyResDto.getTid())
                 .member(member)
-                .amount(BigDecimal.valueOf(Integer.parseInt(payInfoDto.getPrice())))
+                .amount(BigDecimal.valueOf(Double.parseDouble(payInfoDto.getPrice())))
                 .plusPoint(plusPoint)
                 .createdAt(createdAt)
                 .approvedAt(null)
