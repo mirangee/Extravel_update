@@ -40,15 +40,15 @@ const ExchangeHistory = () => {
 
     // 비동기 함수 호출
     fetchData();
-    console.log('history의 길이: ', history.length);
-    if (history.length === 0) {
-      setHasList(false);
-    }
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (history.length === 0) {
+      setHasList(false);
+    } else {
+      setHasList(true);
+    }
+  }, [history]);
   return (
     <>
       <h3 className={styles.myExchangeHeader}>

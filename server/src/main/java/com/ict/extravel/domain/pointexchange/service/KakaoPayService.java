@@ -24,6 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -81,7 +82,7 @@ public class KakaoPayService {
         Integer amount = Integer.parseInt(payInfoDto.getPrice());
 
         // plusPoint 계산
-        BigDecimal plusPoint = BigDecimal.valueOf(calcTotalPoint(member.getId(), amount) - amount);
+        BigDecimal plusPoint = calcTotalPoint(member.getId(), amount).subtract(BigDecimal.valueOf(amount));
 
         // 여기서 tbl_charge_history에 데이터 추가
         PointCharge pointCharge = PointCharge.builder()
@@ -153,39 +154,59 @@ public class KakaoPayService {
 
     public void calcTotalResult(Integer id, PaymentDto paymentDto) {
         // 멤버 등급에 따라 plus point 산정해 총 적립 포인트 계산하는 메서드
-        float newEtPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
-        log.info("산정된 et point: {}", newEtPoint);
-        BigDecimal newEtiPointBD  = BigDecimal.valueOf(newEtPoint);
+        BigDecimal newEtPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
 
         // 현재 가지고 있는 et point 조회
-        BigDecimal currentEtPointBD = BigDecimal.valueOf(0);
-        Optional<Wallet> wallet = walletRepository.findById(id);
-        if (wallet.isPresent()) {
-            currentEtPointBD = wallet.get().getEtPoint();
-        }
+        Wallet wallet = walletRepository.findById(id).orElseThrow();
+        BigDecimal currentEtPoint = wallet.getEtPoint();
 
         // DB Wallet에 보유 포인트 업데이트
-        Wallet wallet1 = updateWallet(id, currentEtPointBD.add(newEtiPointBD));
+        Wallet wallet1 = updateWallet(id, currentEtPoint.add(newEtPoint));
         log.info("wallet 저장 결과: {}", wallet1.toString());
     }
 
-    private float calcTotalPoint(Integer id, int amount) {
+//    private float calcTotalPoint(Integer id, int amount) {
+//        Member member = memberRepository.findById(id).orElseThrow();
+//        float plusRate = 0;
+//        log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
+//        switch (member.getGrade()) {
+//            case BRONZE:
+//                plusRate = 0.001F;
+//                break;
+//            case SILVER:
+//                plusRate = 0.002F;
+//                break;
+//            case GOLD:
+//                plusRate = 0.003F;
+//                break;
+//        }
+//        // 소수점 이하 3자리로 반올림
+//        return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
+//    }
+
+    private BigDecimal calcTotalPoint(Integer id, int amount) {
         Member member = memberRepository.findById(id).orElseThrow();
-        float plusRate = 0;
+        BigDecimal plusRate = BigDecimal.ZERO;
         log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
         switch (member.getGrade()) {
             case BRONZE:
-                plusRate = 0.001F;
+                plusRate = new BigDecimal("0.001");
                 break;
             case SILVER:
-                plusRate = 0.002F;
+                plusRate = new BigDecimal("0.002");
                 break;
             case GOLD:
-                plusRate = 0.003F;
+                plusRate = new BigDecimal("0.003");
                 break;
         }
+
+        BigDecimal amountBD = BigDecimal.valueOf(amount);
+        BigDecimal result = amountBD.multiply(BigDecimal.ONE.add(plusRate));
+
         // 소수점 이하 3자리로 반올림
-        return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
+        result = result.setScale(3, RoundingMode.HALF_UP);
+
+        return result;
     }
 
     public Wallet updateWallet(Integer memberId, BigDecimal etPoint) {
