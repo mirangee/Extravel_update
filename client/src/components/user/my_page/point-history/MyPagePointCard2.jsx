@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../scss/MyPagePointCard2.module.scss';
+import styles from '../../../../scss/MyPagePointCard2.module.scss';
 import { motion } from 'framer-motion';
 
 const MyPagePointCard2 = ({ key, item }) => {
@@ -23,7 +23,7 @@ const MyPagePointCard2 = ({ key, item }) => {
               ET 포인트 사용{' '}
               <span>
                 &nbsp;&nbsp;{' '}
-                {amount.toLocaleString('ko-KR')}원{' '}
+                {amount.toLocaleString('ko-KR')}P{' '}
               </span>
             </li>
           </ul>

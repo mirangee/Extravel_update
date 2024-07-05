@@ -27,12 +27,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Slf4j
 public class CoolSMSApi {
-
-
     private final CoolSMSService coolSMSService;
     private DefaultMessageService messageService;
-
-
     @Value("${CoolSMS.api_key}")
     private String API_KEY;
     @Value("${CoolSMS.apiSecretKey}")
@@ -55,6 +51,11 @@ public class CoolSMSApi {
     @PostMapping("/send-one")
     public ResponseEntity<?> sendOne(@RequestBody Map<String, String> data) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         return handleSmsRequest(data, false);
+    }
+    @ResponseBody
+    @PostMapping("/access")
+    public ResponseEntity<?> access(@RequestBody Map<String, String> data) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
+        return accessHandleSmsRequest(data);
     }
 
     @ResponseBody
@@ -98,7 +99,23 @@ public class CoolSMSApi {
         int max = 999999;
         return random.nextInt(max - min + 1) + min;
     }
+    private ResponseEntity<?> accessHandleSmsRequest(Map<String, String> data) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
+        String phoneNumber = data.get("phoneNumber");
+        int verificationCode = generateRandomNumber();
 
+        /*Message message = new Message();
+        message.setFrom("01021356409");
+        message.setTo(phoneNumber);
+        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
+
+        log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
+
+        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
+        log.info("{}", messageSentResponse.toString());
+        log.info("SMS sent successfully to {}", phoneNumber);
+        */
+        return ResponseEntity.ok().body(verificationCode);
+    }
 
 }
 

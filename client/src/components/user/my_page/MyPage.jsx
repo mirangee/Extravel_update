@@ -3,12 +3,12 @@ import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import { Input } from '@mui/material';
 import '../../../scss/MyPage.scss';
-import MyPageCard from './MyPageCard';
 import AuthContext from '../../../utils/AuthContext';
 import goldMedal from '../../../assets/img/gold.png';
 import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
-import PointHistory from './PointHistory';
+import PointHistory from './point-history/PointHistory';
+import ExchangeHistory from './exchange-history/ExchangeHistory';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -142,8 +142,7 @@ const MyPage = () => {
             style={{ width: '700px', height: '72px' }}
           />
         </div>
-        {/* <Button
-          onClick={handleEdit}
+        <Button
           style={{
             width: '150px',
             height: '50px',
@@ -151,10 +150,10 @@ const MyPage = () => {
             background: '#14505c',
           }}
         >
-          프로필 수정하기
-        </Button> */}
+          회원 탈퇴하기
+        </Button>
       </motion.div>
-      <MyPageCard />
+      <ExchangeHistory />
       <PointHistory />
     </>
   );
