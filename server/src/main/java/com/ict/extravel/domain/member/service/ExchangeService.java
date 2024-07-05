@@ -38,7 +38,7 @@ public class ExchangeService {
                 .currencyCode(currency)
                 .amount(requestDTO.getTo())
                 .useEtPoint(requestDTO.getEtp())
-                .transactionDate(LocalDate.now())
+                .transactionDate(LocalDateTime.now())
                 .exchangeRate(requestDTO.getExchangeRate())
                 .build();
         exChangeHistoryRepository.save(history);

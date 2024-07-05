@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -35,7 +36,7 @@ public class ExchangeHistory {
     private BigDecimal exchangeRate;
 
     @Column(name = "transaction_date")
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDate;
 
     @Column(name = "use_et_point", precision = 10, scale = 2)
     private BigDecimal useEtPoint;

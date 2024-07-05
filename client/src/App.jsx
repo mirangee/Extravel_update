@@ -26,11 +26,20 @@ import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
 
 const App = () => {
   const location = useLocation();
-  const isFlight = location.pathname !== '/flight';
+  const handleLayout = () => {
+    if (
+      location.pathname !== '/login' &&
+      location.pathname !== '/flight'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <>
       <AuthContextProvider>
-        {isFlight && <Header />}
+        {handleLayout() && <Header />}
         <Routes>
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
@@ -69,7 +78,7 @@ const App = () => {
           />
         </Routes>
 
-        {isFlight && <Footer />}
+        {handleLayout() && <Footer />}
         {/* <RealTimeExchanges /> */}
         <ScrollToTopButton />
       </AuthContextProvider>

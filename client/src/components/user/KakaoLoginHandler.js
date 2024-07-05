@@ -27,11 +27,6 @@ const KakaoLoginHandler = () => {
         REQUEST_URL + '/kakaologin?code=' + code,
       );
 
-      const { token, userName, email, role } =
-        await res.json(); // 서버에서 온 json 읽기
-
-      onLogin(token, userName, email, role);
-
       redirection('/');
     };
 

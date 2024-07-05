@@ -87,7 +87,7 @@ public class KakaoPayService {
         PointCharge pointCharge = PointCharge.builder()
                 .tid(payReadyResDto.getTid())
                 .member(member)
-                .amount(Integer.parseInt(payInfoDto.getPrice()))
+                .amount(BigDecimal.valueOf(Integer.parseInt(payInfoDto.getPrice())))
                 .plusPoint(plusPoint)
                 .createdAt(createdAt)
                 .approvedAt(null)
