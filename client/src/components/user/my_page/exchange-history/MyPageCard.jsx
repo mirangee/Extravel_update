@@ -2,11 +2,9 @@ import {
   faArrowRight,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardActions } from '@mui/material';
 import React from 'react';
-import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import styles from '../../../../scss/MyPageCard.module.scss';
 import etpLogo from '../../../../assets/img/logo.png';

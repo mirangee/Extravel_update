@@ -21,6 +21,21 @@
     font-weight: 700;
   }
 }
+.noList {
+  width: 770px;
+  height: 60px;
+  line-height: 60px;
+  color: #14505c;
+  text-align: center;
+  margin-left: 50%;
+  margin-top: 60px;
+  transform: translate(-44%, -50%);
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid rgb(20, 80, 92, 0.4);
+  border-right: none; 
+  border-left: none;
+}
 
 
 .viewMore {
