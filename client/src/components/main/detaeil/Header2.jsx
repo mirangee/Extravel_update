@@ -33,6 +33,7 @@ const Header2 = () => {
     useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const redirection = useNavigate();
+  const { nation } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -59,6 +60,12 @@ const Header2 = () => {
     redirection('/');
     alert('로그아웃 되었습니다.');
   };
+
+  useEffect(() => {
+    if (nation) {
+      setCountry(nation);
+    }
+  }, [nation]);
 
   useEffect(() => {
     const getNationData = () => {

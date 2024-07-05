@@ -142,19 +142,19 @@ public class MemberController {
     public ResponseEntity<FindIDResponseDTO> sendFoundId(String phoneNumber, FindIDResponseDTO email) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         log.info("sendFoundId의 phoneNumber{}, email{}", phoneNumber, email);
 
-        Message message = new Message();
-        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
-        message.setFrom("01021356409");
-        message.setTo(phoneNumber);
-        message.setText("[EXTRAVEL]" +
-                "당신의 아이디는" +
-                "[" + email + "]" +
-                "입력해주세요!");
+//        Message message = new Message();
+//        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
+//        message.setFrom("01021356409");
+//        message.setTo(phoneNumber);
+//        message.setText("[EXTRAVEL]" +
+//                "당신의 아이디는" +
+//                "[" + email + "]" +
+//                "입력해주세요!");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, email);
 
-        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
-        log.info("{}", messageSentResponse.toString());
+//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
+//        log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
         return ResponseEntity.ok().body(email);
     }

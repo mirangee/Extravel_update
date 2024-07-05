@@ -21,71 +21,84 @@
     animation: fadeIn 0.8s ease-in forwards;
   }
 
-  .container {
-    background-color: #fff;
+  .form-container {
+    background: white;
+    height: 40%;
+    min-height: 500px;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    width: 35%;
     border-radius: 10px;
+    padding: 50px 10px;
     box-shadow:
       0 14px 28px rgba(0, 0, 0, 0.25),
       0 10px 10px rgba(0, 0, 0, 0.22);
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    width: 1000px;
-    max-width: 100%;
-    min-height: 800px;
-    animation: fadeIn 0.8s ease-in forwards;
 
-    .form-container {
-      top: 0;
-      height: 100%;
-      transition: all 0.6s ease-in-out;
+    .phoneCertification {
+      font-size: 20px;
+      font-weight: bold;
+      color: black;
+      z-index: 200;
+      margin-top: 10%;
+      text-align: center;
+    }
+
+    .textButton {
       display: flex;
-      flex-direction: column;
-      width: 50%;
-      border-radius: 10px;
-      padding: 50px 10px;
-      //   background: blue;
-      box-shadow:
-        0 14px 28px rgba(0, 0, 0, 0.25),
-        0 10px 10px rgba(0, 0, 0, 0.22);
+      flex-direction: row;
+      margin-top: 30px;
+      justify-content: space-evenly;
+      align-items: center;
 
-      .phoneCertification {
-        font-size: 20px;
-        font-weight: bold;
-        color: black;
-        z-index: 200;
-        margin-top: 10%;
-        text-align: center;
+      .textField {
+        width: 400px;
+        padding: 10px;
+        margin: 0 0 10px 20px;
       }
 
-      .textButton {
-        display: flex;
-        margin-top: 50px;
-        justify-content: space-evenly;
+      .phoneNumberCheck {
+        color: #14505c;
+        width: 100px;
+        height: 40px;
+        font-size: 15px;
+        cursor: pointer;
 
-        .textField {
-          width: 400px;
-          // height: 35px;
-          //   margin: 0 0 10px 20px;
-          padding: 10px;
-
-          input {
-            border-color: #14505c;
-          }
+        &:hover {
+          color: black;
         }
+      }
+    }
 
-        .phoneNumberCheck {
-          color: #14505c;
-          width: 100px;
-          height: 35px;
-          font-size: 15px;
-          cursor: pointer;
+    .grid {
+      display: flex;
+      flex-direction: row;
+      margin-top: 20px;
+      justify-content: space-evenly;
+      align-items: center;
+      margin-bottom: 10px;
 
-          &:hover {
-            color: black;
-          }
+      .certifiedNumberTextField {
+        width: 400px;
+        padding: 10px;
+        margin: 0 0 10px 20px;
+      }
+
+      .certificationButton {
+        width: 100px;
+        height: 40px;
+        background: #14505c;
+        color: white;
+        font-size: 15px;
+        border-radius: 10px;
+
+        &:hover {
+          background: #fff;
+          color: black;
+          border: 5px solid #14505c;
         }
       }
     }
   }
 }
+// }

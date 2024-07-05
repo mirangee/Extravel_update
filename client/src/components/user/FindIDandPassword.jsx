@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Input, Button, CloseButton } from 'reactstrap';
 import styles from '../../scss/FindIDandPassword.module.scss';
 import { useNavigate } from 'react-router-dom';
-import a7 from '../../assets/img/a7.jpg';
 import axios from 'axios';
 import AuthNumTimer from './AuthNumTimer';
 // import SMSUtils from '../../utils/SMSUtils';
@@ -216,7 +215,7 @@ const FindIDandPassword = () => {
       });
     }
     setCheckCode(checkCodeValue); // 인증번호 입력값 상태 업데이트
-    setShowAuthButton(true);
+    setShowAuthButton(false);
   };
 
   // 인증 번호 확인 버튼 클릭 핸들러
@@ -229,6 +228,7 @@ const FindIDandPassword = () => {
         randomCode,
         setIsAuthCompleted,
         setResultMsg,
+        setShowAuthNumTimer(false),
       );
     } else {
       setResultMsg(
@@ -350,9 +350,12 @@ const FindIDandPassword = () => {
       console.log('onSubmitForm의 하단 data : ', data);
 
       const response = await axios.post(url, data);
-      if (response.data.success) {
+      if (!response.data.success) {
         // 성공적인 응답 처리
-        setResultMsg('성공적으로 처리되었습니다.');
+        setResultMsg(
+          '입력하신 전화번호로 아이디를 전송했습니다.',
+        );
+        setShowAuthNumTimer(false);
       } else {
         // DB에 없는 정보로 인한 실패 처리
         setResultMsg(
@@ -431,6 +434,7 @@ const FindIDandPassword = () => {
                     ref={inputPhoneNumber}
                     placeholder='전화번호를 입력하세요.'
                   />
+
                   <div className={styles.certifiedTag}>
                     {showAuthNumInput && (
                       <Input
@@ -552,30 +556,20 @@ const FindIDandPassword = () => {
                     ref={inputPhoneNumber}
                     placeholder='전화번호를 입력하세요'
                   />
-                  {showAuthNumInput && (
-                    <Input
-                      onChange={onChangeCheckCode}
-                      ref={inputCheckCode}
-                      placeholder='인증번호를 입력하세요'
-                    />
-                  )}
 
-                  <div className={styles.pwbtn}>
-                    {showAuthButton && (
-                      <Button
-                        className={styles.certifiedBtn}
-                        size='mid'
-                        onClick={onAuthClick}
-                      >
-                        {/* {PWClickState.authClickCount > 0
-                  ? '재인증'
-                  : '인증하기'} */}
-                        인증하기
-                      </Button>
+                  <div className={styles.certifiedTag}>
+                    {showAuthNumInput && (
+                      <Input
+                        className={styles.certifiedNumber}
+                        onChange={onChangeCheckCode}
+                        ref={inputCheckCode}
+                        placeholder='인증번호를 입력하세요'
+                      />
                     )}
 
                     {showAuthNumInput && (
                       <Button
+                        className={styles.confirmNumber}
                         onClick={(e) => {
                           e.preventDefault();
 
@@ -602,19 +596,44 @@ const FindIDandPassword = () => {
                           }
                         }}
                         variant='contained'
-                        color='success'
-                        style={{
-                          marginTop: 10,
-                          marginLeft: '100px',
-                          background: 'black',
-                          display: !isAuthCompleted
-                            ? 'block'
-                            : 'none',
-                        }}
+                        // color='success'
+                        // style={{
+                        //   marginTop: 10,
+                        //   marginLeft: '100px',
+                        //   background: 'black',
+                        //   display: !isAuthCompleted
+                        //     ? 'block'
+                        //     : 'none',
+                        // }}
                       >
                         인증번호 확인
                       </Button>
                     )}
+                  </div>
+
+                  <div className={styles.pwbtn}>
+                    {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
+                      <Button
+                        className={styles.submitButton}
+                        onClick={onSubmitForm}
+                      >
+                        완료
+                      </Button>
+                    )}
+
+                    {showAuthButton && (
+                      <Button
+                        className={styles.submitButton}
+                        size='mid'
+                        onClick={onAuthClick}
+                      >
+                        {/* {PWClickState.authClickCount > 0
+                  ? '재인증'
+                  : '인증하기'} */}
+                        인증하기
+                      </Button>
+                    )}
+
                     <div>
                       {' '}
                       {showAuthNumTimer && (
@@ -623,14 +642,6 @@ const FindIDandPassword = () => {
                           sendSMS={sendSMS}
                           phoneNumber={phoneNumber}
                         />
-                      )}
-                      {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
-                        <Button
-                          className={styles.submitButton}
-                          onClick={onSubmitForm}
-                        >
-                          완료
-                        </Button>
                       )}
                     </div>
                   </div>
