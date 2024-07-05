@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
@@ -12,7 +13,7 @@ public class ExchangeHistoryResponseDTO {
     private String currencyCode;
     private BigDecimal amount;
     private BigDecimal exchangeRate;
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDate;
     private BigDecimal useEtPoint;
     private byte[] flag;
 

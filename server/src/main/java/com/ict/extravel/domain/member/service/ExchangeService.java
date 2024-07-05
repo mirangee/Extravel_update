@@ -12,17 +12,21 @@ import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.member.repository.WalletExchangeRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
+import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.entity.Wallet;
+import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class ExchangeService {
@@ -32,6 +36,7 @@ public class ExchangeService {
     private final CurrencyRepository currencyRepository;
     private final WalletExchangeRepository walletExchangeRepository;
     private final WalletRepository walletRepository;
+    private final PointChargeRepository pointChargeRepository;
     public String saveHistory(ExchangeRequestDTO requestDTO) {
         Member member = memberRepository.findByEmail(requestDTO.getEmail()).orElseThrow();
         Nation nation = nationRepository.findById(requestDTO.getNation()).orElseThrow();
@@ -41,10 +46,18 @@ public class ExchangeService {
                 .currencyCode(currency)
                 .amount(requestDTO.getTo())
                 .useEtPoint(requestDTO.getEtp())
-                .transactionDate(LocalDate.now())
+                .transactionDate(LocalDateTime.now())
                 .exchangeRate(requestDTO.getExchangeRate())
                 .build();
         exChangeHistoryRepository.save(history);
+        PointCharge newHistory = PointCharge.builder()
+                .tid(member.getEmail()+Math.random())
+                .member(member)
+                .amount(requestDTO.getEtp())
+                .plusPoint(BigDecimal.valueOf(0.00))
+                .status(PointCharge.Status.USED)
+                .build();
+        pointChargeRepository.save(newHistory);
         updatewalletExchange(member, nation, currency, requestDTO);
         updatewallet(member,requestDTO);
         if(member==null||nation==null||currency==null||requestDTO==null){
@@ -80,12 +93,10 @@ public class ExchangeService {
     public List<ExchangeHistoryResponseDTO> getExchangeHistory(Integer id) {
         List<ExchangeHistory> historyList = exChangeHistoryRepository.findAllByMemberId(id);
 
-        log.info("DB에서 가져온 history List: {}", historyList);
         List<ExchangeHistoryResponseDTO> responseDTOList = new ArrayList<>();
         for (ExchangeHistory e : historyList) {
             ExchangeHistoryResponseDTO responseDTO = new ExchangeHistoryResponseDTO(e);
             responseDTOList.add(responseDTO);
-            log.info("DTO로 변환: {}", responseDTO);
         }
         return responseDTOList;
     }

@@ -20,6 +20,10 @@ const MyPageCard = ({ key, item }) => {
     useEtPoint,
     flag,
   } = item;
+  const slicedDate = transactionDate.slice(
+    0,
+    transactionDate.indexOf('T'),
+  );
 
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
@@ -33,7 +37,7 @@ const MyPageCard = ({ key, item }) => {
         transition={{ ease: 'easeOut', duration: 2 }}
       >
         <div className={styles.currentDate}>
-          {transactionDate}
+          {slicedDate}
         </div>
         <div className={styles.cardContainer}>
           <CardActions className={styles.cardActions}>

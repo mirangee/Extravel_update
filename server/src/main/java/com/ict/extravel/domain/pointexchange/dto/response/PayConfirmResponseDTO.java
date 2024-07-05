@@ -20,9 +20,9 @@ public class PayConfirmResponseDTO {
 
     private Integer memberId;
 
-    private Integer amount;
+    private BigDecimal amount;
 
-    private Float plusPoint;
+    private BigDecimal plusPoint;
 
     private LocalDateTime createdAt;
 
