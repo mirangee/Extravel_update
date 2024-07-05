@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import googleCircle from '../../assets/img/google_circle.png';
 import axios from 'axios';
-
+import { AuthContext } from '../../utils/AuthContext';
+import { useNavigate } from 'react-router-dom';
 const GoogleCustomLogin = () => {
+  const { onLogin } = useContext(AuthContext);
+  const redirection = useNavigate();
+
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -19,10 +23,19 @@ const GoogleCustomLogin = () => {
         console.log(res.data); // 사용자 정보가 res.data에 포함됩니다.
         const { email, name } = res.data;
         console.log(`Email: ${email}, Name: ${name}`);
-        axios.post(
+        const response = await axios.post(
           'http://localhost:8181/user/auth/google',
           { name, email },
         );
+        const result = response.data;
+        if (result.phoneNumber) {
+          onLogin(result);
+          redirection('/main');
+        } else {
+          redirection('/login/sns', {
+            state: { result, path: 'GOOGLE' },
+          });
+        }
       } catch (error) {
         console.error('Error fetching user info:', error);
       }

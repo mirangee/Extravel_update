@@ -28,4 +28,8 @@ public class LoginResponseDTO {
         this.grade = member.getGrade();
         this.phoneNumber = member.getPhoneNumber();
     }
+    public LoginResponseDTO(String email,String name){
+        this.email = email;
+        this.name = name;
+    }
 }

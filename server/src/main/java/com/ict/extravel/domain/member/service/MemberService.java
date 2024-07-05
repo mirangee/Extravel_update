@@ -3,10 +3,7 @@ package com.ict.extravel.domain.member.service;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.*;
-import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
-import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
-import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.dto.response.*;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
@@ -227,16 +224,19 @@ public class MemberService {
 
 
     @Transactional
-    public Member NaverLoginService(String code) {
+    public LoginResponseDTO NaverLoginService(String code) {
         String accessToken = getNaverAccessToken(code);
         log.info("token: {}", accessToken);
 
-        NaverUserDTO naverUserInfo = getNaverUserInfo(accessToken);
-        log.info("naverUserInfo:{}",naverUserInfo);
+        NaverUserDTO userDTO = getNaverUserInfo(accessToken);
 
-        Member member = saveMember(naverUserInfo.getResponse().getName(), naverUserInfo.getResponse().getEmail());
-        log.info("member {}",member);
-        return member;
+        boolean duplicate = isDuplicate(userDTO.getResponse().getEmail());
+        if(duplicate){
+            Member member = memberRepository.findByEmail(userDTO.getResponse().getEmail()).orElseThrow();
+            return new LoginResponseDTO(member);
+        }else{
+            return new LoginResponseDTO(userDTO.getResponse().getEmail(), userDTO.getResponse().getName());
+        }
 
     }
 
@@ -283,7 +283,7 @@ public class MemberService {
 
 
 
-    public void kakaoService(String code) {
+    public LoginResponseDTO kakaoService(String code) {
         // 인가 코드를 통해 토큰을 발급받기
         System.out.println(KAKAO_CLIENT_ID);
         System.out.println(KAKAO_CLIENT_SECRET);
@@ -292,11 +292,16 @@ public class MemberService {
         System.out.println(accessToken);
         // 토큰을 통해 사용자 정보를 가져오기
         KakaoUserDTO userDTO = getKakaoUserInfo(accessToken);
-
-        System.out.println(userDTO);
-        Member member = saveMember(userDTO.getKakaoAccount().getProfile().getNickname(),userDTO.getKakaoAccount().getEmail());
-
+        boolean duplicate = isDuplicate(userDTO.getKakaoAccount().getEmail());
+        if(duplicate){
+            Member member = memberRepository.findByEmail(userDTO.getKakaoAccount().getEmail()).orElseThrow();
+            return new LoginResponseDTO(member);
+        }else{
+            return new LoginResponseDTO(userDTO.getKakaoAccount().getEmail(), userDTO.getKakaoAccount().getProfile().getNickname());
+        }
     }
+
+
 
     private String getKakaoAccessToken(String code) {
         // 요청 uri
@@ -388,8 +393,14 @@ public class MemberService {
         return save.getNationCode().getNationCode();
 
     }
-    public void googleService(GoogleUserInfoDTO googleUserInfoDTO) {
-        Member member = saveMember(googleUserInfoDTO.getName(), googleUserInfoDTO.getEmail());
+    public LoginResponseDTO googleService(GoogleUserInfoDTO userDTO) {
+        boolean duplicate = isDuplicate(userDTO.getEmail());
+        if(duplicate){
+            Member member = memberRepository.findByEmail(userDTO.getEmail()).orElseThrow();
+            return new LoginResponseDTO(member);
+        }else{
+            return new LoginResponseDTO(userDTO.getEmail(), userDTO.getName());
+        }
     }
 
 
@@ -400,6 +411,22 @@ public class MemberService {
         }else {
             return "400";
         }
+    }
+
+    public LoginResponseDTO snsSignup(SnsSignUpRequestDTO dto) {
+        Nation us = nationRepository.findById("US").orElseThrow();
+        Member member = Member.builder()
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .phoneNumber(dto.getPhoneNumber())
+                .password("랜덤값 들어가야함")
+                .nationCode(us)
+                .path(dto.getPath())
+                .grade(Member.Grade.BRONZE)
+                .build();
+        Member save = memberRepository.save(member);
+        walletRepository.insertWallet(save.getId(), BigDecimal.valueOf(0.0));
+        return new LoginResponseDTO(save);
     }
 }
 
