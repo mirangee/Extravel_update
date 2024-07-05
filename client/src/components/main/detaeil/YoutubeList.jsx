@@ -36,12 +36,13 @@ const YoutubeList = () => {
     <>
       <div className={styles.youtubeContainer}>
         <Swiper
+          loop={true}
           modules={[Navigation, Pagination]}
           spaceBetween={5}
           slidesPerView={3} // 한 번에 보여질 슬라이드 수
           navigation={true} // 네비게이션 활성화
           pagination={{ clickable: true }} // 페이지네이션 활성화
-          freeMode={false} // 무한 루프 설정
+          freeMode={true} // 무한 루프 설정
         >
           <div className={styles.youtubeSlider}>
             {youtubeLink.map((item) => (
