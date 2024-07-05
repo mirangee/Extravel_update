@@ -8,22 +8,41 @@ import { CardActions } from '@mui/material';
 import React from 'react';
 import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
-import styles from '../../../scss/MyPageCard.module.scss';
-import etpLogo from '../../../assets/img/logo.png';
+import styles from '../../../../scss/MyPageCard.module.scss';
+import etpLogo from '../../../../assets/img/logo.png';
 
-const MyPageCard = () => {
+const MyPageCard = ({ key, item }) => {
+  const {
+    currencyCode,
+    amount,
+    exchangeRate,
+    transactionDate,
+    useEtPoint,
+    flag,
+  } = item;
+  const slicedDate = transactionDate.slice(
+    0,
+    transactionDate.indexOf('T'),
+  );
+
+  function removeInvalidChars(str) {
+    return str.replace(/ï»¿/g, '');
+  }
   return (
     <>
       <motion.div
+        key={key}
         className={styles.myPageCardContainer}
         animate={{ x: 100 }}
         transition={{ ease: 'easeOut', duration: 2 }}
       >
-        <div className={styles.currentDate}>2024-07-03</div>
+        <div className={styles.currentDate}>
+          {slicedDate}
+        </div>
         <div className={styles.cardContainer}>
           <CardActions className={styles.cardActions}>
             <div className={styles.etpLogo}>
-              <img src={etpLogo} alt='KR' />
+              <img src={etpLogo} alt='etpLogo' />
 
               <p>
                 <FontAwesomeIcon
@@ -32,22 +51,28 @@ const MyPageCard = () => {
                     fontSize: '14px',
                   }}
                 />
-                &nbsp;&nbsp;1 USD = 1,381 ETP
+                &nbsp;&nbsp;1 {currencyCode} ={' '}
+                {exchangeRate.toLocaleString('ko-KR')} ETP
               </p>
-              <h3>276,200 ETP</h3>
+              <h3>
+                {useEtPoint.toLocaleString('ko-KR')} ETP
+              </h3>
             </div>
           </CardActions>
           <FontAwesomeIcon
             icon={faArrowRight}
-            style={{ fontSize: '64px', marginTop: '100px' }}
+            style={{ fontSize: '64px', marginTop: '65px' }}
           />
           <CardActions className={styles.cardActions}>
             <div className={styles.flag}>
               <img
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/150px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png'
-                alt='US'
+                src={removeInvalidChars(atob(flag))}
+                alt='flag'
               />
-              <h3>200 USD</h3>
+              <h3>
+                {amount.toLocaleString('ko-KR')}{' '}
+                {currencyCode}
+              </h3>
             </div>
           </CardActions>
         </div>

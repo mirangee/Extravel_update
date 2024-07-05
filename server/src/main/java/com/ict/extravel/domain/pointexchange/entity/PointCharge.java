@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -28,11 +30,12 @@ public class PointCharge {
 
     @NotNull
     @Column(name = "amount", nullable = false)
-    private Integer amount;
+    private BigDecimal amount;
 
     @Column(name = "plus_point")
-    private Float plusPoint;
+    private BigDecimal plusPoint;
 
+    @UpdateTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

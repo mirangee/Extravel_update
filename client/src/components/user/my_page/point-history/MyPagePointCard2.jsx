@@ -23,7 +23,7 @@ const MyPagePointCard2 = ({ key, item }) => {
               ET 포인트 사용{' '}
               <span>
                 &nbsp;&nbsp;{' '}
-                {amount.toLocaleString('ko-KR')}원{' '}
+                {amount.toLocaleString('ko-KR')}P{' '}
               </span>
             </li>
           </ul>
