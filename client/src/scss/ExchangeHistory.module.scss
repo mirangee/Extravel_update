@@ -15,8 +15,25 @@
   margin-top: 100px;
   margin-bottom: 100px;
   padding-left: 500px;
+
+  
 }
 
+.viewMore {
+  width: 770px;
+  height: 50px;
+  text-align: center;
+  background: #14505c;
+  margin-left: 50%;
+  margin-top: 30px;
+  transform: translate(-44%, -50%);
+}
+
+.viewMore:hover {
+  color: #14505c;
+  font-weight: 700;
+  background: #fff;
+}
 
 @media (max-width: 1280px) {
   .myPageCardContainer {

@@ -20,7 +20,7 @@ const GoogleTop5 = () => {
     <>
       <div className={styles.GoogleTopContainer}>
         <h3 className={styles.mainH3}>
-          구글 검색 트렌드 Top 6
+          여행 검색 트렌드 Top 6
         </h3>
 
         <div className={styles.sectionFluidMain}>
