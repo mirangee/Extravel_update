@@ -3,14 +3,14 @@
 
 .myPageCardContainer {
   width: 100%;
-  margin-top: 50px;
-  margin-bottom: 100px;
+  margin-top: 0px;
+  margin-bottom: 50px;
   padding-left: 500px;
 }
 
 .currentDate {
-  margin: 20px auto;
-  font-size: 22px;
+  margin: 20px auto 5px;
+  font-size: 18px;
   font-weight: bold;
   color: #14505C;
 }
@@ -36,6 +36,7 @@
     margin-left: 30px;
     
     img {
+      // margin-top: 15px;
       width: 150px;
       margin-left: 10px;
     }
@@ -48,8 +49,10 @@
     }
   
     h3 {
+      margin-top: 20px;
       text-align: center;
       font-weight: bold;
+      font-size: 20px;
     }
   }
 
@@ -62,6 +65,7 @@
       text-align: center;
       margin: 20px auto;
       font-weight: bold;
+      font-size: 20px;
     }    
   }
 }

@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -79,6 +80,6 @@ public class Member {
     private String refreshToken;
 
     @Column(name = "refresh_token_expiry_date")
-    private LocalDate refreshTokenExpiryDate;
+    private Date refreshTokenExpiryDate;
 
 }
