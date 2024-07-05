@@ -23,13 +23,15 @@ import { Switch } from '@mui/material';
 import NaverShopping from './components/user/NaverShopping';
 import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
 import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
+import LoginPhoneNumber from './components/user/LoginPhoneNumber';
 
 const App = () => {
   const location = useLocation();
   const handleLayout = () => {
     if (
       location.pathname !== '/login' &&
-      location.pathname !== '/flight'
+      location.pathname !== '/flight' &&
+      location.pathname !== '/login/sns'
     ) {
       return true;
     } else {
@@ -44,6 +46,10 @@ const App = () => {
           <Route path='/' element={<MainIntro />} />
           <Route path='/main' element={<MainDetail />} />
           <Route path='/login' element={<Login />} />
+          <Route
+            path='/login/sns'
+            element={<LoginPhoneNumber />}
+          />
           <Route path='/flight' element={<FlightOffer />} />
           <Route
             path='/login/FindIDandPassword'
