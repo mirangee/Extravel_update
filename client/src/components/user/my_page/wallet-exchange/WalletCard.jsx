@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '../../../../scss/WalletCard.module.scss';
-import { motion } from 'framer-motion';
 
 const WalletCard = ({ key, item }) => {
   const { currencyCode, exchangeAmount, flag } = item;
@@ -9,12 +8,7 @@ const WalletCard = ({ key, item }) => {
   }
   return (
     <>
-      <motion.div
-        key={key}
-        className={styles.pageBox}
-        animate={{ x: 100 }}
-        transition={{ ease: 'easeOut', duration: 2 }}
-      >
+      <div key={key} className={styles.pageBox}>
         <div className={styles.point}>
           <img
             src={removeInvalidChars(atob(flag))}
@@ -26,7 +20,7 @@ const WalletCard = ({ key, item }) => {
             {currencyCode}{' '}
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };
