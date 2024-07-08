@@ -418,7 +418,7 @@ public class MemberService {
 
         Optional<Member> idInfo = memberRepository.findById(id);
         log.info("findById에 넣은 id: {}", id);
-        log.info("idInfo:{}",idInfo);
+        log.info("idInfo:{}", idInfo);
 
 
         idInfo.ifPresent(member -> {
@@ -430,6 +430,7 @@ public class MemberService {
         });
 
         return null;
+    }
 
     public LoginResponseDTO snsSignup(SnsSignUpRequestDTO dto) {
         Nation us = nationRepository.findById("US").orElseThrow();
