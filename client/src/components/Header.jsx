@@ -156,8 +156,10 @@ const Header = () => {
                   style={{
                     color: '#fff',
                     fontWeight: 'bold',
-                    fontSize: '18px',
-                    paddingRight: '105px',
+                    fontSize: '15px',
+                    paddingRight: '75px',
+                    minWidth: '260px',
+                    paddingLeft: '30px',
                   }}
                 >
                   {isLoggedIn ? name + '님 안녕하세요' : ''}

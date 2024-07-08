@@ -6,6 +6,10 @@ import DetailSection3 from './DetailSection3';
 import YoutubeList from './YoutubeList';
 import { useLocation } from 'react-router-dom';
 const MainDetail = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
   return (
     <div className={Styles.mainBox}>
       <DetailSection1 />
