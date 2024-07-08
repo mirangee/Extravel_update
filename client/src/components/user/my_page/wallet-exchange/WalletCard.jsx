@@ -15,20 +15,16 @@ const WalletCard = ({ key, item }) => {
         animate={{ x: 100 }}
         transition={{ ease: 'easeOut', duration: 2 }}
       >
-        <div className={styles.pointBox}>
-          <div className={styles.point}>
-            <img
-              src={removeInvalidChars(atob(flag))}
-              alt='flag'
-            />
+        <div className={styles.point}>
+          <img
+            src={removeInvalidChars(atob(flag))}
+            alt='flag'
+          />
+          <div>
+            &nbsp;&nbsp;{' '}
+            {exchangeAmount.toLocaleString('ko-KR')}&nbsp;
+            {currencyCode}{' '}
           </div>
-          <ul>
-            <li>
-              &nbsp;&nbsp;{' '}
-              {exchangeAmount.toLocaleString('ko-KR')}&nbsp;
-              {currencyCode}{' '}
-            </li>
-          </ul>
         </div>
       </motion.div>
     </>

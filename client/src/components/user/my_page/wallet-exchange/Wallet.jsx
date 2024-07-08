@@ -49,7 +49,7 @@ const Wallet = () => {
           </div>
         ) : (
           wallet.map((item, key) => (
-            <li>
+            <li className={styles.mapLi}>
               <WalletCard key={key} item={item} />
             </li>
           ))
