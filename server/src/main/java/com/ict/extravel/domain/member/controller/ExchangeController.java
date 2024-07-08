@@ -3,6 +3,7 @@ package com.ict.extravel.domain.member.controller;
 
 import com.ict.extravel.domain.member.dto.request.ExchangeRequestDTO;
 import com.ict.extravel.domain.member.dto.response.ExchangeHistoryResponseDTO;
+import com.ict.extravel.domain.member.dto.response.HistoryAverResponseDTO;
 import com.ict.extravel.domain.member.dto.response.WalletTotalResponseDTO;
 import com.ict.extravel.domain.member.entity.WalletExchange;
 import com.ict.extravel.domain.member.service.ExchangeService;
@@ -33,6 +34,12 @@ public class ExchangeController {
         log.info(historyList.toString());
         return ResponseEntity.ok().body(historyList);
     }
+    @GetMapping("/average")
+    public ResponseEntity<?> getAverageExchangeHistory(String nation) {
+        HistoryAverResponseDTO averageList = exchangeService.getAverageExchangeHistory(nation);
+        return ResponseEntity.ok().body(averageList);
+    }
+
 
     @PostMapping("/wallet/{id}")
     public ResponseEntity<?> getWalletTotal(@PathVariable Integer id) {

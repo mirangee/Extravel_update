@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import styles from '../../../scss/GoogleTop5.module.scss';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../config/host-config';
-
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../../utils/AuthContext';
 const GoogleTop5 = () => {
   const [trendList, setTrendList] = useState([]);
-
+  const navi = useNavigate();
   useEffect(() => {
     getSearchTrend();
   }, []);
+  const { onChangeNation } = useContext(AuthContext);
 
   const getSearchTrend = async () => {
     const res = await axios.get(
@@ -16,6 +22,7 @@ const GoogleTop5 = () => {
     );
     setTrendList(res.data);
   };
+
   return (
     <>
       <div className={styles.GoogleTopContainer}>
@@ -29,6 +36,10 @@ const GoogleTop5 = () => {
               <div
                 className={styles.sectionCol}
                 key={index}
+                onClick={() => {
+                  onChangeNation(item.nationCode);
+                  navi('/main');
+                }}
               >
                 <div className={styles.section}>
                   <div className={styles.sectionIn}>

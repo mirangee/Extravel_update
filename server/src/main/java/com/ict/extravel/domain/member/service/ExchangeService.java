@@ -4,6 +4,7 @@ import com.ict.extravel.domain.currency.entity.Currency;
 import com.ict.extravel.domain.currency.repository.CurrencyRepository;
 import com.ict.extravel.domain.member.dto.request.ExchangeRequestDTO;
 import com.ict.extravel.domain.member.dto.response.ExchangeHistoryResponseDTO;
+import com.ict.extravel.domain.member.dto.response.HistoryAverResponseDTO;
 import com.ict.extravel.domain.member.dto.response.WalletTotalResponseDTO;
 import com.ict.extravel.domain.member.entity.ExchangeHistory;
 import com.ict.extravel.domain.member.entity.Member;
@@ -101,6 +102,14 @@ public class ExchangeService {
         return responseDTOList;
     }
 
+
+    public HistoryAverResponseDTO getAverageExchangeHistory(String nationCode) {
+        Nation nation = nationRepository.findById(nationCode).orElseThrow();
+        Currency byNationCode = currencyRepository.findByNationCode(nation);
+        List<ExchangeHistory> byCurrencyCode = exChangeHistoryRepository.findByCurrencyCode(byNationCode);
+        double v = byCurrencyCode.stream().mapToDouble(x -> Double.parseDouble(String.valueOf(x.getUseEtPoint()))).average().orElse(0.0);
+        return HistoryAverResponseDTO.builder().average(v).name(nation.getName()).build();
+    }
     public List<WalletTotalResponseDTO> getWalletTotal(Integer id) {
         List<WalletExchange> walletExchangeList = walletExchangeRepository.findAllByMemberId(id);
         log.info("id의 값은?: {}, {}", id, walletExchangeList);
@@ -111,6 +120,7 @@ public class ExchangeService {
             responseDTOList.add(responseDTO);
         }
         return responseDTOList;
+
 
     }
 }

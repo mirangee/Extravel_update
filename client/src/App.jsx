@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { Children, useContext } from 'react';
 import {
   Route,
   Routes,
   Link,
   useLocation,
+  Navigate,
 } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/main/ScrollToTopButton';
 import KakaoLoginHandler from './components/user/KakaoLoginHandler';
-import { AuthContextProvider } from './utils/AuthContext';
+import AuthContext, {
+  AuthContextProvider,
+} from './utils/AuthContext';
 import Login from './components/user/Login';
 import FindIDandPassword from './components/user/FindIDandPassword';
 import MainIntro from './components/main/intro/MainIntro';
@@ -38,14 +41,29 @@ const App = () => {
       return false;
     }
   };
+
   return (
     <>
       <AuthContextProvider>
         {handleLayout() && <Header />}
         <Routes>
-          <Route path='/' element={<MainIntro />} />
+          <Route
+            path='/'
+            element={
+              <IsLoginHandler>
+                <MainIntro />
+              </IsLoginHandler>
+            }
+          />
           <Route path='/main' element={<MainDetail />} />
-          <Route path='/login' element={<Login />} />
+          <Route
+            path='/login'
+            element={
+              <IsLoginHandler>
+                <Login />
+              </IsLoginHandler>
+            }
+          />
           <Route
             path='/login/sns'
             element={<LoginPhoneNumber />}
@@ -90,6 +108,13 @@ const App = () => {
       </AuthContextProvider>
     </>
   );
+};
+const IsLoginHandler = ({ children }) => {
+  const { isLoggedIn } = useContext(AuthContext);
+  if (isLoggedIn) {
+    return <Navigate to='/main/exrates' />;
+  }
+  return children;
 };
 
 export default App;
