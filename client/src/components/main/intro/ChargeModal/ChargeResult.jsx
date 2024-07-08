@@ -49,6 +49,15 @@ const ChargeResult = ({ pointInfo, setPayResult }) => {
               </div>{' '}
               P
             </div>
+            <div className={styles.chargeAmountTitle}>
+              누적 충전 포인트
+            </div>
+            <div className={styles.pointContainer}>
+              <div className={styles.point}>
+                {pointInfo.etPoint.toLocaleString('ko-KR')}{' '}
+              </div>{' '}
+              P
+            </div>
           </div>
 
           <button

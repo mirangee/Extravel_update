@@ -21,5 +21,4 @@ public class WeekExchangeController {
         List<WeekExShowResponseDTO> weekExShowResponseDTOS = weekExchangeService.showChart(nation);
         return ResponseEntity.ok(weekExShowResponseDTOS);
     }
-
 }
