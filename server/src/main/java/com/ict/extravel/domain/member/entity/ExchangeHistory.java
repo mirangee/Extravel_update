@@ -41,4 +41,5 @@ public class ExchangeHistory {
     @Column(name = "use_et_point", precision = 10, scale = 2)
     private BigDecimal useEtPoint;
 
+
 }

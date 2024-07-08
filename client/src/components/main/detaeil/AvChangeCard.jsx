@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
+import AuthContext from '../../../utils/AuthContext';
 import {
   Card,
   CardBody,
@@ -9,26 +14,34 @@ import {
   Container,
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 const AvChangeCard = () => {
-  const [count, setCount] = useState(0);
-  const target = 932123;
-  const increment = 12345;
-
+  const [name, setName] = useState();
+  const [average, setAverage] = useState(0.0);
+  const { nation } = useContext(AuthContext);
+  const date = new Date();
+  const options = {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  };
+  const formattedDate = new Intl.DateTimeFormat(
+    'ko-KR',
+    options,
+  ).format(date);
   useEffect(() => {
-    const counting = setInterval(() => {
-      setCount((prevCount) => {
-        if (prevCount >= target) {
-          clearInterval(counting);
-          return target;
-        } else {
-          return prevCount + increment;
-        }
-      });
-    }, 20);
-
-    return () => clearInterval(counting); // Clean up the interval on component unmount
-  }, [target, increment]);
+    if (nation) {
+      const getData = async () => {
+        const response = await axios.get(
+          `http://localhost:8181/api/v2/exchange/average?nation=${nation}`,
+        );
+        setName(response.data.name);
+        setAverage(response.data.average);
+      };
+      getData();
+    }
+  }, [nation]);
 
   const containerStyle = {
     width: '800px',
@@ -61,7 +74,7 @@ const AvChangeCard = () => {
               fontSize: '17px',
             }}
           >
-            미국으로 떠나는 여행객은
+            {name}으로 떠나는 여행객은
           </h2>
         </Col>
       </Row>
@@ -84,8 +97,11 @@ const AvChangeCard = () => {
                     fontSize: '36px',
                   }}
                 >
-                  {new Intl.NumberFormat().format(count)}
-                </span>{' '}
+                  {}
+                </span>
+                {Number(average.toFixed(0)).toLocaleString(
+                  'ko-KR',
+                )}
                 원 환전했어요.
               </CardTitle>
             </CardBody>
@@ -97,7 +113,7 @@ const AvChangeCard = () => {
           <Card style={noBorderStyle}>
             <CardBody>
               <CardText style={{ marginLeft: '5px' }}>
-                2024/06/18 기준
+                {formattedDate}
               </CardText>
             </CardBody>
           </Card>
