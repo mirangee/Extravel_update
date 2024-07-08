@@ -3,9 +3,7 @@ package com.ict.extravel.domain.member.controller;
 
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.request.*;
-import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
-import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.dto.response.*;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.service.CoolSMSService;
 import com.ict.extravel.domain.member.service.MemberService;
@@ -186,28 +184,24 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        Member member = memberService.NaverLoginService(code);
-        if(member == null){
-            return ResponseEntity.ok().body("duplicate");
-        }else{
-            return ResponseEntity.ok().body("SUCCESS");
-        }
+        LoginResponseDTO loginResponseDTO = memberService.NaverLoginService(code);
+        return ResponseEntity.ok().body(loginResponseDTO);
 
     }
 
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
         log.info("/user/auth/kakaoLogin - GET! code: {}", code);
-        memberService.kakaoService(code);
-        return ResponseEntity.ok().body("ok");
+        LoginResponseDTO loginResponseDTO = memberService.kakaoService(code);
+        return ResponseEntity.ok().body(loginResponseDTO);
     }
 
     @PostMapping("/google")
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
-        memberService.googleService(googleUserInfoDTO);
-        return ResponseEntity.ok().body("SUCCESS");
+        LoginResponseDTO loginResponseDTO = memberService.googleService(googleUserInfoDTO);
+        return ResponseEntity.ok().body(loginResponseDTO);
     }
 
     @PutMapping("/nation")
@@ -230,6 +224,11 @@ public class MemberController {
         return ResponseEntity.ok("회원탈퇴성공!");
     }
 
+    @PostMapping("/signup/sns")
+    public ResponseEntity<?> snsSignup(@RequestBody SnsSignUpRequestDTO dto) {
+        LoginResponseDTO member = memberService.snsSignup(dto);
+        return ResponseEntity.ok().body(member);
+    }
 
 }
 

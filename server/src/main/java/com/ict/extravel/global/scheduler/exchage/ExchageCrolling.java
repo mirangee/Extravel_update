@@ -44,7 +44,7 @@ public class ExchageCrolling {
     public void saveCurExchageData(){
         List<String> curList = getCurList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate from = LocalDate.parse("20240612",formatter);
+        LocalDate from = LocalDate.parse("20240705",formatter);
         JSONArray array = getExchageData(from.toString().replace("-", ""));
         JSONArray preArray = getExchageData(from.minusDays(1).toString().replace("-",""));
         Map<String,Double> curEx = initMap(curList);
@@ -57,19 +57,19 @@ public class ExchageCrolling {
             JSONObject ob = (JSONObject)week;
             preEx.replace(ob.get("cur_unit").toString().replace("(100)",""),Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
         });
-        curList.forEach(cur -> {
+        /*curList.forEach(cur -> {
             Currency currency = currencyRepository.findById(cur).orElseThrow();
             String currencyCode = currency.getCurrencyCode();
             Nation nationCode = currency.getNationCode();
-            CurrentExchangeRate curRate = CurrentExchangeRate.builder()
-                    .nationCode(nationCode)
-                    .currencyCode(currency)
-                    .exchangeRateValue(BigDecimal.valueOf(curEx.get(currencyCode)))
-                    .preExchangeRateValue(BigDecimal.valueOf(preEx.get(currencyCode)))
-                    .updateDate(LocalDate.now())
-                    .build();
-            currentExchangeRepository.save(curRate);
-        });
+            CurrentExchangeRate byNationCode = currentExchangeRepository.findByNationCode(nationCode);
+            byNationCode.setUpdateDate(LocalDate.now());
+            byNationCode.setExchangeRateValue(BigDecimal.valueOf(curEx.get(currencyCode)));
+            if(!(preEx.get(currencyCode) ==0.0)){
+                byNationCode.setPreExchangeRateValue(BigDecimal.valueOf(preEx.get(currencyCode)));
+            }
+            currentExchangeRepository.save(byNationCode);
+        });*/
+        calculateExchageData();
     }
 
     public void calculateExchageData(){
@@ -77,7 +77,7 @@ public class ExchageCrolling {
         Map<String,Double> weeks = initMap(curList);
         Map<String,Double> months = initMap(curList);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate from = LocalDate.parse("20230501",formatter);
+        LocalDate from = LocalDate.parse("20240610",formatter);
         LocalDate now = LocalDate.now();
         long between = ChronoUnit.DAYS.between(from, now);
         LocalDate cur = from;
@@ -117,8 +117,10 @@ public class ExchageCrolling {
             }
             exchage.forEach(ex -> {
                 JSONObject ob = (JSONObject)ex;
-                weeks.replace(ob.get("cur_unit").toString().replace("(100)",""),weeks.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
-                months.replace(ob.get("cur_unit").toString().replace("(100)",""),months.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
+                if(!ob.get("cur_unit").toString().replace("100","").equals("KRW")){
+                    weeks.replace(ob.get("cur_unit").toString().replace("(100)",""),weeks.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
+                    months.replace(ob.get("cur_unit").toString().replace("(100)",""),months.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
+                }
             });
             cur = cur.plusDays(1);
         }

@@ -1,12 +1,17 @@
 import React from 'react';
 import styles from '../../../../scss/MyPagePointCard.module.scss';
 import { motion } from 'framer-motion';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 const MyPagePointCard = ({ key, item }) => {
   const { amount, plusPoint, createdAt, sum } = item;
   const slicedDate = createdAt.slice(
     0,
     createdAt.indexOf('T'),
+  );
+  const slicedDate2 = createdAt.slice(
+    createdAt.indexOf('T') + 1,
+    createdAt.indexOf('T') + 6,
   );
   return (
     <>
@@ -19,7 +24,11 @@ const MyPagePointCard = ({ key, item }) => {
         <div className={styles.pointBox}>
           <div className={styles.point}>충전</div>
           <ul>
-            <li>{slicedDate}</li>
+            <li className={styles.time}>
+              <FontAwesomeIcon icon={faClock} />
+              &nbsp;&nbsp;
+              {slicedDate}&nbsp;&nbsp;{slicedDate2}{' '}
+            </li>
             <li>
               ET 포인트 충전{' '}
               <span>

@@ -2,11 +2,9 @@ import {
   faArrowRight,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardActions } from '@mui/material';
 import React from 'react';
-import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import styles from '../../../../scss/MyPageCard.module.scss';
 import etpLogo from '../../../../assets/img/logo.png';
@@ -25,6 +23,11 @@ const MyPageCard = ({ key, item }) => {
     transactionDate.indexOf('T'),
   );
 
+  const slicedDate2 = transactionDate.slice(
+    transactionDate.indexOf('T') + 1,
+    transactionDate.indexOf('T') + 6,
+  );
+
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
   }
@@ -37,7 +40,7 @@ const MyPageCard = ({ key, item }) => {
         transition={{ ease: 'easeOut', duration: 2 }}
       >
         <div className={styles.currentDate}>
-          {slicedDate}
+          {slicedDate}&nbsp;&nbsp;{slicedDate2}
         </div>
         <div className={styles.cardContainer}>
           <CardActions className={styles.cardActions}>

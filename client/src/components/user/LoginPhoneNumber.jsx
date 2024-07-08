@@ -1,7 +1,7 @@
 import { Grid, TextField } from '@mui/material';
 import styles from '../../scss/LoginPhoneNumber.module.scss';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import {
@@ -11,9 +11,13 @@ import {
 import { GiConfirmed } from 'react-icons/gi';
 import AuthNumTimer from './AuthNumTimer';
 import { Button } from 'reactstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Logo from '../../assets/img/logo.png';
+import { AuthContext } from '../../utils/AuthContext';
 
 const LoginPhoneNumber = () => {
   const SEND_ONE_URL = BASE + USER + '/send-one';
+  const SNS_SIGNUP = BASE + USER + '/signup/sns';
   const [randomCode, setRandomCode] = useState(''); //인증값 상태
   const [isAuthCompleted, setIsAuthCompleted] =
     useState(false); // 인증 완료 여부 상태
@@ -23,11 +27,18 @@ const LoginPhoneNumber = () => {
   const [checkCode, setCheckCode] = useState(''); //사용자 입력 인증값
   const [isTimeZero, setIsTimeZero] = useState(false); //시간 0초 체크
   const [resultMsg, setResultMsg] = useState('');
-
+  const redirection = useNavigate();
   const { control: signUpControl } = useForm({
     mode: 'onChange',
   });
-
+  const { onLogin } = useContext(AuthContext);
+  const {
+    state: {
+      result: { email, name },
+      path,
+    },
+  } = useLocation();
+  console.log(email, name);
   // 번호 인증을 위한 SMS 전송
   const sendSMS = async (phoneNumber) => {
     console.log('로그인 phoneNumber : ', phoneNumber);
@@ -80,8 +91,20 @@ const LoginPhoneNumber = () => {
       alert('값을 입력해주세요.');
     }
     if (+checkCodeStr === +randomCode) {
-      msg = '휴대폰 인증이 정상적으로 완료되었습니다.';
+      msg = '인증이 완료되었습니다.';
       setIsAuthCompleted(true);
+      const data = {
+        email,
+        name,
+        phoneNumber,
+        path,
+      };
+      const signUp = async () => {
+        const res = await axios.post(SNS_SIGNUP, data);
+        onLogin(res.data);
+        redirection('/main');
+      };
+      signUp();
     } else {
       msg = '인증번호가 올바르지 않습니다.';
       setIsAuthCompleted(false);
@@ -91,12 +114,20 @@ const LoginPhoneNumber = () => {
 
   return (
     <div className={styles.login}>
-      <h2 className={styles.toplogo}>EXTRAVEL</h2>
+      <div className={`${styles['form-container']}`}>
+        <div className={styles.logoBox}>
+          <img src={Logo} />
+        </div>
+        <div className={styles.text}>
+          원활한 서비스 이용을 위하여 휴대전화 인증을 진행
+          합니다.
+        </div>
 
       <div className={`${styles['form-container']}`}>
         <div className={styles.phoneCertification}>
           <h2>전화번호 인증하기</h2>
         </div>
+
 
         <Grid item style={{ width: '100%' }}>
           {/* 전화번호 입력 및 SMS 전송 */}
