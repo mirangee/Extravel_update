@@ -1,12 +1,12 @@
-.GoogleTopContainer{
-  margin-top: 100px;
-  margin-bottom: 100px;
+.GoogleTopContainer {
+  margin-top: 200px;
+  margin-bottom: 50px;
 }
 
-.mainH3{
-  font-family: "Black Han Sans";
-  font-size: 50px;
-  color: #14505C;
+.mainH3 {
+  font-family: 'Black Han Sans';
+  font-size: 60px;
+  color: #14505c;
   margin-left: 400px;
 }
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
@@ -26,7 +26,7 @@
   margin-right: auto;
   margin-left: auto;
   max-width: 1140px;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 .sectionRow {
@@ -105,7 +105,9 @@
   color: #fff;
   opacity: 0;
   transform: scale(0.8);
-  transition: transform 150ms linear, opacity 150ms ease;
+  transition:
+    transform 150ms linear,
+    opacity 150ms ease;
 }
 
 .sectionCol:hover .hoverText h2 {
@@ -113,21 +115,19 @@
   transform: scale(1);
 }
 
-
-
 @media (max-width: 767px) {
-  .sectionCol{
+  .sectionCol {
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
     max-width: 100%;
   }
-  .hoverText h2{
+  .hoverText h2 {
     font-size: 12vw;
   }
 }
 
 @media (max-width: 640px) {
-  .mainH3{
+  .mainH3 {
     margin-left: 30px;
   }
 }

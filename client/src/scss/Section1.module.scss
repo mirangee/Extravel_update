@@ -12,7 +12,7 @@
   .section1Title {
     color: #fff;
     font-size: 100px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     animation: fadeIn 1.6s ease-in forwards;
   }
 
@@ -32,6 +32,8 @@
     font-size: 20px;
     animation: fadeIn 2.4s ease-in forwards;
     margin-bottom: 40px;
+    letter-spacing: 2px;
+    line-height: 2;
   }
 
   .section1Explore {
@@ -44,7 +46,10 @@
     font-size: 20px;
     font-weight: bold;
     animation: fadeIn 3.2s ease-in forwards;
-
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      transform 0.3s;
 
     &:hover {
       background-color: #fafeff;
@@ -62,8 +67,7 @@
     justify-content: space-around;
     font-size: 20px;
     align-self: flex-end;
-    animation: fadeIn 4.0s ease-in forwards;
-
+    animation: fadeIn 4s ease-in forwards;
 
     .section1More {
       background: none;
@@ -84,33 +88,31 @@
 }
 
 @media (max-width: 640px) {
-  .section1Body{
-  .section1Title {
-    color: #fff;
-    font-size: 60px;
-    margin-top: 40px;
-    animation: fadeIn 1.6s ease-in forwards;
-  }
-  .section1Small {
-    margin: 15px;
-    color: #fff;
-    font-size: 15px;
-    animation: fadeIn 2.4s ease-in forwards;
-    margin-bottom: 40px;
-  }
-  .section1Explore {
-    width: 120px;
-    height: 50px;
-    margin: 10px;
-    
-  }
+  .section1Body {
+    .section1Title {
+      color: #fff;
+      font-size: 60px;
+      margin-top: 40px;
+      animation: fadeIn 1.6s ease-in forwards;
+    }
+    .section1Small {
+      margin: 15px;
+      color: #fff;
+      font-size: 15px;
+      animation: fadeIn 2.4s ease-in forwards;
+      margin-bottom: 40px;
+    }
+    .section1Explore {
+      width: 120px;
+      height: 50px;
+      margin: 10px;
+    }
 
-  .section1SideRectangle {
-    width: 90%;
-    margin: 30px;
-    font-size: 15px;
-    border-radius: 20px;
+    .section1SideRectangle {
+      width: 90%;
+      margin: 30px;
+      font-size: 15px;
+      border-radius: 20px;
+    }
   }
-
-}
 }
