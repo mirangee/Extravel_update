@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -224,5 +225,25 @@ public class KakaoPayService {
         log.info("wallet에 담긴 정보: {}", wallet);
         PointInfoResponseDto responseDto = new PointInfoResponseDto();
         return responseDto.toEntity(wallet.getEtPoint());
+    }
+
+    //결제한포인트에따라 등급변화
+    public BigDecimal sumAmount(Integer memberId) {
+         Member member = memberRepository.findById(memberId).orElseThrow();
+         List<PointCharge> pointChargeList = pointChargeRepository.findByMember(member);
+
+        BigDecimal total = BigDecimal.ZERO;
+        for(PointCharge p : pointChargeList) {
+            total = total.add(p.getAmount());
+        }
+
+        if (total.compareTo(new BigDecimal("10000000")) > 0) {
+            member.setGrade(Member.Grade.GOLD);
+            memberRepository.save(member);
+        } else if (total.compareTo(new BigDecimal("5000000")) >= 0 && total.compareTo(new BigDecimal("10000000")) <= 0) {
+            member.setGrade(Member.Grade.SILVER);
+            memberRepository.save(member);
+        }
+        return total;
     }
 }
