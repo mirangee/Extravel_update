@@ -22,6 +22,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import Logo from '../../../assets/img/logo.png';
 import axios from 'axios';
 import ExchangeAccess from './ExchangeAccess';
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  Col,
+  Container,
+  Row,
+} from 'react-bootstrap';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -32,6 +42,17 @@ const style = {
   borderRadius: 10,
   boxShadow: 24,
   p: 4,
+};
+const containerStyle = {
+  width: '800px',
+  marginTop: '20px',
+  boxShadow:
+    '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
+  borderRadius: '10px',
+};
+const noBorderStyle = {
+  border: 'none',
+  boxShadow: 'none',
 };
 const DetailSection3 = () => {
   const [open, setOpen] = useState(false);
@@ -146,7 +167,58 @@ const DetailSection3 = () => {
   return (
     <div className={Styles.box}>
       <AvChangeCard />
-      <Button onClick={handleOpen}>환전하기</Button>
+      <Container
+        style={{
+          width: '800px',
+          boxShadow:
+            '0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22)',
+          borderRadius: '10px',
+          marginTop: '20px',
+          marginLeft: '30px',
+        }}
+      >
+        <Row>
+          <Col>
+            <Card style={noBorderStyle}>
+              <CardBody>
+                <CardTitle
+                  tag='h5'
+                  style={{
+                    paddingTop: '10px',
+                    paddingBottom: '15px',
+                    fontWeight: 'bold',
+                    fontSize: '17px',
+                  }}
+                >
+                  지금 환전하고, 안전하고 빠르게 외화를
+                  받아보세요 <br />
+                </CardTitle>
+                <span
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: '27px',
+                  }}
+                >
+                  쉽고 빠른 환전, 누구나 쉽게 이용해보세요!
+                </span>
+              </CardBody>
+            </Card>
+            <Button
+              startIcon={<ArrowForwardIcon />}
+              variant='contained'
+              style={{
+                backgroundColor: '#275963',
+                borderRadius: '10px',
+                marginBottom: '15px',
+                marginLeft: '15px',
+              }}
+              onClick={handleOpen}
+            >
+              환전하기
+            </Button>
+          </Col>
+        </Row>
+      </Container>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'

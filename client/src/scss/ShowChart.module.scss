@@ -11,3 +11,10 @@
   display: flex;
   justify-content: flex-end;
 }
+
+@media (max-width: 1280px) {
+  .chartBox{
+    position: relative;
+    right: 170px;
+  }
+}
