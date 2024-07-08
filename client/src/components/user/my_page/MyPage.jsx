@@ -11,6 +11,7 @@ import PointHistory from './point-history/PointHistory';
 import ExchangeHistory from './exchange-history/ExchangeHistory';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Wallet from './wallet-exchange/Wallet';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -34,7 +35,7 @@ const MyPage = () => {
     e.preventDefault();
     if (
       window.confirm(
-        '확인을 누르면 회원 탈퇴가 진행됩니다. 보유한 ETP, 외화가 포함된 모든 회원정보가 삭제되며 복구가 불가합니다.',
+        '확인을 누르면 회원 탈퇴가 진행됩니다. 보유한 ETP, 외화가 포함된 모든 회원정보가 삭제되며 복구가 불가합니됩니다.',
       )
     ) {
       axios
@@ -187,6 +188,7 @@ const MyPage = () => {
           회원 탈퇴하기
         </Button>
       </motion.div>
+      <Wallet />
       <ExchangeHistory />
       <PointHistory />
     </>

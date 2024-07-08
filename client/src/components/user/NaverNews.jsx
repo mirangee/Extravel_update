@@ -31,7 +31,7 @@ function NaverNews() {
         width: '680px',
         height: '362px',
         overflow: 'auto',
-        border: '1px solid #ccc',
+        border: '1px solid #14505C',
         padding: '15px',
         borderRadius: '10px',
         marginLeft: '10px',

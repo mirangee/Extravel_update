@@ -3,7 +3,11 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import Select from 'react-select';
 import styles from '../scss/Header.module.scss';
 import logoImage from '../assets/img/logo_white.png';
@@ -22,6 +26,7 @@ import {
   DropdownToggle,
 } from 'reactstrap';
 import ChargeModal from './main/intro/ChargeModal/ChargeModal';
+import { render } from '@testing-library/react';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -39,6 +44,8 @@ const Header = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+  const location = useLocation();
+  const render = location.pathname !== '/';
 
   const goToIntro = () => {
     navigate('/');
@@ -127,7 +134,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}
+        className={`${styles.header} ${scrolled || render ? styles.scrolled : ''}`}
       >
         <img
           src={logoImage}
@@ -143,42 +150,48 @@ const Header = () => {
         </div>
         <nav className={styles.nav}>
           <ul className={styles.menu}>
-            <li
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: '18px',
-                paddingRight: '105px',
-              }}
-            >
-              {isLoggedIn ? name + '님 안녕하세요' : ''}
-            </li>
-            <motion.li whileHover={{ scale: 1.2 }}>
-              <Link
-                to='/api/v1/shopping/'
-                onClick={scrollToTop}
-              >
-                패키지
-              </Link>
-            </motion.li>
-            <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/main' onClick={scrollToTop}>
-                뉴스
-              </Link>
-            </motion.li>
-            <motion.li whileHover={{ scale: 1.2 }}>
-              <Link
-                to='/main/exrates'
-                onClick={scrollToTop}
-              >
-                환율 정보
-              </Link>
-            </motion.li>
-            <motion.li whileHover={{ scale: 1.2 }}>
-              <Link to='/mypage' onClick={scrollToTop}>
-                내&nbsp;&nbsp;정보
-              </Link>
-            </motion.li>
+            {isLoggedIn && (
+              <>
+                <li
+                  style={{
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    fontSize: '15px',
+                    paddingRight: '75px',
+                    minWidth: '260px',
+                    paddingLeft: '30px',
+                  }}
+                >
+                  {isLoggedIn ? name + '님 안녕하세요' : ''}
+                </li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link
+                    to='/api/v1/shopping/'
+                    onClick={scrollToTop}
+                  >
+                    패키지
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link to='/flight' onClick={scrollToTop}>
+                    항공권
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link
+                    to='/main/exrates'
+                    onClick={scrollToTop}
+                  >
+                    환율 정보
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link to='/mypage' onClick={scrollToTop}>
+                    내&nbsp;&nbsp;정보
+                  </Link>
+                </motion.li>
+              </>
+            )}
             {isLoggedIn && (
               <Dropdown
                 isOpen={dropdownOpen}
@@ -209,15 +222,17 @@ const Header = () => {
               </Dropdown>
             )}
             <li>
-              <Select
-                value={countryOptions.find(
-                  (option) => option.value === country,
-                )}
-                onChange={handleCountryChange}
-                options={countryOptions}
-                className={styles.countrySelect}
-                classNamePrefix={styles.reactSelect}
-              />
+              {isLoggedIn && (
+                <Select
+                  value={countryOptions.find(
+                    (option) => option.value === country,
+                  )}
+                  onChange={handleCountryChange}
+                  options={countryOptions}
+                  className={styles.countrySelect}
+                  classNamePrefix={styles.reactSelect}
+                />
+              )}
             </li>
             <ul>
               {isLoggedIn ? (

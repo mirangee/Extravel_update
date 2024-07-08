@@ -4,6 +4,8 @@ import com.ict.extravel.domain.currency.entity.Currency;
 import com.ict.extravel.domain.currency.repository.CurrencyRepository;
 import com.ict.extravel.domain.member.dto.request.ExchangeRequestDTO;
 import com.ict.extravel.domain.member.dto.response.ExchangeHistoryResponseDTO;
+import com.ict.extravel.domain.member.dto.response.HistoryAverResponseDTO;
+import com.ict.extravel.domain.member.dto.response.WalletTotalResponseDTO;
 import com.ict.extravel.domain.member.entity.ExchangeHistory;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.entity.WalletExchange;
@@ -21,13 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ExchangeService {
     private final MemberRepository memberRepository;
@@ -101,4 +102,25 @@ public class ExchangeService {
         return responseDTOList;
     }
 
+
+    public HistoryAverResponseDTO getAverageExchangeHistory(String nationCode) {
+        Nation nation = nationRepository.findById(nationCode).orElseThrow();
+        Currency byNationCode = currencyRepository.findByNationCode(nation);
+        List<ExchangeHistory> byCurrencyCode = exChangeHistoryRepository.findByCurrencyCode(byNationCode);
+        double v = byCurrencyCode.stream().mapToDouble(x -> Double.parseDouble(String.valueOf(x.getUseEtPoint()))).average().orElse(0.0);
+        return HistoryAverResponseDTO.builder().average(v).name(nation.getName()).build();
+    }
+    public List<WalletTotalResponseDTO> getWalletTotal(Integer id) {
+        List<WalletExchange> walletExchangeList = walletExchangeRepository.findAllByMemberId(id);
+        log.info("id의 값은?: {}, {}", id, walletExchangeList);
+
+        List<WalletTotalResponseDTO> responseDTOList = new ArrayList<>();
+        for (WalletExchange w : walletExchangeList) {
+            WalletTotalResponseDTO responseDTO = new WalletTotalResponseDTO(w);
+            responseDTOList.add(responseDTO);
+        }
+        return responseDTOList;
+
+
+    }
 }

@@ -24,7 +24,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FlightHeader from './FlightHeader';
 import LinearProgress from '@mui/material/LinearProgress';
 import FlightOffterRoundCard from './FlightOfferRoundCard';
-
+import { useNavigate } from 'react-router-dom';
 const ID = process.env.REACT_APP_FLIGHT_API_ID;
 const SECRET = process.env.REACT_APP_FLIGHT_API_SECRET;
 const drawerWidth = 500;
@@ -82,7 +82,7 @@ const FlightOffer = () => {
   const [token, setToken] = useState('');
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-
+  const navi = useNavigate();
   const handleClass = (e) => {
     setFlyClass(e.target.value);
   };
@@ -225,7 +225,12 @@ const FlightOffer = () => {
 
   const drawer = (
     <div>
-      <div className={Styles.logoBox}>
+      <div
+        className={Styles.logoBox}
+        onClick={() => {
+          navi('/main/exrates');
+        }}
+      >
         <img src={Logo} />
       </div>
       <Divider />

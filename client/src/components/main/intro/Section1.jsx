@@ -30,8 +30,10 @@ const Section1 = () => {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Travel
           </h1>
           <h5 className={styles.section1Small}>
-            환전하면 적립되는 포인트로 투어 패키지를 구매해
-            더욱 큰 혜택을 누리세요.
+            포인트 충전으로 등급에 따라 최대 0.3% 추가 적립!{' '}
+            <br />
+            환율별 여행지 추천과 최신 뉴스까지, ExTravel에서
+            확인하세요.
           </h5>
           <motion.button
             className={styles.section1Explore}
@@ -47,7 +49,8 @@ const Section1 = () => {
           className={styles.section1SideRectangle}
         >
           <div>
-            5 best world <br /> to visit <br />
+            Check real-time <br />
+            exchange rates. <br />
             <motion.button
               className={styles.section1More}
               whileHover={{ scale: 1.2 }}
