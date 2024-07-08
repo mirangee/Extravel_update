@@ -58,10 +58,11 @@ const NaverShopping = () => {
     });
   };
 
-  const indexOfLastArticle = activePage * itemsPerPage;
+  const indexOfLastArticle = activePage * itemsPerPage; // 1 * 12
   const indexOfFirstArticle =
     indexOfLastArticle - itemsPerPage;
   const currentArticles = article.slice(
+    // 1에서 12로 끊어진다
     indexOfFirstArticle,
     indexOfLastArticle,
   );
@@ -174,8 +175,8 @@ const NaverShopping = () => {
           <Pagination
             activePage={activePage}
             itemsCountPerPage={itemsPerPage}
-            totalItemsCount={article.length}
-            pageRangeDisplayed={5}
+            totalItemsCount={article.length} //
+            pageRangeDisplayed={5} //보여지는 버튼수
             onChange={handlePageChange}
             itemClass='page-item'
             linkClass='page-link'

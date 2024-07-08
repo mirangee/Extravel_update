@@ -31,6 +31,8 @@ public class PayConfirmResponseDTO {
     private PointCharge.Status status;
 
     private BigDecimal etPoint;
+
+    private BigDecimal countPoint;
     public static PayConfirmResponseDTO toDto(PointCharge pointCharge, BigDecimal etPoint){
         PayConfirmResponseDTO payConfirmResponseDTO = PayConfirmResponseDTO.builder()
                 .tid(pointCharge.getTid())
@@ -44,4 +46,5 @@ public class PayConfirmResponseDTO {
                 .build();
         return payConfirmResponseDTO;
     }
+
 }
