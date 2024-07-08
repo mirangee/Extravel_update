@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import styles from '../../../../scss/ChargeResult.module.scss';
 
 const ChargeResult = ({ pointInfo, setPayResult }) => {

@@ -229,8 +229,8 @@ public class KakaoPayService {
 
     //결제한포인트에따라 등급변화
     public BigDecimal sumAmount(Integer memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        List<PointCharge> pointChargeList = pointChargeRepository.findByMember(member);
+         Member member = memberRepository.findById(memberId).orElseThrow();
+         List<PointCharge> pointChargeList = pointChargeRepository.findByMember(member);
 
         BigDecimal total = BigDecimal.ZERO;
         for(PointCharge p : pointChargeList) {
