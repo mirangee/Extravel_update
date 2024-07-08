@@ -8,6 +8,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
 import AuthContext from '../../../../utils/AuthContext';
 import WalletCard from './WalletCard';
+import { motion } from 'framer-motion';
 
 const Wallet = () => {
   const { id } = useContext(AuthContext);
@@ -27,7 +28,10 @@ const Wallet = () => {
     fetchData();
   }, []);
   return (
-    <div>
+    <motion.div
+      animate={{ x: 100 }}
+      transition={{ ease: 'easeOut', duration: 2 }}
+    >
       <div className={styles.title}>
         {' '}
         <h1 className={styles.pageHeader}>My Wallet</h1>
@@ -55,7 +59,7 @@ const Wallet = () => {
           ))
         )}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 
