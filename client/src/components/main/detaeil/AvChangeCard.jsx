@@ -18,7 +18,7 @@ import axios from 'axios';
 
 const AvChangeCard = () => {
   const [name, setName] = useState();
-  const [average, setAverage] = useState(0.0);
+  const [sum, setSum] = useState(0.0);
   const { nation } = useContext(AuthContext);
   const date = new Date();
   const options = {
@@ -37,7 +37,7 @@ const AvChangeCard = () => {
           `http://localhost:8181/api/v2/exchange/average?nation=${nation}`,
         );
         setName(response.data.name);
-        setAverage(response.data.average);
+        setSum(response.data.sum);
       };
       getData();
     }
@@ -90,7 +90,7 @@ const AvChangeCard = () => {
                   height: '20px',
                 }}
               >
-                평균{' '}
+                누적{' '}
                 <span
                   style={{
                     fontWeight: 'bold',
@@ -99,7 +99,7 @@ const AvChangeCard = () => {
                 >
                   {}
                 </span>
-                {Number(average.toFixed(0)).toLocaleString(
+                {Number(sum.toFixed(0)).toLocaleString(
                   'ko-KR',
                 )}
                 원 환전했어요.

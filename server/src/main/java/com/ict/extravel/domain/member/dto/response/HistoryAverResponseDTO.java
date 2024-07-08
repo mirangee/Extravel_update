@@ -10,5 +10,5 @@ import lombok.*;
 @Builder
 public class HistoryAverResponseDTO {
     private String name;
-    private Double average;
+    private Double sum;
 }
