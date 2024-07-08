@@ -35,7 +35,7 @@ const RealTimeExchanges = () => {
       <div className={styles.RealTimeContainer}>
         <h3 className={styles.mainH3}>22개국 환율 정보</h3>
         <h1 className={styles.mainH1}>
-          각 나라들을 환율을 손쉽게 알아보세요. <br />
+          다양한 국가의 환율을 손쉽게 알아보세요. <br />
         </h1>
         <div className={styles.wrapper}>
           {groupedData.map((group, groupIndex) => (
