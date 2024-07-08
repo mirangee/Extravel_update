@@ -1,41 +1,35 @@
 .pageBox{
   // background-color: red;
-  width: 100%;
+  // width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  padding-left: 500px;
+  // padding-left: 500px;
 }
 
 .pointBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 400px;
-  height: 100px;
+  width: 300px;
+  height: 80px;
   padding: 20px;
-  // border: 1px solid #ccc;
-  border-top: 1px solid #ccc;    // 상단 보더 추가
-  border-bottom: 1px solid #ccc; // 하단 보더 추가
-  border-left: none;             // 좌측 보더 제거
-  border-right: none;  
-  border-radius: 5px;
-  // background-color: yellow;
-  background-color: #fff;
+  border: 1px solid #ccc;
+  background-color: #14505c; 
+  border-radius: 5px;  
+  
 
   .point {
-   
-    background: black;
-    width: 50px;
-    padding: 15px;
-    margin: 35px;
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
+    width: 65px;
+    margin: 15px;
     display: flex;  // Flexbox 사용
     justify-content: center;  // 가로 정렬
     align-items: center;  // 세로 정렬
     text-align: center;  // 텍스트 정렬
+
+    img {
+      width: 100%;
+    }
   }
 
 
@@ -45,10 +39,11 @@
     margin: 0;
 
     li {
+      color: #fff;
       padding-left: 20px;
       margin: 10px;
       font-size: 20px;
-      font-weight: bold;
+      // font-weight: bold;
     }
 
     .time {

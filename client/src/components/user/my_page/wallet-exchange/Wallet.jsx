@@ -12,17 +12,19 @@ import WalletCard from './WalletCard';
 const Wallet = () => {
   const { id } = useContext(AuthContext);
   const [hasList, setHasList] = useState(true);
+  const [wallet, setWallet] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.post(
-          API_BASE_URL + '/history/point/' + id,
+          API_BASE_URL + '/api/v2/exchange/wallet/' + id,
         );
-        console.log(res.data);
+        setWallet(res.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
+    fetchData();
   }, []);
   return (
     <div>
@@ -30,14 +32,29 @@ const Wallet = () => {
         {' '}
         <h1 className={styles.pageHeader}>My Wallet</h1>
       </div>
-
+      {/* 
       {!hasList ? (
         <div className={styles.noList}>
           보유 외화가 없습니다
         </div>
       ) : (
-        <WalletCard />
-      )}
+        wallet.map((item, key) => (
+          <WalletCard key={key} item={item} />
+        ))
+      )} */}
+      <ul className={styles.listUl}>
+        {!hasList ? (
+          <div className={styles.noList}>
+            보유 외화가 없습니다
+          </div>
+        ) : (
+          wallet.map((item, key) => (
+            <li>
+              <WalletCard key={key} item={item} />
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 };
