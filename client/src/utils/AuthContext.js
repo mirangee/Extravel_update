@@ -63,14 +63,7 @@ export const AuthContextProvider = (props) => {
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem('ACCESS_TOKEN');
-    localStorage.removeItem('NAME');
-    localStorage.removeItem('NATION');
-    localStorage.removeItem('EMAIL');
-    localStorage.removeItem('ROLE');
-    localStorage.removeItem('ID');
-    localStorage.removeItem('GRADE');
-    localStorage.removeItem('PHONE');
+    localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
     setEmail('');
