@@ -35,7 +35,7 @@ public class WalletExchange {
     @JoinColumn(name = "currency_code")
     private Currency currencyCode;
 
-    @Column(name = "exchange_amount", precision = 10, scale = 4)
+    @Column(name = "exchange_amount", precision = 15, scale = 4)
     private BigDecimal exchangeAmount;
 
     @UpdateTimestamp
