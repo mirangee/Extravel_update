@@ -4,7 +4,11 @@ import React, {
   useState,
 } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import {
+  Navigation,
+  Pagination,
+  EffectCoverflow,
+} from 'swiper/modules';
 import 'swiper/css'; // Swiper의 기본 CSS를 가져옵니다.
 import 'swiper/css/navigation'; // Swiper의 Navigation CSS를 가져옵니다.
 import 'swiper/css/pagination'; // Swiper의 Pagination CSS를 가져옵니다.
@@ -36,12 +40,20 @@ const YoutubeList = () => {
     <>
       <div className={styles.youtubeContainer}>
         <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={5}
-          slidesPerView={3} // 한 번에 보여질 슬라이드 수
+          effect={'coverflow'}
+          modules={[Navigation, EffectCoverflow]}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 3,
+          }}
           navigation={true} // 네비게이션 활성화
-          pagination={{ clickable: true }} // 페이지네이션 활성화
-          freeMode={false} // 무한 루프 설정
+          centeredSlides={true}
+          // loop={true}
+          slidesPerView={5}
+          freeMode={false}
+          initialSlide={2}
         >
           <div className={styles.youtubeSlider}>
             {youtubeLink.map((item) => (
@@ -52,7 +64,11 @@ const YoutubeList = () => {
                   height='280'
                   title='YouTube video 1'
                   src={item.youtubeVideoLink}
-                  style={{ marginLeft: '75px' }}
+                  style={{
+                    marginLeft: '75px',
+                    position: 'relative',
+                    right: '100px',
+                  }}
                 ></iframe>
               </SwiperSlide>
             ))}
