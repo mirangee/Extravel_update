@@ -27,8 +27,8 @@ const MyPage = () => {
   const part2 = phoneNumber.slice(3, 7);
   const part3 = phoneNumber.slice(7);
   const phone = part1 + '-' + part2 + '-' + part3;
-  const navigate = useNavigate();
-  const { id } = useContext(AuthContext);
+  const { id, onLogout } = useContext(AuthContext);
+  const redirection = useNavigate();
 
   const handleDeleteProfile = (e) => {
     e.preventDefault();
@@ -51,7 +51,9 @@ const MyPage = () => {
         .then(() => {
           localStorage.clear();
           alert('그동안 이용해주셔서 감사합니다.');
-          navigate('/');
+          onLogout();
+          redirection('/');
+          alert('메인 페이지로 이동합니다.');
         })
         .catch((err) => alert(err.response.data.message));
     }
