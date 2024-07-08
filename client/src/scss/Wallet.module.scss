@@ -31,7 +31,24 @@
   border-left: none;
 }
 
+.listUl {
+  margin-top: 20px;
+  margin-left: 600px;
+  width: 50%;
+  background-color: #14505c;
+  border-radius: 15px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap; /* 요소들이 줄을 넘어갈 수 있도록 설정 */
+  padding: 50px;
+  // gap: 10px; /* 각 카드 사이의 간격을 조정 */
 
+  .mapLi {
+    flex: 1 1 calc(40% - 20px); /* 요소를 가로로 두 개 배치되도록 설정 */
+    // margin: 30px;
+    background-color: aqua;
+  }
+}
 .viewMore {
   width: 770px;
   height: 50px;

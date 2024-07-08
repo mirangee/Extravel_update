@@ -1,137 +1,27 @@
 .pageBox{
-  // background-color: red;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  padding-left: 500px;
+
+  width: 350px;
+  height: 80px;
+  background-color: rgb(255, 255, 255);
 }
 
-.pointBox {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 400px;
-  height: 100px;
-  padding: 20px;
-  // border: 1px solid #ccc;
-  border-top: 1px solid #ccc;    // 상단 보더 추가
-  border-bottom: 1px solid #ccc; // 하단 보더 추가
-  border-left: none;             // 좌측 보더 제거
-  border-right: none;  
-  border-radius: 5px;
-  // background-color: yellow;
-  background-color: #fff;
+
 
   .point {
-   
-    background: black;
-    width: 50px;
-    padding: 15px;
-    margin: 35px;
-    font-size: 26px;
+    color: #3f3f3f;
+    font-size: 20px;
     font-weight: bold;
-    color: white;
-    display: flex;  // Flexbox 사용
-    justify-content: center;  // 가로 정렬
-    align-items: center;  // 세로 정렬
-    text-align: center;  // 텍스트 정렬
-  }
-
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      padding-left: 20px;
-      margin: 10px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .time {
-      color: #525252;
-      font-size: 16px;
-    }
-  }
-
-  h2 {
-    // '보유 포인트' 텍스트 스타일
-    flex: 1;
-    text-align: right;
-    margin: 15px;
-    font-weight: bold;
-    font-size: 22px;
-    color: red;
-  }
-}
-
-.pointBox2 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 790px;
-  height: 200px;
-  padding: 20px;
-  // border: 1px solid #ccc;
-  border-top: 1px solid #ccc;    // 상단 보더 추가
-  border-bottom: 1px solid #ccc; // 하단 보더 추가
-  border-left: none;             // 좌측 보더 제거
-  border-right: none;  
-  border-radius: 5px;
-  // background-color: #f9f9f9;
-  background-color: #fff;
-
-  .point {
-    // '충전' 텍스트 스타일
-    // flex: 1;
-    background: #fff;
-    width: 120px;
-    height: 120px;
-    padding: 15px;
-    margin: 35px;
-    font-size: 26px;
-    font-weight: bold;
-    color: #14505c;
-    border-radius: 50%;
-    border: 1px solid #14505c;  // 동그랗게 만들기
-    display: flex;  // Flexbox 사용
-    justify-content: center;  // 가로 정렬
-    align-items: center;  // 세로 정렬
-    text-align: center;  // 텍스트 정렬
-  }
-
-
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    flex: 2;
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-    // margin: 10px;
-
-
-    li {
-      padding-left: 20px;
-      margin: 10px;
-      font-size: 20px;
-      font-weight: bold;
+    align-items: center;
+    justify-content: space-around;
+    img {
+      width: 75px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     }
   }
 
-  h2 {
-    // '보유 포인트' 텍스트 스타일
-    flex: 1;
-    text-align: right;
-    margin: 15px;
-    font-weight: bold;
-  }
-}
+
+  
 
 
 @media (max-width: 1280px) {
