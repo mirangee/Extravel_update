@@ -27,8 +27,23 @@ import NaverShopping from './components/user/NaverShopping';
 import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
 import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
 import LoginPhoneNumber from './components/user/LoginPhoneNumber';
+const IsLoginHandler = ({ children }) => {
+  const { isLoggedIn } = useContext(AuthContext);
+  if (isLoggedIn) {
+    return <Navigate to='/main/exrates' />;
+  }
+  return children;
+};
+const IsLoggedInHandler = ({ children }) => {
+  const name = localStorage.getItem('NAME');
+  if (!name) {
+    return <Navigate to='/login' />;
+  }
+  return children;
+};
 
 const App = () => {
+  const { isLoggedIn } = useContext(AuthContext);
   const location = useLocation();
   const handleLayout = () => {
     if (
@@ -55,7 +70,14 @@ const App = () => {
               </IsLoginHandler>
             }
           />
-          <Route path='/main' element={<MainDetail />} />
+          <Route
+            path='/main'
+            element={
+              <IsLoggedInHandler>
+                <MainDetail />
+              </IsLoggedInHandler>
+            }
+          />
           <Route
             path='/login'
             element={
@@ -68,7 +90,14 @@ const App = () => {
             path='/login/sns'
             element={<LoginPhoneNumber />}
           />
-          <Route path='/flight' element={<FlightOffer />} />
+          <Route
+            path='/flight'
+            element={
+              <IsLoggedInHandler>
+                <FlightOffer />
+              </IsLoggedInHandler>
+            }
+          />
           <Route
             path='/login/FindIDandPassword'
             element={<FindIDandPassword />}
@@ -84,21 +113,40 @@ const App = () => {
           />
           <Route
             path='/main/news'
-            element={<NaverNews />}
+            element={
+              <IsLoggedInHandler>
+                <NaverNews />
+              </IsLoggedInHandler>
+            }
           ></Route>
 
           <Route
             path='api/v1/shopping'
             element={<NaverShopping />}
           ></Route>
-          <Route path='/mypage' element={<MyPage />} />
+          <Route
+            path='/mypage'
+            element={
+              <IsLoggedInHandler>
+                <MyPage />
+              </IsLoggedInHandler>
+            }
+          />
           <Route
             path='/main/exrates'
-            element={<RealTimeExchanges />}
+            element={
+              <IsLoggedInHandler>
+                <RealTimeExchanges />
+              </IsLoggedInHandler>
+            }
           />
           <Route
             path='/mypage/modify'
-            element={<MyPageModify />}
+            element={
+              <IsLoggedInHandler>
+                <MyPageModify />
+              </IsLoggedInHandler>
+            }
           />
         </Routes>
 
@@ -108,13 +156,6 @@ const App = () => {
       </AuthContextProvider>
     </>
   );
-};
-const IsLoginHandler = ({ children }) => {
-  const { isLoggedIn } = useContext(AuthContext);
-  if (isLoggedIn) {
-    return <Navigate to='/main/exrates' />;
-  }
-  return children;
 };
 
 export default App;

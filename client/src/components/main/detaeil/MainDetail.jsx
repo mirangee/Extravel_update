@@ -4,7 +4,6 @@ import DetailSection1 from './DetailSection1';
 import DetailSection2 from './DetailSection2';
 import DetailSection3 from './DetailSection3';
 import YoutubeList from './YoutubeList';
-import { useLocation } from 'react-router-dom';
 const MainDetail = () => {
   window.scrollTo({
     top: 0,

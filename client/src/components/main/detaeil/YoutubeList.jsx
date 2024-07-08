@@ -51,13 +51,13 @@ const YoutubeList = () => {
           navigation={true} // 네비게이션 활성화
           centeredSlides={true}
           // loop={true}
-          slidesPerView={5}
+          slidesPerView={3}
           freeMode={false}
           initialSlide={2}
         >
           <div className={styles.youtubeSlider}>
             {youtubeLink.map((item) => (
-              <SwiperSlide>
+              <SwiperSlide style={{ width: '500px' }}>
                 <iframe
                   className={styles.youtube1}
                   width='500'
