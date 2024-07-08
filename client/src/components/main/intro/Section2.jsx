@@ -11,11 +11,16 @@ import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { createTheme } from '@mui/material/styles';
 import VirualEx from './VirualEx';
+import { useNavigate } from 'react-router-dom';
 
 const Section2 = () => {
   const [liveData, setLiveData] = useState([]);
   const [loading, setLoading] = useState(false);
   const swiperRef = useRef(null);
+  const navigate = useNavigate();
+  const goToLogin = () => {
+    navigate('/login');
+  };
 
   useEffect(() => {
     const getLiveData = async () => {
@@ -43,6 +48,7 @@ const Section2 = () => {
             </span>
             <div className={styles.titleBt}>
               <Button
+                onClick={goToLogin}
                 startIcon={<ArrowForwardIcon />}
                 variant='contained'
                 style={{
