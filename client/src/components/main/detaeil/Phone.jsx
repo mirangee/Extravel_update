@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../../../scss/Phone.module.scss';
 import { Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Link } from 'react-router-dom';
 
 const Phone = () => {
   return (
@@ -208,17 +209,19 @@ const Phone = () => {
             클릭만으로 찾아보세요. <br /> 여행의 시작을
             스트레스 없이 준비하세요!
           </p>
-          <Button
-            startIcon={<ArrowForwardIcon />}
-            variant='contained'
-            style={{
-              backgroundColor: '#275963',
-              borderRadius: '10px',
-            }}
-          >
-            {' '}
-            항공권 검색하러가기
-          </Button>
+          <Link to='/flight'>
+            <Button
+              startIcon={<ArrowForwardIcon />}
+              variant='contained'
+              style={{
+                backgroundColor: '#275963',
+                borderRadius: '10px',
+              }}
+            >
+              {' '}
+              항공권 검색하러가기
+            </Button>
+          </Link>
         </div>
       </div>
     </>

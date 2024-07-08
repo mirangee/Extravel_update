@@ -9,6 +9,7 @@ import {
   Container,
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from '../../../scss/ExRateCard.module.scss';
 const ExRateCard = ({ exChanges, type }) => {
   const title = () => {
     if (type === 'cur') {
@@ -169,7 +170,7 @@ const ExRateCard = ({ exChanges, type }) => {
   };
 
   return (
-    <Container style={containerStyle}>
+    <Container className={styles.containerStyle}>
       <Row style={rowStyle}>
         <Col sm='12' style={textCenterStyle}>
           <h2

@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { createTheme } from '@mui/material/styles';
 import VirualEx from './VirualEx';
+import { Link } from 'react-router-dom';
 
 const Section2 = () => {
   const [liveData, setLiveData] = useState([]);
@@ -42,16 +43,18 @@ const Section2 = () => {
               여행지를 추천받으세요{' '}
             </span>
             <div className={styles.titleBt}>
-              <Button
-                startIcon={<ArrowForwardIcon />}
-                variant='contained'
-                style={{
-                  backgroundColor: '#275963',
-                  borderRadius: '10px',
-                }}
-              >
-                더 많은 국가 보기
-              </Button>
+              <Link to={'/main/exrates'}>
+                <Button
+                  startIcon={<ArrowForwardIcon />}
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#275963',
+                    borderRadius: '10px',
+                  }}
+                >
+                  더 많은 국가 보기
+                </Button>
+              </Link>
             </div>
           </div>
           <div className={styles.rateContent}>
