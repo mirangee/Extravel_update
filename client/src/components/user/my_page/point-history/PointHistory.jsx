@@ -9,17 +9,24 @@ import styles from '../../../../scss/PointHistory.module.scss';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
 import AuthContext from '../../../../utils/AuthContext';
+import { Button } from 'reactstrap';
 
 const PointHistory = () => {
   const { id } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [currentEtp, setCurrentEtp] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [hasList, setHasList] = useState(true);
+  const [visibleParagraphs, setVisibleParagraphs] =
+    useState(3);
+
+  const showMore = () => {
+    setVisibleParagraphs((prevCount) => prevCount + 3);
+  };
 
   useEffect(() => {
     if (!id) return;
     const fetchData = async () => {
-      console.log('가지고 있는 id 값:', id);
       try {
         const res = await axios.post(
           API_BASE_URL + '/history/point/' + id,
@@ -49,6 +56,14 @@ const PointHistory = () => {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    if (history.length === 0) {
+      setHasList(false);
+    } else {
+      setHasList(true);
+    }
+  }, [history]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -65,12 +80,29 @@ const PointHistory = () => {
         </p>
       </div>
 
-      {history.map((item, key) =>
-        item.status === 'USED' ? (
-          <MyPagePointCard2 key={key} item={item} />
-        ) : (
-          <MyPagePointCard key={key} item={item} />
-        ),
+      {!hasList ? (
+        <div className={styles.noList}>
+          충전 내역이 없습니다
+        </div>
+      ) : (
+        history
+          .slice(0, visibleParagraphs)
+          .map((item, key) =>
+            item.status === 'USED' ? (
+              <MyPagePointCard2 key={key} item={item} />
+            ) : (
+              <MyPagePointCard key={key} item={item} />
+            ),
+          )
+      )}
+
+      {visibleParagraphs < history.length && (
+        <Button
+          className={styles.viewMore}
+          onClick={showMore}
+        >
+          충전 내역 더 보기
+        </Button>
       )}
     </div>
   );

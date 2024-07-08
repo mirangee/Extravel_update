@@ -36,6 +36,7 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+
 public class MemberService {
     private final MemberRepository memberRepository;
     private final NationRepository nationRepository;
@@ -413,6 +414,24 @@ public class MemberService {
         }
     }
 
+    public List<Member> deleteId(Integer id) {
+
+        Optional<Member> idInfo = memberRepository.findById(id);
+        log.info("findById에 넣은 id: {}", id);
+        log.info("idInfo:{}", idInfo);
+
+
+        idInfo.ifPresent(member -> {
+            member.setEmail("탈퇴한 회원입니다");
+            member.setName("null");
+            member.setPhoneNumber("null");
+            member.setPassword("null");
+            memberRepository.save(member);
+        });
+
+        return null;
+    }
+
     public LoginResponseDTO snsSignup(SnsSignUpRequestDTO dto) {
         Nation us = nationRepository.findById("US").orElseThrow();
         Member member = Member.builder()
@@ -427,6 +446,7 @@ public class MemberService {
         Member save = memberRepository.save(member);
         walletRepository.insertWallet(save.getId(), BigDecimal.valueOf(0.0));
         return new LoginResponseDTO(save);
+
     }
 }
 

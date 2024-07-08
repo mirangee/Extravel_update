@@ -17,6 +17,7 @@ import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -140,19 +142,19 @@ public class MemberController {
     public ResponseEntity<FindIDResponseDTO> sendFoundId(String phoneNumber, FindIDResponseDTO email) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         log.info("sendFoundId의 phoneNumber{}, email{}", phoneNumber, email);
 
-        Message message = new Message();
-        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
-        message.setFrom("01021356409");
-        message.setTo(phoneNumber);
-        message.setText("[EXTRAVEL]" +
-                "당신의 아이디는" +
-                "[" + email + "]" +
-                "입력해주세요!");
+//        Message message = new Message();
+//        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
+//        message.setFrom("01021356409");
+//        message.setTo(phoneNumber);
+//        message.setText("[EXTRAVEL]" +
+//                "당신의 아이디는" +
+//                "[" + email + "]" +
+//                "입력해주세요!");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, email);
 
-        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
-        log.info("{}", messageSentResponse.toString());
+//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
+//        log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
         return ResponseEntity.ok().body(email);
     }
@@ -212,10 +214,21 @@ public class MemberController {
         String result = memberService.exchangeCheck(dto);
         return ResponseEntity.ok().body(result);
     }
+
+    @PutMapping("/remove/{id}")
+    public ResponseEntity<?> remove(@PathVariable Integer id) {
+        memberService.deleteId(id);
+        log.info("id입니다: {}", id);
+
+
+        return ResponseEntity.ok("회원탈퇴성공!");
+    }
+
     @PostMapping("/signup/sns")
     public ResponseEntity<?> snsSignup(@RequestBody SnsSignUpRequestDTO dto) {
         LoginResponseDTO member = memberService.snsSignup(dto);
         return ResponseEntity.ok().body(member);
     }
+
 }
 

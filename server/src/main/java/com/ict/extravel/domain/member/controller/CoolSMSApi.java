@@ -79,16 +79,16 @@ public class CoolSMSApi {
             return ResponseEntity.badRequest().body("없는 번호입니다.");
         }
 
-        Message message = new Message();
-        message.setFrom("01021356409");
-        message.setTo(phoneNumber);
-        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
+//        Message message = new Message();
+//        message.setFrom("01021356409");
+//        message.setTo(phoneNumber);
+//        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
 
-        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
-        log.info("{}", messageSentResponse.toString());
-        log.info("SMS sent successfully to {}", phoneNumber);
+//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
+//        log.info("{}", messageSentResponse.toString());
+//        log.info("SMS sent successfully to {}", phoneNumber);
 
         return ResponseEntity.ok().body(verificationCode);
     }

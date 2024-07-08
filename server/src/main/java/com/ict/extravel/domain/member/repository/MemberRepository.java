@@ -16,6 +16,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     boolean existsByPhoneNumber(String phoneNumber);
     Optional<Member> findByEmail(String email); //메서드 직접 선언
 
+
+
     //풀리용 임시 주석 처리 06.27 진행중~ by종구
 //    Optional<Member> findMembersWithNameAndPhone(String phoneNumber, String name); //자체 아이디 찾기
 
