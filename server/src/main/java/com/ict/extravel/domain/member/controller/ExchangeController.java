@@ -3,6 +3,7 @@ package com.ict.extravel.domain.member.controller;
 
 import com.ict.extravel.domain.member.dto.request.ExchangeRequestDTO;
 import com.ict.extravel.domain.member.dto.response.ExchangeHistoryResponseDTO;
+import com.ict.extravel.domain.member.dto.response.WalletTotalResponseDTO;
 import com.ict.extravel.domain.member.entity.WalletExchange;
 import com.ict.extravel.domain.member.service.ExchangeService;
 import com.ict.extravel.domain.pointexchange.dto.response.HistoryResponseDto;
@@ -32,4 +33,12 @@ public class ExchangeController {
         log.info(historyList.toString());
         return ResponseEntity.ok().body(historyList);
     }
+
+    @PostMapping("/wallet/{id}")
+    public ResponseEntity<?> getWalletTotal(@PathVariable Integer id) {
+        log.info("/api/v2/exchange/wallet/{id} 요청 들어옴! {}", id);
+        List<WalletTotalResponseDTO> walletTotal = exchangeService.getWalletTotal(id);
+        return ResponseEntity.ok().body(walletTotal);
+    }
+
 }
