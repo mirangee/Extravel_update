@@ -57,7 +57,13 @@ const DetailSection3 = () => {
   const finalRate = (
     parseFloat(exchangeRate) + parseFloat(discounted)
   ).toFixed(2);
-  const amount = (1000 / finalRate).toFixed(2);
+  let amount;
+  if (currencyCode === 'JPY' || currencyCode === 'IDR') {
+    amount = ((1000 / finalRate) * 100).toFixed(2);
+  } else {
+    amount = (1000 / finalRate).toFixed(2);
+  }
+
   const history = {
     nation,
     currencyCode,
@@ -94,8 +100,12 @@ const DetailSection3 = () => {
     if (/^\d*$/.test(value)) {
       const numericValue = Number(value);
       setEtp(numericValue);
+      const Rate =
+        currencyCode === 'JPY' || currencyCode === 'IDR'
+          ? finalRate / 100
+          : finalRate;
       const convertedValue = Number(
-        (numericValue / finalRate).toFixed(2),
+        (numericValue / Rate).toFixed(2),
       );
       setTo(convertedValue);
       setError(false);
@@ -108,8 +118,12 @@ const DetailSection3 = () => {
     if (/^\d*$/.test(value)) {
       const numericValue = Number(value);
       setTo(numericValue);
+      const Rate =
+        currencyCode === 'JPY' || currencyCode === 'IDR'
+          ? finalRate / 100
+          : finalRate;
       const convertedValue = Number(
-        (numericValue * finalRate).toFixed(2),
+        (numericValue * Rate).toFixed(2),
       );
       setEtp(convertedValue);
       setError(false);

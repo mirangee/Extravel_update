@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import Styles from '../../../scss/LiveRankExRateCard.module.scss';
 import { Container } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../../utils/AuthContext';
 const RealTimeExchangesCard = (item) => {
+  const navigate = useNavigate();
   const {
     changeRate,
     currencyCode,
@@ -10,6 +17,7 @@ const RealTimeExchangesCard = (item) => {
     nationCode,
     nationName,
   } = item.item;
+  const { onChangeNation } = useContext(AuthContext);
   const exRate = (c) => {
     if (changeRate > 0) {
       return (
@@ -42,9 +50,15 @@ const RealTimeExchangesCard = (item) => {
   function removeInvalidChars(str) {
     return str.replace(/ï»¿/g, '');
   }
-
+  const clickHandler = () => {
+    onChangeNation(nationCode);
+    navigate('/main');
+  };
   return (
-    <Container style={containerStyle}>
+    <Container
+      onClick={clickHandler}
+      style={containerStyle}
+    >
       <div className={Styles.box1}>
         <h6>
           {nationName} {currencyCode}

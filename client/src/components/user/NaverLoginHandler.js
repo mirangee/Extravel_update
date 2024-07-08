@@ -25,7 +25,7 @@ const NaverLoginHandler = () => {
       const result = res.data;
       if (result.phoneNumber) {
         onLogin(result);
-        redirection('/main');
+        redirection('/main/exrates');
       } else {
         redirection('/login/sns', {
           state: { result, path: 'NAVER' },

@@ -32,7 +32,6 @@ const RealTimeExchanges = () => {
 
   return (
     <>
-      <Header2 />
       <div className={styles.RealTimeContainer}>
         <h3 className={styles.mainH3}>22개국 환율 정보</h3>
         <h1 className={styles.mainH1}>
