@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import { Input } from '@mui/material';
@@ -9,6 +9,8 @@ import silverMedal from '../../../assets/img/silver.png';
 import bronzeMedal from '../../../assets/img/bronze.png';
 import PointHistory from './point-history/PointHistory';
 import ExchangeHistory from './exchange-history/ExchangeHistory';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -25,6 +27,37 @@ const MyPage = () => {
   const part2 = phoneNumber.slice(3, 7);
   const part3 = phoneNumber.slice(7);
   const phone = part1 + '-' + part2 + '-' + part3;
+  const { id, onLogout } = useContext(AuthContext);
+  const redirection = useNavigate();
+
+  const handleDeleteProfile = (e) => {
+    e.preventDefault();
+    if (
+      window.confirm(
+        '확인을 누르면 회원 정보가 삭제됩니다.',
+      )
+    ) {
+      axios
+        .put(
+          'http://localhost:8181/user/auth/remove/' + id,
+          {
+            headers: {
+              Authorization:
+                'Bearer ' +
+                localStorage.getItem('ACCESS_TOKEN'),
+            },
+          },
+        )
+        .then(() => {
+          localStorage.clear();
+          alert('그동안 이용해주셔서 감사합니다.');
+          onLogout();
+          redirection('/');
+          alert('메인 페이지로 이동합니다.');
+        })
+        .catch((err) => alert(err.response.data.message));
+    }
+  };
 
   let nationName = '';
   switch (nation) {
@@ -143,6 +176,7 @@ const MyPage = () => {
           />
         </div>
         <Button
+          onClick={handleDeleteProfile}
           style={{
             width: '150px',
             height: '50px',

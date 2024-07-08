@@ -14,6 +14,7 @@ import { Button } from 'reactstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/img/logo.png';
 import { AuthContext } from '../../utils/AuthContext';
+
 const LoginPhoneNumber = () => {
   const SEND_ONE_URL = BASE + USER + '/send-one';
   const SNS_SIGNUP = BASE + USER + '/signup/sns';
@@ -121,6 +122,12 @@ const LoginPhoneNumber = () => {
           원활한 서비스 이용을 위하여 휴대전화 인증을 진행
           합니다.
         </div>
+
+      <div className={`${styles['form-container']}`}>
+        <div className={styles.phoneCertification}>
+          <h2>전화번호 인증하기</h2>
+        </div>
+
 
         <Grid item style={{ width: '100%' }}>
           {/* 전화번호 입력 및 SMS 전송 */}
