@@ -8,22 +8,29 @@ import MyPageCard from './MyPageCard';
 import AuthContext from '../../../../utils/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
+import { Button } from 'reactstrap';
 
 const ExchangeHistory = () => {
   const { id } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasList, setHasList] = useState(true);
+  const [visibleParagraphs, setVisibleParagraphs] =
+    useState(3);
+
+  const showMore = () => {
+    setVisibleParagraphs((prevCount) => prevCount + 3);
+  };
 
   useEffect(() => {
     if (!id) return;
+
     const fetchData = async () => {
-      console.log('가지고 있는 id 값:', id);
       try {
         const res = await axios.post(
           API_BASE_URL + '/api/v2/exchange/' + id,
         );
         setHistory(res.data);
-        console.log(res.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -35,17 +42,37 @@ const ExchangeHistory = () => {
     fetchData();
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (history.length === 0) {
+      setHasList(false);
+    } else {
+      setHasList(true);
+    }
+  }, [history]);
   return (
     <>
       <h3 className={styles.myExchangeHeader}>
         Exchange History{' '}
       </h3>
-      {history.map((item, key) => (
-        <MyPageCard key={key} item={item} />
-      ))}
+      {!hasList ? (
+        <div className={styles.noList}>
+          환전 내역이 없습니다
+        </div>
+      ) : (
+        history
+          .slice(0, visibleParagraphs)
+          .map((item, key) => (
+            <MyPageCard key={key} item={item} />
+          ))
+      )}
+      {visibleParagraphs < history.length && (
+        <Button
+          className={styles.viewMore}
+          onClick={showMore}
+        >
+          환전 내역 더 보기
+        </Button>
+      )}
     </>
   );
 };

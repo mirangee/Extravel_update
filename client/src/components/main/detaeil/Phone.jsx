@@ -2,8 +2,13 @@ import React from 'react';
 import styles from '../../../scss/Phone.module.scss';
 import { Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 
 const Phone = () => {
+  const navigate = useNavigate();
+  const goToLogin = () => {
+    navigate('/login');
+  };
   return (
     <>
       <div className={styles.wrapper}>
@@ -209,6 +214,7 @@ const Phone = () => {
             스트레스 없이 준비하세요!
           </p>
           <Button
+            onClick={goToLogin}
             startIcon={<ArrowForwardIcon />}
             variant='contained'
             style={{

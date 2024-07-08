@@ -171,7 +171,9 @@ const ChargeInfo = ({
         setText(numberValue);
 
         const pointMultiplier = getPointMultiplier(grade);
-        const calculated = numberValue * pointMultiplier;
+        const calculated =
+          Math.round(numberValue * pointMultiplier * 100) /
+          100;
         setCalculatedNumber(calculated);
 
         const multiplier = getMultiplier(grade);

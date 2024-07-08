@@ -3,9 +3,7 @@ package com.ict.extravel.domain.member.controller;
 
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.request.*;
-import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
-import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
-import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
+import com.ict.extravel.domain.member.dto.response.*;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.service.CoolSMSService;
 import com.ict.extravel.domain.member.service.MemberService;
@@ -19,6 +17,7 @@ import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +26,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -142,19 +142,19 @@ public class MemberController {
     public ResponseEntity<FindIDResponseDTO> sendFoundId(String phoneNumber, FindIDResponseDTO email) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         log.info("sendFoundId의 phoneNumber{}, email{}", phoneNumber, email);
 
-        Message message = new Message();
-        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
-        message.setFrom("01021356409");
-        message.setTo(phoneNumber);
-        message.setText("[EXTRAVEL]" +
-                "당신의 아이디는" +
-                "[" + email + "]" +
-                "입력해주세요!");
+//        Message message = new Message();
+//        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
+//        message.setFrom("01021356409");
+//        message.setTo(phoneNumber);
+//        message.setText("[EXTRAVEL]" +
+//                "당신의 아이디는" +
+//                "[" + email + "]" +
+//                "입력해주세요!");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, email);
 
-        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
-        log.info("{}", messageSentResponse.toString());
+//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
+//        log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
         return ResponseEntity.ok().body(email);
     }
@@ -184,28 +184,24 @@ public class MemberController {
     @GetMapping("/naverlogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code) {
         log.info("/user/auth/naver- Get code : {}", code);
-        Member member = memberService.NaverLoginService(code);
-        if(member == null){
-            return ResponseEntity.ok().body("duplicate");
-        }else{
-            return ResponseEntity.ok().body("SUCCESS");
-        }
+        LoginResponseDTO loginResponseDTO = memberService.NaverLoginService(code);
+        return ResponseEntity.ok().body(loginResponseDTO);
 
     }
 
     @GetMapping("/kakaologin")
     public ResponseEntity<?> kakaoLogin(String code) {
         log.info("/user/auth/kakaoLogin - GET! code: {}", code);
-        memberService.kakaoService(code);
-        return ResponseEntity.ok().body("ok");
+        LoginResponseDTO loginResponseDTO = memberService.kakaoService(code);
+        return ResponseEntity.ok().body(loginResponseDTO);
     }
 
     @PostMapping("/google")
     public ResponseEntity<?> googleLogin(@RequestBody GoogleUserInfoDTO googleUserInfoDTO) {
         log.info(googleUserInfoDTO.getName());
         log.info(googleUserInfoDTO.getEmail());
-        memberService.googleService(googleUserInfoDTO);
-        return ResponseEntity.ok().body("SUCCESS");
+        LoginResponseDTO loginResponseDTO = memberService.googleService(googleUserInfoDTO);
+        return ResponseEntity.ok().body(loginResponseDTO);
     }
 
     @PutMapping("/nation")
@@ -218,5 +214,21 @@ public class MemberController {
         String result = memberService.exchangeCheck(dto);
         return ResponseEntity.ok().body(result);
     }
+
+    @PutMapping("/remove/{id}")
+    public ResponseEntity<?> remove(@PathVariable Integer id) {
+        memberService.deleteId(id);
+        log.info("id입니다: {}", id);
+
+
+        return ResponseEntity.ok("회원탈퇴성공!");
+    }
+
+    @PostMapping("/signup/sns")
+    public ResponseEntity<?> snsSignup(@RequestBody SnsSignUpRequestDTO dto) {
+        LoginResponseDTO member = memberService.snsSignup(dto);
+        return ResponseEntity.ok().body(member);
+    }
+
 }
 

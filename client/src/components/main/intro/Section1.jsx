@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Section1 = () => {
   const navigate = useNavigate();
   const goToLogin = () => {
-    navigate('/Login');
+    navigate('/login');
   };
 
   //스크롤 부분
