@@ -1,0 +1,31 @@
+.pageBox{
+
+  width: 350px;
+  height: 80px;
+  background-color: rgb(255, 255, 255);
+}
+
+
+
+  .point {
+    color: #3f3f3f;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    img {
+      width: 75px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+
+  
+
+
+@media (max-width: 1280px) {
+  .pageBox{
+    padding-left: 30px;
+  }
+}

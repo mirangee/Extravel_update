@@ -5,6 +5,10 @@ import DetailSection2 from './DetailSection2';
 import DetailSection3 from './DetailSection3';
 import YoutubeList from './YoutubeList';
 const MainDetail = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
   return (
     <div className={Styles.mainBox}>
       <DetailSection1 />

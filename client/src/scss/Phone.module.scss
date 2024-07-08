@@ -1231,6 +1231,7 @@
 @media (max-width: 1280px) {
   .introduceBox{
     margin-right: 50px;
+    
     button{
       margin-bottom: 450px;
       margin-left: 230px;
@@ -1249,6 +1250,12 @@
 
 @media (max-width: 640px) {
   .wrapper{
-    // justify;
+    margin-top: 10px;
+    min-height: 40vh;
+  }
+  .introduceBox{
+    h3{
+      font-size: 38px;
+    }
   }
 }

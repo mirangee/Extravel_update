@@ -1,0 +1,18 @@
+.containerStyle {
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  width: 400px;
+  margin-top: 70px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1280px) {
+  .containerStyle{
+    // flex-direction: row;
+    position: relative;
+    right: 140px;
+    width: 350px;
+    margin: 20px;
+  }
+}
