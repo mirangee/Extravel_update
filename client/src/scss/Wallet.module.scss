@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 100px;
-  margin-left: 600px;
+  margin-left: 500px;
   // background-color: yellow;
 
   .pageHeader{
@@ -16,7 +16,7 @@
   }
 }
 .noList {
-  width: 770px;
+  width: 600px;
   height: 60px;
   line-height: 60px;
   color: #14505c;
@@ -33,20 +33,23 @@
 
 .listUl {
   margin-top: 20px;
-  margin-left: 600px;
-  width: 50%;
-  background-color: #14505c;
-  border-radius: 15px;
+  margin-left: 500px;
+  // padding-left: 50px;
+  width: 43%;
+  background-color: rgb(235, 235, 235);
+  border-radius: 40px;
   list-style: none;
   display: flex;
   flex-wrap: wrap; /* 요소들이 줄을 넘어갈 수 있도록 설정 */
-  padding: 50px;
-  // gap: 10px; /* 각 카드 사이의 간격을 조정 */
+  padding: 20px 30px;
+  gap: 5px; /* 각 카드 사이의 간격을 조정 */
 
   .mapLi {
-    flex: 1 1 calc(40% - 20px); /* 요소를 가로로 두 개 배치되도록 설정 */
-    // margin: 30px;
-    background-color: aqua;
+    flex: 1 1 calc(50% - 20px); /* 요소를 가로로 두 개 배치되도록 설정 */
+    // width: 300px;
+    // background-color: aqua;
+    margin-bottom: 10px; /* 각 카드의 아래쪽 간격을 조정 */
+    
   }
 }
 .viewMore {
