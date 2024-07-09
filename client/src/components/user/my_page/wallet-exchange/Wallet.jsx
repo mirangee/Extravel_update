@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 const Wallet = () => {
   const { id } = useContext(AuthContext);
   const [hasList, setHasList] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [wallet, setWallet] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +27,20 @@ const Wallet = () => {
       }
     };
     fetchData();
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (wallet.length === 0) {
+      setHasList(false);
+    } else {
+      setHasList(true);
+    }
+  }, [wallet]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <motion.div
       animate={{ x: 100 }}
@@ -36,16 +50,6 @@ const Wallet = () => {
         {' '}
         <h1 className={styles.pageHeader}>My Wallet</h1>
       </div>
-      {/* 
-      {!hasList ? (
-        <div className={styles.noList}>
-          보유 외화가 없습니다
-        </div>
-      ) : (
-        wallet.map((item, key) => (
-          <WalletCard key={key} item={item} />
-        ))
-      )} */}
       <ul className={styles.listUl}>
         {!hasList ? (
           <div className={styles.noList}>
