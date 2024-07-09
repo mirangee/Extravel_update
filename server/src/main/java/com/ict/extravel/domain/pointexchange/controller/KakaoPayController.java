@@ -160,8 +160,6 @@ public class KakaoPayController {
         pointChargeRepository.updateInUseByTid(tid);
         log.info("/payment/confirm/tid 요청 들어 옴! {}", tid);
         PayConfirmResponseDTO tidInfo = kakaoPayService.findTidInfo(tid);
-        BigDecimal countPoint = kakaoPayService.sumAmount(tidInfo.getMemberId());
-        tidInfo.setCountPoint(countPoint);
         log.info("tidInfo:{}",tidInfo);
         return ResponseEntity.status(HttpStatus.OK).body(tidInfo);
     }

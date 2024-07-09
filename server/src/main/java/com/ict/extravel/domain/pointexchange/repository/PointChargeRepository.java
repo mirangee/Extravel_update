@@ -1,17 +1,12 @@
 package com.ict.extravel.domain.pointexchange.repository;
 
-import com.ict.extravel.domain.member.entity.Member;
-import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +29,6 @@ public interface PointChargeRepository extends JpaRepository<PointCharge, String
     List<PointCharge> findAllByMemberId(@Param("memberId") Integer id);
 
 
-
-    List<PointCharge> findByMember(Member member);
+    @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND p.status = 'SUCCESS'")
+    List<PointCharge> findByMember(@Param("memberId")Integer memberId);
 }

@@ -4,10 +4,22 @@ import React, {
   useState,
 } from 'react';
 import styles from '../../../../scss/ChargeResult.module.scss';
+import AuthContext from '../../../../utils/AuthContext';
 
 const ChargeResult = ({ pointInfo, setPayResult }) => {
+  const { grade } = useContext(AuthContext);
+  if (
+    pointInfo.countPoint >= 5000000 &&
+    grade === 'BRONZE'
+  ) {
+    alert('축하합니다! SILVER 등급으로 승급되었습니다.');
+  } else if (
+    pointInfo.countPoint >= 10000000 &&
+    grade === 'SILVER'
+  ) {
+    alert('축하합니다! GOLD 등급으로 승급되었습니다.');
+  }
   const eventHandler = () => {
-    console.log('charge result 컴포넌트에서 버튼 클릭됨!');
     setPayResult(false);
   };
   return (
@@ -53,12 +65,16 @@ const ChargeResult = ({ pointInfo, setPayResult }) => {
               </div>{' '}
               P
             </div>
+          </div>
+          <div className={styles.pointOuterContainer}>
             <div className={styles.chargeAmountTitle}>
               누적 충전 포인트
             </div>
             <div className={styles.pointContainer}>
               <div className={styles.point}>
-                {pointInfo.etPoint.toLocaleString('ko-KR')}{' '}
+                {pointInfo.countPoint.toLocaleString(
+                  'ko-KR',
+                )}{' '}
               </div>{' '}
               P
             </div>

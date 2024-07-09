@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.ict.extravel.domain.member.entity.QMember.member;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -145,11 +147,22 @@ public class KakaoPayService {
         log.info("pointChargeRepo에서 pointCharge SELECT 완료! {}", pointCharge);
 
         // wallet에서 해당 id의 보유 포인트를 조회해 dto에 같이 전달
-        Integer id = pointCharge.getMember().getId();
+        Member member = pointCharge.getMember();
+        Integer id = member.getId();
         Wallet wallet = walletRepository.findById(id).orElseThrow();
         log.info("wallet에서 꺼낸 et point 조회: {}", wallet.getEtPoint());
 
-        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge, wallet.getEtPoint());
+        BigDecimal total = sumAmount(id);
+
+        if (total.compareTo(new BigDecimal("10000000")) > 0) {
+            member.setGrade(Member.Grade.GOLD);
+            memberRepository.save(member);
+        } else if (total.compareTo(new BigDecimal("5000000")) >= 0 && total.compareTo(new BigDecimal("10000000")) <= 0) {
+            member.setGrade(Member.Grade.SILVER);
+            memberRepository.save(member);
+        }
+
+        PayConfirmResponseDTO dto = PayConfirmResponseDTO.toDto(pointCharge, wallet.getEtPoint(), total);
         return dto;
     }
 
@@ -166,24 +179,6 @@ public class KakaoPayService {
         log.info("wallet 저장 결과: {}", wallet1.toString());
     }
 
-//    private float calcTotalPoint(Integer id, int amount) {
-//        Member member = memberRepository.findById(id).orElseThrow();
-//        float plusRate = 0;
-//        log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
-//        switch (member.getGrade()) {
-//            case BRONZE:
-//                plusRate = 0.001F;
-//                break;
-//            case SILVER:
-//                plusRate = 0.002F;
-//                break;
-//            case GOLD:
-//                plusRate = 0.003F;
-//                break;
-//        }
-//        // 소수점 이하 3자리로 반올림
-//        return Math.round(amount * (1 + plusRate) * 1000) / 1000f;
-//    }
 
     private BigDecimal calcTotalPoint(Integer id, int amount) {
         Member member = memberRepository.findById(id).orElseThrow();
@@ -223,26 +218,19 @@ public class KakaoPayService {
     public PointInfoResponseDto getPointInfo(Integer id) {
         Wallet wallet = walletRepository.findById(id).orElseThrow();
         log.info("wallet에 담긴 정보: {}", wallet);
+        BigDecimal total = sumAmount(id);
         PointInfoResponseDto responseDto = new PointInfoResponseDto();
-        return responseDto.toEntity(wallet.getEtPoint());
+        return responseDto.toEntity(wallet.getEtPoint(), total);
     }
 
-    //결제한포인트에따라 등급변화
+    //현재까지 충전한 포인트 누적합 계산
     public BigDecimal sumAmount(Integer memberId) {
          Member member = memberRepository.findById(memberId).orElseThrow();
-         List<PointCharge> pointChargeList = pointChargeRepository.findByMember(member);
+         List<PointCharge> pointChargeList = pointChargeRepository.findByMember(member.getId());
 
         BigDecimal total = BigDecimal.ZERO;
         for(PointCharge p : pointChargeList) {
             total = total.add(p.getAmount());
-        }
-
-        if (total.compareTo(new BigDecimal("10000000")) > 0) {
-            member.setGrade(Member.Grade.GOLD);
-            memberRepository.save(member);
-        } else if (total.compareTo(new BigDecimal("5000000")) >= 0 && total.compareTo(new BigDecimal("10000000")) <= 0) {
-            member.setGrade(Member.Grade.SILVER);
-            memberRepository.save(member);
         }
         return total;
     }
