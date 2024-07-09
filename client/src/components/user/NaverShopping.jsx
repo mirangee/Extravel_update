@@ -18,6 +18,7 @@ import {
 import { FaPlay, FaPause } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import AuthContext from '../../utils/AuthContext';
+import axios from 'axios';
 
 const NaverShopping = () => {
   const [article, setArticle] = useState([]);
@@ -27,11 +28,12 @@ const NaverShopping = () => {
   const swiperRef = useRef(null);
   const { nation } = useContext(AuthContext);
   useEffect(() => {
-    console.log('설정국가:{}', nation);
-    fetch('http://localhost:8181/api/v1/shopping/' + nation)
-      .then((response) => response.json())
-      .then((data) => {
-        const items = data.items;
+    axios
+      .get(
+        'http://localhost:8181/api/v1/shopping/' + nation,
+      )
+      .then((response) => {
+        const items = response.data.items;
 
         const transformArticle = items.map((item) => ({
           title: item.title.replace(/(<([^>]+)>)/gi, ''),
@@ -41,9 +43,9 @@ const NaverShopping = () => {
         }));
         setArticle(transformArticle);
       })
-      .catch((error) =>
-        console.error('Error fetching data : ', error),
-      );
+      .catch((error) => {
+        console.error('Error fetching data : ', error);
+      });
   }, [nation]);
 
   const formatPrice = (lprice) => {
