@@ -12,6 +12,7 @@ import ExchangeHistory from './exchange-history/ExchangeHistory';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Wallet from './wallet-exchange/Wallet';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
@@ -39,16 +40,13 @@ const MyPage = () => {
       )
     ) {
       axios
-        .put(
-          'http://localhost:8181/user/auth/remove/' + id,
-          {
-            headers: {
-              Authorization:
-                'Bearer ' +
-                localStorage.getItem('ACCESS_TOKEN'),
-            },
+        .put({ API_BASE_URL } + '/user/auth/remove/' + id, {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              localStorage.getItem('ACCESS_TOKEN'),
           },
-        )
+        })
         .then(() => {
           localStorage.clear();
           alert('그동안 이용해주셔서 감사합니다.');

@@ -19,6 +19,7 @@ import { FaPlay, FaPause } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import AuthContext from '../../utils/AuthContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/host-config';
 
 const NaverShopping = () => {
   const [article, setArticle] = useState([]);
@@ -29,9 +30,7 @@ const NaverShopping = () => {
   const { nation } = useContext(AuthContext);
   useEffect(() => {
     axios
-      .get(
-        'http://localhost:8181/api/v1/shopping/' + nation,
-      )
+      .get(`${API_BASE_URL}/api/v1/shopping/${nation}`)
       .then((response) => {
         const items = response.data.items;
 

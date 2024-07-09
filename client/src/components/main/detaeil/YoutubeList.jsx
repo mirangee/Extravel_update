@@ -15,6 +15,7 @@ import 'swiper/css/pagination'; // Swiper의 Pagination CSS를 가져옵니다.
 import styles from '../../../scss/YoutubeList.module.scss';
 import AuthContext from '../../../utils/AuthContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../config/host-config';
 const YoutubeList = () => {
   const { nation } = useContext(AuthContext);
   const [youtubeLink, setYoutubeLink] = useState([]);
@@ -24,9 +25,7 @@ const YoutubeList = () => {
     if (nation) {
       console.log('if nation:{}', nation);
       axios //get요청보내기
-        .get(
-          `http://localhost:8181/api/v1/youtube/` + nation,
-        )
+        .get(`${API_BASE_URL}/api/v1/youtube/` + nation)
         .then((response) => {
           setYoutubeLink(response.data);
         })

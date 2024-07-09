@@ -87,11 +87,14 @@ const PointHistory = () => {
       ) : (
         history
           .slice(0, visibleParagraphs)
-          .map((item, key) =>
+          .map((item) =>
             item.status === 'USED' ? (
-              <MyPagePointCard2 key={key} item={item} />
+              <MyPagePointCard2
+                key={item.key}
+                item={item}
+              />
             ) : (
-              <MyPagePointCard key={key} item={item} />
+              <MyPagePointCard key={item.key} item={item} />
             ),
           )
       )}

@@ -4,6 +4,7 @@ import googleCircle from '../../assets/img/google_circle.png';
 import axios from 'axios';
 import { AuthContext } from '../../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from './../../config/host-config';
 const GoogleCustomLogin = () => {
   const { onLogin } = useContext(AuthContext);
   const redirection = useNavigate();
@@ -24,7 +25,7 @@ const GoogleCustomLogin = () => {
         const { email, name } = res.data;
         console.log(`Email: ${email}, Name: ${name}`);
         const response = await axios.post(
-          'http://localhost:8181/user/auth/google',
+          { API_BASE_URL } + '/user/auth/google',
           { name, email },
         );
         const result = response.data;

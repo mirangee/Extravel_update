@@ -22,6 +22,7 @@ import {
   DropdownToggle,
 } from 'reactstrap';
 import ChargeModal from '../.././main/intro/ChargeModal/ChargeModal';
+import { API_BASE_URL } from './../../../config/host-config';
 
 const Header2 = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -70,7 +71,7 @@ const Header2 = () => {
   useEffect(() => {
     const getNationData = () => {
       axios
-        .get('http://localhost:8181/api/nation')
+        .get({ API_BASE_URL } + '/api/nation')
         .then((res) => {
           const options = res.data.map((element) => ({
             value: element.nationCode,

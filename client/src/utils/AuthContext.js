@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config/host-config';
 
 //컨텍스트 생성
 export const AuthContext = React.createContext({
@@ -52,10 +53,7 @@ export const AuthContextProvider = (props) => {
         nationCode,
       };
       axios
-        .put(
-          'http://localhost:8181/user/auth/nation',
-          userInfo,
-        )
+        .put(`${API_BASE_URL}/user/auth/nation`, userInfo)
         .then((res) => {
           setNation(res.data);
           localStorage.setItem('NATION', res.data);

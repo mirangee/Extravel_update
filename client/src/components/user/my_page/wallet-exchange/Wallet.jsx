@@ -56,9 +56,9 @@ const Wallet = () => {
             보유 외화가 없습니다
           </div>
         ) : (
-          wallet.map((item, key) => (
+          wallet.map((item) => (
             <li className={styles.mapLi}>
-              <WalletCard key={key} item={item} />
+              <WalletCard key={item.key} item={item} />
             </li>
           ))
         )}

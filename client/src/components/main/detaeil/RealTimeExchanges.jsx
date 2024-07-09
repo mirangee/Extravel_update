@@ -4,9 +4,7 @@ import RealTimeExchangesCard from '../intro/RealTimeExchangesCard';
 import styles from '../../../scss/RealTimeExchanges.module.scss';
 import { Card } from 'reactstrap';
 import GoogleTop5 from './GoogleTop5';
-import Header from '../../Header';
-import Header2 from './Header2';
-
+import { API_BASE_URL } from '../../../config/host-config';
 const RealTimeExchanges = () => {
   const [liveData, setLiveData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +12,7 @@ const RealTimeExchanges = () => {
   useEffect(() => {
     const getLiveData = async () => {
       await axios
-        .get('http://localhost:8181/api/rate/currency/live')
+        .get(`${API_BASE_URL}/api/rate/currency/live`)
         .then((res) => {
           setLiveData(res.data);
           setLoading(true);

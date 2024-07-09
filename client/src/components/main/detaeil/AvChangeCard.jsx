@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const AvChangeCard = () => {
   const [name, setName] = useState();
@@ -34,7 +35,7 @@ const AvChangeCard = () => {
     if (nation) {
       const getData = async () => {
         const response = await axios.get(
-          `http://localhost:8181/api/v2/exchange/average?nation=${nation}`,
+          `${API_BASE_URL}/api/v2/exchange/average?nation=${nation}`,
         );
         setName(response.data.name);
         setSum(response.data.sum);
@@ -96,9 +97,7 @@ const AvChangeCard = () => {
                     fontWeight: 'bold',
                     fontSize: '36px',
                   }}
-                >
-                  {}
-                </span>
+                ></span>
                 {Number(sum.toFixed(0)).toLocaleString(
                   'ko-KR',
                 )}
