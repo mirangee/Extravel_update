@@ -10,6 +10,7 @@ export const AuthContext = React.createContext({
   onLogout: () => {},
   onLogin: () => {},
   onChangeNation: () => {},
+  onChangeGrade: () => {},
 });
 
 //컨텍스트 프로바이더
@@ -73,6 +74,10 @@ export const AuthContextProvider = (props) => {
     setPhoneNumber('');
   };
 
+  const gradeHandler = (grade) => {
+    setGrade(grade);
+  };
+
   //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
   useEffect(() => {
     if (localStorage.getItem('NAME')) {
@@ -100,6 +105,7 @@ export const AuthContextProvider = (props) => {
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,
+        onChangeGrade: gradeHandler,
       }}
     >
       {props.children}

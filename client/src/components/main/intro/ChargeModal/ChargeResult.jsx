@@ -7,17 +7,20 @@ import styles from '../../../../scss/ChargeResult.module.scss';
 import AuthContext from '../../../../utils/AuthContext';
 
 const ChargeResult = ({ pointInfo, setPayResult }) => {
-  const { grade } = useContext(AuthContext);
+  const { grade, onChangeGrade } = useContext(AuthContext);
   if (
+    pointInfo.countPoint < 10000000 &&
     pointInfo.countPoint >= 5000000 &&
     grade === 'BRONZE'
   ) {
     alert('축하합니다! SILVER 등급으로 승급되었습니다.');
+    onChangeGrade('SILVER');
   } else if (
     pointInfo.countPoint >= 10000000 &&
-    grade === 'SILVER'
+    grade !== 'GOLD'
   ) {
     alert('축하합니다! GOLD 등급으로 승급되었습니다.');
+    onChangeGrade('GOLD');
   }
   const eventHandler = () => {
     setPayResult(false);
