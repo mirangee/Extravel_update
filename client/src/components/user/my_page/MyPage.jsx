@@ -17,14 +17,12 @@ import { API_BASE_URL } from '../../../config/host-config';
 const MyPage = () => {
   const { email, grade, name, nation, phoneNumber } =
     useContext(AuthContext);
-
   let medalImage = bronzeMedal;
   if (grade === 'SILVER') {
     medalImage = silverMedal;
   } else if (grade === 'GOLD') {
     medalImage = goldMedal;
   }
-
   const part1 = phoneNumber.slice(0, 3);
   const part2 = phoneNumber.slice(3, 7);
   const part3 = phoneNumber.slice(7);

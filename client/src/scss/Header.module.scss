@@ -123,17 +123,6 @@
     .nav {
       display: none; /* 작은 화면에서 네비게이션 숨기기 */
     }
-
-    .hamburger {
-      display: block; /* 햄버거 아이콘 표시 */
-      cursor: pointer;
-      margin-right: 20px; /* 원하는 간격으로 조정 */
-      color: white;
-
-      &:hover {
-        opacity: 0.8; /* 호버 효과 추가 */
-      }
-    }
   }
 }
 

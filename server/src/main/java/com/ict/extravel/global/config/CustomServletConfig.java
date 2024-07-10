@@ -1,8 +1,10 @@
 package com.ict.extravel.global.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Configuration
 //pring MVC의 글로벌 CORS 설정을 관리 : WebMvcConfigurer 인터페이스를 구현하여 CORS 관련 설정을 커스터마이징
 public class CustomServletConfig implements WebMvcConfigurer {
 

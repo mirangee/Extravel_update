@@ -5,13 +5,17 @@ import { API_BASE_URL } from '../config/host-config';
 
 //컨텍스트 생성
 export const AuthContext = React.createContext({
-  inLoggedIn: false,
+  isLoggedIn: false,
   name: '',
   nation: '',
+  email: '',
+  id: '',
+  grade: '',
+  phoneNumber: '',
   onLogout: () => {},
-  onLogin: () => {},
-  onChangeNation: () => {},
-  onChangeGrade: () => {},
+  onLogin: (res) => {},
+  onChangeNation: (nationCode) => {},
+  onChangeGrade: (grade) => {},
 });
 
 //컨텍스트 프로바이더
@@ -22,11 +26,10 @@ export const AuthContextProvider = (props) => {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
   const [grade, setGrade] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const navi = useNavigate();
 
   const loginHandler = (res) => {
-    console.log(res.phoneNumber);
     // localStorage.setItem('ACCESS_TOKEN', token);
     localStorage.setItem('NAME', res.name);
     localStorage.setItem('NATION', res.nationCode);
@@ -43,14 +46,15 @@ export const AuthContextProvider = (props) => {
     );
     //localStorage 토큰 넣기
     // localStorage.setItem('ROLE', role);
-    setIsLoggedIn(true);
+    setPhone(res.phoneNumber);
     setUserName(res.name);
     setEmail(res.email);
     setNation(res.nationCode);
     setId(res.id);
     setGrade(res.grade);
-    setPhoneNumber(res.phoneNumber);
+    setIsLoggedIn(true);
   };
+
   const nationHandler = (nationCode) => {
     if (email === '') {
       alert('로그인을 먼저 해주세요.');
@@ -77,10 +81,11 @@ export const AuthContextProvider = (props) => {
     setNation('US');
     setId('');
     setGrade('');
-    setPhoneNumber('');
+    setPhone('');
   };
 
   const gradeHandler = (grade) => {
+    localStorage.setItem('GRADE', grade);
     setGrade(grade);
   };
 
@@ -93,7 +98,6 @@ export const AuthContextProvider = (props) => {
       setEmail(localStorage.getItem('EMAIL'));
       setId(localStorage.getItem('ID'));
       setGrade(localStorage.getItem('GRADE'));
-      setPhoneNumber(localStorage.getItem('PHONE'));
     }
   }, []);
 
@@ -107,7 +111,7 @@ export const AuthContextProvider = (props) => {
         id,
         email,
         grade,
-        phoneNumber,
+        phoneNumber: phone,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,

@@ -1,8 +1,9 @@
 * {
   box-sizing: border-box;
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-body {
-      font-family: 'Noto Sans KR', sans-serif; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 }
 
 @keyframes fadeIn {
@@ -40,7 +41,6 @@ body {
   margin-bottom: 50px;
   color: white;
   animation: fadeIn 0.8s ease-in forwards;
-
 }
 
 .login h1 {
@@ -57,7 +57,7 @@ body {
   font-weight: 100;
   line-height: 20px;
   letter-spacing: 0.5px;
-  margin: 20px 0 30px;
+  margin: 0;
 }
 
 .login span {
@@ -99,14 +99,78 @@ body {
   border-color: #ffffff;
 }
 
+.controller {
+  background-color: red;
+  overflow: hidden;
+}
+
+.login .GridAll {
+  // background-color: blue;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 세로 방향 중앙 정렬 */
+}
+
+.login .GridBox {
+  display: flex;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 1px black;
+  justify-content: center;
+  align-items: center;
+
+  // background-color: pink;
+}
+
+.login .GridBox1 {
+  display: flex;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 1px black;
+  justify-content: flex-end;
+  align-items: center;
+  // background-color: pink;
+}
+
+.login .GridBox2 {
+  display: flex;
+  width: 100%;
+  margin: 10px;
+  padding: 0 10px 0 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  // background-color: pink;
+  :last-child {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+// 인증번호 버튼
+.login .GridBox3 {
+  width: 100%;
+  display: flex;
+  margin-left: 6px;
+  padding: 10px;
+  border-radius: 1px black;
+  justify-content: center;
+  align-items: center;
+  // background-color: pink;
+}
+
 .login form {
-  width: 95%;
+  width: 100%;
   background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 50px;
+  margin: 6px;
+
+  padding: 10px;
   height: 99%;
   text-align: center;
   margin: 10px 0 10px 0;
@@ -121,14 +185,10 @@ body {
   // height: 25px;
 }
 
-
-
 input::placeholder {
   font-size: 16px; /* 원하는 크기로 조절하세요 */
   color: gray; /* 색상도 변경할 수 있습니다 */
 }
-
-
 
 .container {
   background-color: #fff;
@@ -213,9 +273,8 @@ input::placeholder {
     #498586,
     #56a89f,
     #4ea798,
-    #14505C,
-    #14505C,
-
+    #14505c,
+    #14505c
   );
   background: linear-gradient(
     to right,
@@ -225,8 +284,7 @@ input::placeholder {
     #4a8d85,
     #4f978f,
     #3d6e6e,
-    #14505C,
-
+    #14505c
   );
   background-repeat: no-repeat;
   background-size: cover;
@@ -334,16 +392,66 @@ footer {
 }
 
 .login .phoneNumberCheck {
-  display: flex;
-  flex-direction: row;
+  flex-basis: 70%;
+  flex-shrink: 1;
+}
+
+.login .NumCheckBtn {
+  flex-basis: 100%;
+  flex-shrink: 3;
+  color: pink;
+
+  flex: content;
+  margin: 5px;
+  padding: 15px;
+  height: 50px;
+  font-size: 12px;
+}
+
+.login .sec1 {
+  flex-shrink: 10;
+  flex-basis: 100%;
+}
+
+.login .MuiCheckBtn1 {
+  flex-shrink: 2;
+  flex-basis: 30%;
+  color: white;
+  align-items: center;
   justify-content: center;
-  background: black;
+  text-align: center;
+  font-size: 12px;
+}
+
+.login .emailInput {
+  flex-basis: 100%;
+  flex-shrink: 5;
 }
 
 .login .CheckButton {
-  margin-top: 15px;
-  width: 45%;
+  flex-basis: 30%;
+  flex-shrink: 1;
+  margin: 5px;
+  height: 50px;
+  padding: 15px;
+  font-size: 12px;
+}
+
+.resultMsg {
+  min-height: 5px;
+  padding: 50px;
+  width: 100%;
+  display: flex;
   flex-direction: column;
-  text-align: center;
-  opacity: 0.5;
+}
+
+.helperText {
+  min-height: 1px;
+  background-color: red;
+  display: block;
+}
+
+
+.meg {
+  margin: 0;
 }

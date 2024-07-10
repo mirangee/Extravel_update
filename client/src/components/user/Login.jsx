@@ -56,6 +56,10 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState(''); // 전화번호 상태
 
   const [isTimeZero, setIsTimeZero] = useState(false); //시간 0초 체크
+  const [showPhoneNumInput, setShowPhoneNumInput] =
+    useState(true); //전화번호 입력창
+  const [showEmailInput, setshowEmailInput] =
+    useState(true); //이메일 입력창
 
   const navigate = useNavigate(); //페이지 이동을 위해 useNavigate 훅 사용
   const redirection = useNavigate();
@@ -122,6 +126,9 @@ const Login = () => {
   // 회원가입 데이터 전송을 위한 핸들러
   const handleSignUpSubmit = async (data) => {
     // passwordConfirm 필드를 제거하여 서버로 전송하지 않음 ***
+
+    console.log('submitHandler 안에서의 data: ', data);
+
     const { passwordConfirm, ...submitData } = data;
     submitData.phoneNumber = phoneNumber; //@@@ phoneNumber 데이터 따로 추가
     console.log(
@@ -179,6 +186,7 @@ const Login = () => {
       console.log('fetchLogin data = ', data);
 
       const res = await axios.post(REQUEST_URL, data);
+      console.log(res.data);
       return res.data; // 서버 응답 데이터 반환
     } catch (error) {
       console.error('로그인 요청 중 오류 발생:', error);
@@ -188,12 +196,21 @@ const Login = () => {
     }
   };
 
+  // SMS 인증 확인 처리
+  const handleSendSMS = () => {
+    sendSMS(phoneNumber).then((code) => {
+      // then 프로미스 값 해제 할 때(외부에서 호출 한 곳에서 비동기 통신한 결과 가져오기 : 컴포넌트 다를 경우 then으로 풀어야 함) @@@
+      console.log('promise 내의 result: ', code);
+      setRandomCode(code); //프로미스 code -> set에 담기
+    });
+  };
+
   // 번호 인증을 위한 SMS 전송
   const sendSMS = async (phoneNumber) => {
     console.log('로그인 phoneNumber : ', phoneNumber);
     try {
-      if (!phoneNumber || phoneNumber.length === 0) {
-        alert('전화번호를 입력해주세요');
+      if (!phoneNumber || phoneNumber.length !== 11) {
+        alert('전화번호를 11자리로 입력해주세요!!!');
         setShowAuthNumTimer(false);
         return;
       }
@@ -201,13 +218,18 @@ const Login = () => {
       const res = await axios.post(SEND_ONE_URL, {
         phoneNumber,
       });
+      console.log('서버 응답:', res); // 응답 전체를 출력
+
       if (res && res.data) {
         console.log('발송 성공!!! : ', phoneNumber);
         const saveRandomCode = res.data;
         console.log('randomCode: ', saveRandomCode);
         setRandomCode(saveRandomCode);
+        console.log('발송 후 randomCode: ', saveRandomCode);
         alert('인증번호가 발송되었습니다.');
+        setShowPhoneNumInput(false);
         setShowAuthNumTimer(true);
+        return saveRandomCode; //@@@ 찾음
       } else {
         console.error(
           '서버 응답이 유효하지 않습니다:',
@@ -215,13 +237,19 @@ const Login = () => {
         );
         alert('서버 응답이 유효하지 않습니다.');
         setShowAuthNumTimer(false);
+        setShowPhoneNumInput(true);
       }
     } catch (error) {
       console.error(error);
       alert(error.response.data);
       setShowAuthNumTimer(false);
+      setShowPhoneNumInput(true);
     }
   };
+
+  useEffect(() => {
+    console.log('randomCode가 업데이트됨:', randomCode);
+  }, [randomCode]);
 
   // 인증번호 확인
   const checkSMS = (checkCode) => {
@@ -273,7 +301,7 @@ const Login = () => {
       //로그인 성공
       onLogin(response);
       alert(`${response.name}님 환영합니다!!! ^^`);
-      window.location.replace('/');
+      redirection('/main/exrates');
     } catch (error) {
       console.error('로그인 요청 중 오류 발생', error);
       alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
@@ -294,13 +322,14 @@ const Login = () => {
         email,
       });
 
-      console.log('check로 데이터 전송');
+      console.log('check로 데이터 전송 email : ', email);
       if (res.data) {
         alert('이미 등록된 이메일입니다.');
         setIsEmailChecked(false);
         return true; // 중복된 이메일이면 true 반환
       } else {
         alert('사용 가능한 이메일 입니다.');
+        // setshowEmailInput(false);
         setIsEmailChecked(true);
 
         return false; // 중복되지 않은 이메일이면 false 반환
@@ -319,6 +348,22 @@ const Login = () => {
       setIsSignUpEnabled(false); // 회원 가입 비활성화
     }
   };
+
+  // 회원가입 데이터 초기화
+  // const handleSignUpReset = () => {
+  //   setEmail('');
+  //   setPassword('');
+  //   setRandomCode('');
+  //   setCheckCode('');
+  //   setShowAuthNumTimer(false);
+  //   setResultMsg('');
+  //   setIsSignUpEnabled(false);
+  //   setIsAuthCompleted(false);
+  //   setIsEmailChecked(false);
+  //   setPhoneNumber('');
+  //   setIsTimeZero(false);
+  //   setShowPhoneNumInput(true);
+  // };
 
   return (
     <>
@@ -377,14 +422,11 @@ const Login = () => {
                 <span className={styles.span}>
                   혹은 이메일을 사용하여 회원가입 하기
                 </span>
-                <Grid item>
-                  <Grid
-                    container
-                    direction={'column'}
-                    spacing={1}
-                  >
-                    <Grid item style={{ width: '100%' }}>
+                <Grid className={styles.GridAll}>
+                  <Grid>
+                    <Grid className={styles.GridBox2}>
                       <Controller
+                        className={styles.resultMsg}
                         name='name' // 컨트롤러의 이름
                         control={signUpControl} // useForm에서 제공하는 컨트롤 객체
                         defaultValue={''} // 초기 값
@@ -419,16 +461,19 @@ const Login = () => {
                       />
                     </Grid>
 
-                    <Grid item style={{ width: '100%' }}>
+                    <Grid className={styles.GridBox}>
                       {/* 전화번호 입력 및 SMS 전송 */}
                       <Controller
                         name='phoneNumber'
                         defaultValue={''}
-                        disabled={isAuthCompleted}
+                        disabled={
+                          !showPhoneNumInput ||
+                          isAuthCompleted
+                        }
                         control={signUpControl}
                         rules={{
                           required:
-                            '전화번호를 입력해주세요.',
+                            '전화번호를 입력해주세요!.',
                           pattern: {
                             value: /^[0-9]*$/,
                             message: '숫자만 입력해주세요.',
@@ -442,6 +487,9 @@ const Login = () => {
                         render={({ field, fieldState }) => (
                           <>
                             <TextField
+                              className={
+                                styles.phoneNumberCheck
+                              }
                               label='Phone Number'
                               {...field}
                               value={field.value}
@@ -459,17 +507,14 @@ const Login = () => {
                                 sendSMS(field.value); // 전화번호로 SMS 전송
                               }}
                               variant='contained'
-                              className={
-                                styles.phoneNumberCheck
-                              }
+                              className={styles.NumCheckBtn}
                               style={{
-                                marginLeft: '100px',
                                 display: !isAuthCompleted
                                   ? 'block'
                                   : 'none',
                               }}
                             >
-                              전화번호 인증
+                              번호인증
                             </Button>
                           </>
                         )}
@@ -479,10 +524,7 @@ const Login = () => {
                     {/* 인증번호 입력 및 확인 */}
                     {showAuthNumTimer && (
                       <>
-                        <Grid
-                          item
-                          style={{ width: '100%' }}
-                        >
+                        <Grid className={styles.GridBox2}>
                           <TextField
                             fullWidth
                             variant='outlined'
@@ -494,40 +536,50 @@ const Login = () => {
                             disabled={isAuthCompleted} // 인증 완료 시 비활성화
                           />
 
-                          {showAuthNumTimer &&
-                            !isAuthCompleted && (
-                              <AuthNumTimer
-                                onTimeZero={handleTimeZero} //@@@ 타이머가 0이 되었을 때 호출될 콜백 함수
-                                sendSMS={sendSMS}
-                                phoneNumber={phoneNumber}
-                              />
-                            )}
+                          <div className={styles.GridBox3}>
+                            <div className={styles.sec1}>
+                              {showAuthNumTimer &&
+                                !isAuthCompleted && (
+                                  <AuthNumTimer
+                                    onTimeZero={
+                                      handleTimeZero
+                                    } //@@@ 타이머가 0이 되었을 때 호출될 콜백 함수
+                                    handleSendSMS={
+                                      handleSendSMS
+                                    }
+                                    phoneNumber={
+                                      phoneNumber
+                                    }
+                                  />
+                                )}
+                            </div>
 
-                          <Button
-                            onClick={(e) => {
-                              e.preventDefault();
-
-                              if (!isTimeZero) {
-                                checkSMS(checkCode); // 입력된 인증코드 검증
-                              } else {
-                                setResultMsg(
-                                  '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
-                                );
+                            <Button
+                              className={
+                                styles.MuiCheckBtn1
                               }
-                            }}
-                            variant='contained'
-                            color='success'
-                            style={{
-                              marginTop: 10,
-                              marginLeft: '100px',
-                              background: 'black',
-                              display: !isAuthCompleted
-                                ? 'block'
-                                : 'none',
-                            }}
-                          >
-                            인증하기
-                          </Button>
+                              onClick={(e) => {
+                                e.preventDefault();
+
+                                if (!isTimeZero) {
+                                  checkSMS(checkCode); // 입력된 인증코드 검증
+                                } else {
+                                  setResultMsg(
+                                    '인증 시간이 만료되었습니다. 다시 시도하세요.',
+                                  );
+                                }
+                              }}
+                              variant='contained'
+                              color='success'
+                              style={{
+                                display: !isAuthCompleted
+                                  ? 'block'
+                                  : 'none',
+                              }}
+                            >
+                              인증하기
+                            </Button>
+                          </div>
                           <div
                             style={{
                               color: resultMsg.includes(
@@ -543,11 +595,12 @@ const Login = () => {
                       </>
                     )}
 
-                    <Grid item style={{ width: '100%' }}>
+                    <Grid className={styles.GridBox1}>
                       <Controller
                         name='email'
                         control={signUpControl}
                         defaultValue={''}
+                        // disabled={!showEmailInput}
                         rules={{
                           required:
                             '이메일을 입력해주세요.',
@@ -566,6 +619,7 @@ const Login = () => {
                         render={({ field, fieldState }) => (
                           <>
                             <TextField
+                              className={styles.emailInput}
                               label='Email ID'
                               {...field}
                               value={field.value}
@@ -592,7 +646,7 @@ const Login = () => {
                       />
                     </Grid>
 
-                    <Grid item style={{ width: '100%' }}>
+                    <Grid className={styles.GridBox2}>
                       <Controller
                         name='password'
                         defaultValue={''}
@@ -619,11 +673,12 @@ const Login = () => {
                               fieldState.error &&
                               fieldState.error.message
                             }
+                            sx={{ m: 1 }} // 여기서 my는 margin-top과 margin-bottom을 나타내며, 다른 여백도 필요한 경우 mx, mt, mb, ml, mr과 같은 다양한 margin 속성을 사용할 수 있습니다.
                           />
                         )}
                       />
                     </Grid>
-                    <Grid item style={{ width: '100%' }}>
+                    <Grid className={styles.GridBox2}>
                       <Controller
                         name='passwordConfirm'
                         defaultValue={''}
@@ -651,7 +706,7 @@ const Login = () => {
                         )}
                       />
                     </Grid>
-                    <Grid item style={{ width: '100%' }}>
+                    <Grid className={styles.GridBox}>
                       <Button
                         type='submit'
                         variant='contained'
@@ -660,7 +715,7 @@ const Login = () => {
                           !isEmailChecked
                         }
                       >
-                        가입하기1
+                        가입하기
                       </Button>
                     </Grid>
                   </Grid>

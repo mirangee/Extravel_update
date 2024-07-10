@@ -259,68 +259,6 @@ const Header = () => {
           </ul>
         </nav>
       </header>
-
-      <div
-        className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}
-      >
-        <div
-          className={styles.closeButton}
-          onClick={toggleSidebar}
-        >
-          <FontAwesomeIcon icon={faBars} size='2x' />
-        </div>
-        <nav className={styles.nav}>
-          <ul className={styles.menu}>
-            <li>
-              <Link
-                to='/api/v1/shopping/'
-                onClick={toggleSidebar}
-              >
-                패키지
-              </Link>
-            </li>
-            <li>
-              <Link to='/main' onClick={toggleSidebar}>
-                뉴스
-              </Link>
-            </li>
-            <li>
-              <Link
-                to='/main/exrates'
-                onClick={toggleSidebar}
-              >
-                환율 정보
-              </Link>
-            </li>
-            <li>
-              <Link to='/mypage' onClick={toggleSidebar}>
-                내&nbsp;&nbsp;정보
-              </Link>
-            </li>
-            <li>
-              <Select
-                value={countryOptions.find(
-                  (option) => option.value === nation,
-                )}
-                onChange={handleCountryChange}
-                options={nation}
-                className={styles.countrySelect}
-                classNamePrefix={styles.reactSelect}
-              />
-            </li>
-            {isLoggedIn && (
-              <li>
-                <button
-                  className={styles.logout}
-                  onClick={clickLogoutHandler}
-                >
-                  로그아웃
-                </button>
-              </li>
-            )}
-          </ul>
-        </nav>
-      </div>
     </>
   );
 };
