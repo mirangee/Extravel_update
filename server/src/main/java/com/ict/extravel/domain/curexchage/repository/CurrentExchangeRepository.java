@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CurrentExchangeRepository extends JpaRepository<CurrentExchangeRate,Integer> {
     CurrentExchangeRate findByNationCode(Nation nationCode);
+
 }

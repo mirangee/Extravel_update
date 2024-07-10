@@ -17,6 +17,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,18 +36,22 @@ import java.util.stream.Collectors;
 
 
 @Service
+//@EnableScheduling
 @RequiredArgsConstructor
+@Component
 public class ExchageCrolling {
     private String exchangeApiKey = "qzQOFMH9YhIWguibe9K9hZ6zjeS3MZAh";
     private final CurrencyRepository currencyRepository;
     private final WeekExchangeRepository weekExchangeRepository;
     private final MonthExchangeRepository monthExchangeRepository;
     private final CurrentExchangeRepository currentExchangeRepository;
-
+   // @Scheduled(cron = "0 0 10 * * ?")
     public void saveCurExchageData(){
         List<String> curList = getCurList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate from = LocalDate.parse("20240705",formatter);
+        LocalDate now = LocalDate.now();
+        String formatNow = formatter.format(now);
+        LocalDate from = LocalDate.parse(formatNow,formatter);
         JSONArray array = getExchageData(from.toString().replace("-", ""));
         JSONArray preArray = getExchageData(from.minusDays(1).toString().replace("-",""));
         Map<String,Double> curEx = initMap(curList);
@@ -57,7 +64,7 @@ public class ExchageCrolling {
             JSONObject ob = (JSONObject)week;
             preEx.replace(ob.get("cur_unit").toString().replace("(100)",""),Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
         });
-        /*curList.forEach(cur -> {
+        curList.forEach(cur -> {
             Currency currency = currencyRepository.findById(cur).orElseThrow();
             String currencyCode = currency.getCurrencyCode();
             Nation nationCode = currency.getNationCode();
@@ -68,44 +75,34 @@ public class ExchageCrolling {
                 byNationCode.setPreExchangeRateValue(BigDecimal.valueOf(preEx.get(currencyCode)));
             }
             currentExchangeRepository.save(byNationCode);
-        });*/
-        calculateExchageData();
+        });
+        weekCalculateExchageData();
+        monthCalculateExchageData();
     }
-
-    public void calculateExchageData(){
+    public void monthCalculateExchageData(){
         List<String> curList = getCurList();
-        Map<String,Double> weeks = initMap(curList);
         Map<String,Double> months = initMap(curList);
+        MonthlyPastExchangeRate monthly = monthExchangeRepository.findTopByOrderByEndDateDesc();
+        LocalDate month = monthly.getEndDate();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate from = LocalDate.parse("20240610",formatter);
+        String monthStart = formatter.format(month.plusDays(1));
+        LocalDate monthFrom = LocalDate.parse(monthStart,formatter);
         LocalDate now = LocalDate.now();
-        long between = ChronoUnit.DAYS.between(from, now);
-        LocalDate cur = from;
-        LocalDate preweek = from;
-        LocalDate premonth = from;
-        int weekcnt=0;
+        long between = ChronoUnit.DAYS.between(monthFrom, now);
+        LocalDate cur = monthFrom;
+        LocalDate premonth = monthFrom;
         int monthcnt=0;
         for(int i=0;i<between;i++){
             JSONArray exchage = getExchageData(cur.toString().replace("-", ""));
-            if(ChronoUnit.WEEKS.between(preweek, cur) == 1){
-                LocalDate start = preweek;
-                LocalDate end = cur.minusDays(1);
-                preweek = cur;
-                int weekCal=weekcnt;
-                Map<String, Double> avgEx = weeks.entrySet().stream().collect(HashMap::new,(map,entry) -> map.put(entry.getKey(),entry.getValue()/weekCal),HashMap::putAll);
-                saveExchageData(start,end,avgEx,curList,"week");
-                weeks.replaceAll((k,v) -> 0.0);
-                weekcnt=exchage.isEmpty() ? 0 : 1;
-            }else{
-                weekcnt = exchage.isEmpty() ? weekcnt : weekcnt + 1;
-            }
             if(ChronoUnit.MONTHS.between(premonth, cur) == 1){
                 LocalDate start = premonth;
                 LocalDate end = cur.minusDays(1);
                 premonth = cur;
                 int monthCal=monthcnt;
                 Map<String, Double> avgEx = months.entrySet().stream().collect(HashMap::new,(map,entry) -> map.put(entry.getKey(),entry.getValue()/monthCal),HashMap::putAll);
-                saveExchageData(start,end,avgEx,curList,"month");
+                if(!monthExchangeRepository.existsByStartDate(start)){
+                    saveExchageData(start,end,avgEx,curList,"month");
+                }
                 months.replaceAll((k,v) -> 0.0);
                 monthcnt=exchage.isEmpty() ? 0:1;
             }else{
@@ -118,8 +115,52 @@ public class ExchageCrolling {
             exchage.forEach(ex -> {
                 JSONObject ob = (JSONObject)ex;
                 if(!ob.get("cur_unit").toString().replace("100","").equals("KRW")){
-                    weeks.replace(ob.get("cur_unit").toString().replace("(100)",""),weeks.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
                     months.replace(ob.get("cur_unit").toString().replace("(100)",""),months.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
+                }
+            });
+            cur = cur.plusDays(1);
+        }
+    }
+
+
+
+    public void weekCalculateExchageData(){
+        List<String> curList = getCurList();
+        Map<String,Double> weeks = initMap(curList);
+        WeeklyPastExchangeRate weekly = weekExchangeRepository.findTopByOrderByEndDateDesc();
+        LocalDate week = weekly.getEndDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String weekStart = formatter.format(week.plusDays(1));
+        LocalDate weekFrom = LocalDate.parse(weekStart,formatter);
+        LocalDate now = LocalDate.now();
+        long between = ChronoUnit.DAYS.between(weekFrom, now);
+        LocalDate cur = weekFrom;
+        LocalDate preweek = weekFrom;
+        int weekcnt=0;
+        for(int i=0;i<between;i++){
+            JSONArray exchage = getExchageData(cur.toString().replace("-", ""));
+            if(ChronoUnit.WEEKS.between(preweek, cur) == 1){
+                LocalDate start = preweek;
+                LocalDate end = cur.minusDays(1);
+                preweek = cur;
+                int weekCal=weekcnt;
+                Map<String, Double> avgEx = weeks.entrySet().stream().collect(HashMap::new,(map,entry) -> map.put(entry.getKey(),entry.getValue()/weekCal),HashMap::putAll);
+                if(!weekExchangeRepository.existsByStartDate(start)){
+                    saveExchageData(start,end,avgEx,curList,"week");
+                };
+                weeks.replaceAll((k,v) -> 0.0);
+                weekcnt=exchage.isEmpty() ? 0 : 1;
+            }else{
+                weekcnt = exchage.isEmpty() ? weekcnt : weekcnt + 1;
+            }
+            if(exchage.isEmpty()){
+                cur = cur.plusDays(1);
+                continue;
+            }
+            exchage.forEach(ex -> {
+                JSONObject ob = (JSONObject)ex;
+                if(!ob.get("cur_unit").toString().replace("100","").equals("KRW")){
+                    weeks.replace(ob.get("cur_unit").toString().replace("(100)",""),weeks.get(ob.get("cur_unit").toString().replace("(100)",""))+Double.parseDouble(ob.get("deal_bas_r").toString().replace(",","")));
                 }
             });
             cur = cur.plusDays(1);

@@ -2,6 +2,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
@@ -9,16 +10,19 @@ import {
   Pagination,
   EffectCoverflow,
 } from 'swiper/modules';
-import 'swiper/css'; // Swiper의 기본 CSS를 가져옵니다.
-import 'swiper/css/navigation'; // Swiper의 Navigation CSS를 가져옵니다.
-import 'swiper/css/pagination'; // Swiper의 Pagination CSS를 가져옵니다.
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import styles from '../../../scss/YoutubeList.module.scss';
 import AuthContext from '../../../utils/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../config/host-config';
+
 const YoutubeList = () => {
   const { nation } = useContext(AuthContext);
   const [youtubeLink, setYoutubeLink] = useState([]);
+  const swiperRef = useRef(null);
+
   useEffect(() => {
     console.log('유튜브페이지국가:{}', nation);
 
@@ -28,6 +32,9 @@ const YoutubeList = () => {
         .get(`${API_BASE_URL}/api/v1/youtube/` + nation)
         .then((response) => {
           setYoutubeLink(response.data);
+          if (swiperRef.current) {
+            swiperRef.current.swiper.update(); // Swiper 업데이트
+          }
         })
         .catch((error) => {
           console.error('Error', error);
@@ -37,43 +44,46 @@ const YoutubeList = () => {
 
   return (
     <>
-      <div className={styles.youtubeContainer}>
-        <Swiper
-          effect={'coverflow'}
-          modules={[Navigation, EffectCoverflow]}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 100,
-            modifier: 3,
-          }}
-          navigation={true} // 네비게이션 활성화
-          centeredSlides={true}
-          // loop={true}
-          slidesPerView={3}
-          freeMode={false}
-          initialSlide={2}
-        >
-          <div className={styles.youtubeSlider}>
-            {youtubeLink.map((item) => (
-              <SwiperSlide style={{ width: '500px' }}>
+      {youtubeLink && youtubeLink.length > 1 && (
+        <div className={styles.youtubeContainer}>
+          <Swiper
+            effect={'coverflow'}
+            modules={[
+              Navigation,
+              Pagination,
+              EffectCoverflow,
+            ]}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 100,
+              modifier: 3,
+            }}
+            navigation={true}
+            pagination={{ clickable: true }}
+            centeredSlides={true}
+            slidesPerView={3}
+            initialSlide={1}
+            loop={true}
+            className='swiper'
+            ref={swiperRef} // Swiper 인스턴스를 참조
+          >
+            {youtubeLink.map((item, index) => (
+              <SwiperSlide
+                key={index}
+                style={{ width: '500px' }}
+              >
                 <iframe
-                  className={styles.youtube1}
                   width='500'
                   height='280'
-                  title='YouTube video 1'
+                  title={`YouTube video ${index + 1}`}
                   src={item.youtubeVideoLink}
-                  style={{
-                    marginLeft: '75px',
-                    position: 'relative',
-                    right: '100px',
-                  }}
                 ></iframe>
               </SwiperSlide>
             ))}
-          </div>
-        </Swiper>
-      </div>
+          </Swiper>
+        </div>
+      )}
     </>
   );
 };
