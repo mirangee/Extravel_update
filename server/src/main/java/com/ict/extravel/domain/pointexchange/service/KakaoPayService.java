@@ -152,12 +152,14 @@ public class KakaoPayService {
         Wallet wallet = walletRepository.findById(id).orElseThrow();
         log.info("wallet에서 꺼낸 et point 조회: {}", wallet.getEtPoint());
 
+        // 누적 충전액 구하기
         BigDecimal total = sumAmount(id);
-
-        if (total.compareTo(new BigDecimal("10000000")) > 0) {
+        
+        // 누적 충전액에 따라 GRADE 승급 결정
+        if (total.compareTo(new BigDecimal("10000000")) >= 0) {
             member.setGrade(Member.Grade.GOLD);
             memberRepository.save(member);
-        } else if (total.compareTo(new BigDecimal("5000000")) >= 0 && total.compareTo(new BigDecimal("10000000")) <= 0) {
+        } else if (total.compareTo(new BigDecimal("5000000")) >= 0 && total.compareTo(new BigDecimal("10000000")) < 0) {
             member.setGrade(Member.Grade.SILVER);
             memberRepository.save(member);
         }

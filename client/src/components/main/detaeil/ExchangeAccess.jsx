@@ -173,7 +173,7 @@ const ExchangeAccess = ({ data, close }) => {
     };
     try {
       const response = await axiosInstance.post(
-        BASE + '/api/v2/exchange',
+        `${API_BASE_URL}/api/v2/exchange`,
         send,
       );
       const result = response.data;

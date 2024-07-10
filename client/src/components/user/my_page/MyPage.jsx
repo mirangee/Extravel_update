@@ -38,7 +38,7 @@ const MyPage = () => {
       )
     ) {
       axios
-        .put({ API_BASE_URL } + '/user/auth/remove/' + id, {
+        .put(`${API_BASE_URL}/user/auth/remove/${id}`, {
           headers: {
             Authorization:
               'Bearer ' +

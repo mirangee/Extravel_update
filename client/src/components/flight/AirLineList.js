@@ -583,4 +583,8 @@ export const AirLineList = {
     title: '재즈 항공',
     img: 'https://i.namu.wiki/i/xdl4cwS3TDIVVsZXQIJSADEugUqW7aJKqtfPVSkNXy_d_ukHHL6xE-JDXvmHBN_e9yQ7LL2jMNdl5BMG9yN5CFMwulTiVDpdao6XBb8wFvLMAAsvPxUVYesNQuWLOtK7JJHiUI5juIQXMH3vcnXgPw.svg',
   },
+  NU: {
+    title: '일본 트랜스 오션 항공',
+    img: 'https://i.namu.wiki/i/IOrGGRDjYCKVLap7SJRF_jzEKoaD13o9eBPyvk53raOSMaqzf71KZbzXexHCM6arxKdU1s3JEXxQp_4ZJgiIzxPQBqI7Mad4H7kiCn8wKjUpaNaxpAAh0g6OHU2g_EMHqK9IHLwpkiHYOyp6Sm6WPw.svg',
+  },
 };

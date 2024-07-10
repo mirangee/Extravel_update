@@ -511,4 +511,14 @@ public class MemberService {
         //@@@
 
     }
+
+    public String setPassword(setNewPassRequestDTO dto) {
+        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
+        if(member == null){
+            return "error";
+        }
+        member.setPassword(passwordEncoder.encode(dto.getNewPass()));
+        memberRepository.save(member);
+        return "success";
+    }
 }

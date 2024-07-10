@@ -105,7 +105,12 @@ const FindIDandPassword = () => {
     useState(false); // 완료 버튼 표시 여부
   const [showAuthButton, setShowAuthButton] =
     useState(true); // "인증하기" 버튼 상태
-
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [newPass, setNewPass] = useState('');
+  const [newPassConfirm, setNewPassConfirm] = useState('');
+  const [newPassErr, setNewPassErr] = useState(false);
+  const [newPassConfirmErr, setNewConfirmPassErr] =
+    useState(false);
   //객체화
   const [disableInputs, setDisableInputs] = useState({
     name: false,
@@ -203,6 +208,62 @@ const FindIDandPassword = () => {
     setShowAuthButton(true);
     setShowAuthNumInput(false); // 이메일이 변경될 경우 인증번호 입력창 숨김
   };
+
+  const onChangeNewPass = (value) => {
+    if (
+      !/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/.test(
+        value,
+      )
+    ) {
+      setNewPassErr(true);
+    } else {
+      setNewPassErr(false);
+    }
+    setNewPass(value);
+  };
+  const onChangeNewPassConfirm = (value) => {
+    setNewPassConfirm(value);
+  };
+  const onSubmitNewPass = () => {
+    if (newPassErr) {
+      alert(
+        '비밀번호는 영문 숫자 특수기호 조합 8자리 이상이어야 합니다.',
+      );
+      return;
+    }
+    if (newPassConfirmErr) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    const data = {
+      email: findPWState.email,
+      newPass,
+    };
+    const setPass = async () => {
+      const result = await axios.put(
+        BASE + USER + '/newpass',
+        data,
+      );
+      if (result.data === 'success') {
+        alert('비밀번호가 수정되었습니다');
+        navigate('/login');
+      } else {
+        alert('에러');
+      }
+    };
+    setPass();
+  };
+
+  useEffect(() => {
+    if (
+      newPassConfirm !== '' &&
+      newPass !== newPassConfirm
+    ) {
+      setNewConfirmPassErr(true);
+    } else {
+      setNewConfirmPassErr(false);
+    }
+  }, [newPass, newPassConfirm]);
 
   const onChangePhoneNumber = (e) => {
     const phoneNumberValue = e.target.value; //변경1
@@ -661,24 +722,47 @@ const FindIDandPassword = () => {
               {/* 비밀번호 찾기 */}
               {!showIDSection && (
                 <div className={styles.pw}>
-                  <div className={styles.findId}>
-                    비밀번호 찾기
+                  <div className={styles.findId} onClick={() => {
+                    console.log(newPass);
+                    console.log(newPassConfirm);
+                  }}>
+                    {showNewPass ? '새로운 비밀번호 입력' : '비밀번호 찾기'}
                   </div>
-                  <Input
-                    onChange={onChangeEmail}
-                    ref={inputEmail}
-                    placeholder='이메일을 입력하세요.'
-                    // disabled={isAuthCompleted}
-                    disabled={disableInputs.email}
-                  />
+                  {!showNewPass && <>
+                    <Input
+                      onChange={onChangeEmail}
+                      ref={inputEmail}
+                      placeholder='이메일을 입력하세요.'
+                      // disabled={isAuthCompleted}
+                      disabled={disableInputs.email}
+                    />
 
-                  <Input
-                    onChange={onChangePhoneNumber}
-                    ref={inputPhoneNumber}
-                    placeholder='전화번호를 입력하세요.'
+                    <Input
+                      onChange={onChangePhoneNumber}
+                      ref={inputPhoneNumber}
+                      placeholder='전화번호를 입력하세요.'
+                      // disabled={isAuthCompleted}
+                      disabled={disableInputs.phoneNumber}
+                    />
+                  </>}
+                  {showNewPass && <div className={styles.newPass}>
+                    <Input
+                      type='password'
+                      onChange={(e) => onChangeNewPass(e.target.value)}
+                      value={newPass}
+                      placeholder='비밀번호를 입력'
                     // disabled={isAuthCompleted}
-                    disabled={disableInputs.phoneNumber}
-                  />
+                    />
+                    {newPassErr && <div className={styles.errMsg}>비밀번호는 영문 숫자 특수기호 조합 8자리 이상이어야 합니다.</div>}
+                    <Input
+                      type='password'
+                      onChange={(e) => onChangeNewPassConfirm(e.target.value)}
+                      value={newPassConfirm}
+                      placeholder='비밀번호 확인'
+                    // disabled={isAuthCompleted}
+                    />
+                    {newPassConfirmErr && <div className={styles.errMsg}>비밀번호가 일치하지 않습니다.</div>}
+                  </div>}
 
                   <div className={styles.certifiedTag}>
                     {showAuthNumInput && (
@@ -714,6 +798,8 @@ const FindIDandPassword = () => {
                               setShowAuthNumTimer(false);
                               setIsAuthCompleted(true); // 인증 완료 상태 업데이트 @@@
                               setShowCompleteButton(true);
+                              setShowNewPass(true);
+                              setShowAuthNumInput(false);
                               setDisableInputs({
                                 name: true,
                                 email: true,
@@ -754,13 +840,14 @@ const FindIDandPassword = () => {
                         인증번호 확인
                       </Button>
                     )}
+
                   </div>
 
                   <div className={styles.pwbtn}>
                     {showCompleteButton && ( // 완료 버튼의 조건부 렌더링
                       <Button
                         className={styles.submitButton}
-                        onClick={onSubmitForm}
+                        onClick={onSubmitNewPass}
                         navigate
                       >
                         완료

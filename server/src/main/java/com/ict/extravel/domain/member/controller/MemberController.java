@@ -254,5 +254,12 @@ public class MemberController {
         LoginResponseDTO member = memberService.snsSignup(dto);
         return ResponseEntity.ok().body(member);
     }
+    @PutMapping("/newpass")
+    public ResponseEntity<?> setNewPassword(@RequestBody setNewPassRequestDTO dto){
+        String result = memberService.setPassword(dto);
+        return ResponseEntity.ok().body(result);
+
+    }
+
 
 }

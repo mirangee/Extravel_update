@@ -25,7 +25,7 @@ const GoogleCustomLogin = () => {
         const { email, name } = res.data;
         console.log(`Email: ${email}, Name: ${name}`);
         const response = await axios.post(
-          { API_BASE_URL } + '/user/auth/google',
+          `${API_BASE_URL}/user/auth/google`,
           { name, email },
         );
         const result = response.data;

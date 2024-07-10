@@ -10,10 +10,6 @@ const FlightHeader = ({ loading }) => {
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
 
-  const goToIntro = () => {
-    navigate('/');
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {

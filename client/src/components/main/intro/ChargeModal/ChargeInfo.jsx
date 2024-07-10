@@ -181,6 +181,8 @@ const ChargeInfo = ({
     if (numberValue >= 1000) {
       setIsButtonDisabled(false);
       console.log(isButtonDisabled);
+    } else if (numberValue < 1000) {
+      setIsButtonDisabled(true);
     }
 
     if (!isNaN(numberValue)) {

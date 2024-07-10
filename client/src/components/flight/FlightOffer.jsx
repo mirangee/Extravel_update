@@ -228,6 +228,10 @@ const FlightOffer = () => {
       <div
         className={Styles.logoBox}
         onClick={() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'instant',
+          });
           navi('/main/exrates');
         }}
       >
