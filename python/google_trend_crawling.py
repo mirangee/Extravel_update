@@ -1,12 +1,23 @@
 from pytrends.request import TrendReq
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+# .env 파일 로드
+load_dotenv()
+
+# 환경 변수 읽기
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
 
 # DB 접속을 위한 정보 세팅
 mydb = mysql.connector.connect(
-    host='192.168.0.28',
-    user='et',
-    passwd='et',
-    database = 'et'
+    host=DB_HOST,
+    user=DB_USER,
+    passwd=DB_PASSWORD,
+    database = DB_NAME
 )
 
 # sql 실행을 위한 커서 생성
