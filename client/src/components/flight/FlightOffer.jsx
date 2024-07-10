@@ -169,13 +169,13 @@ const FlightOffer = () => {
     if (query.flyClass) {
       url = url + `&travelClass=${query.flyClass}`;
     }
-    await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setData(data))
+    await axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((data) => setData(data.data))
       .then(() => setLoading(false));
   };
   const mainRender = () => {

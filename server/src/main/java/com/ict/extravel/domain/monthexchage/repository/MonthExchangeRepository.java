@@ -5,10 +5,13 @@ import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.weekexchange.entity.WeeklyPastExchangeRate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MonthExchangeRepository extends JpaRepository<MonthlyPastExchangeRate, Integer> {
     MonthlyPastExchangeRate findTopByNationCodeOrderByStartDateDesc(Nation nationCode);
     List<MonthlyPastExchangeRate> findByNationCodeOrderByStartDate(Nation nation);
+    boolean existsByStartDate(LocalDate startDate);
+    MonthlyPastExchangeRate findTopByOrderByEndDateDesc();
 
 }
