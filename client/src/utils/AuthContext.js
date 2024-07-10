@@ -33,7 +33,15 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('EMAIL', res.email);
     localStorage.setItem('ID', res.id);
     localStorage.setItem('GRADE', res.grade);
-    localStorage.setItem('PHONE', res.phoneNumber);
+    localStorage.setItem(
+      'ACCESS_TOKEN',
+      res.token.access_token,
+    );
+    localStorage.setItem(
+      'REFRESH_TOKEN',
+      res.token.refresh_token,
+    );
+    //localStorage 토큰 넣기
     // localStorage.setItem('ROLE', role);
     setIsLoggedIn(true);
     setUserName(res.name);
@@ -78,7 +86,7 @@ export const AuthContextProvider = (props) => {
 
   //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
   useEffect(() => {
-    if (localStorage.getItem('NAME')) {
+    if (localStorage.getItem('ACCESS_TOKEN')) {
       setIsLoggedIn(true);
       setUserName(localStorage.getItem('NAME'));
       setNation(localStorage.getItem('NATION'));

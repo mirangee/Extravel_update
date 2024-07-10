@@ -7,6 +7,7 @@ import styles from '../../../../scss/ChargeModal.module.scss';
 import AuthContext from '../../../../utils/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
+import axiosInstance from '../../../../config/axios-config';
 
 const ChargeInfo = ({
   setLoading,
@@ -23,11 +24,29 @@ const ChargeInfo = ({
   const [isButtonDisabled, setIsButtonDisabled] =
     useState(true);
 
+  // useEffect(() => {
+  //   setIsButtonDisabled(true);
+  //   async function fetchData() {
+  //     try {
+  //       const response = await axios.post(
+  //         API_BASE_URL + '/payment/pointInfo',
+  //         { id },
+  //       );
+  //       console.log(response.data);
+  //       setCurrentEtp(response.data.etPoint);
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     setIsButtonDisabled(true);
     async function fetchData() {
       try {
         const response = await axios.post(
+          // axios 대신 axiosInstance 사용
           API_BASE_URL + '/payment/pointInfo',
           { id },
         );
@@ -38,7 +57,7 @@ const ChargeInfo = ({
       }
     }
     fetchData();
-  }, []);
+  }, [id]); // `id`가 변경될 때마다 데이터를 다시 가져옴
 
   // 카카오 페이 결제 함수
   let tid = 0;
@@ -110,7 +129,7 @@ const ChargeInfo = ({
   const payHandler = async () => {
     setLoading(true);
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         API_BASE_URL + '/payment/ready',
         {
           id,

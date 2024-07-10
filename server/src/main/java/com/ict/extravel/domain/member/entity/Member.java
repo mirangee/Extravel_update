@@ -1,18 +1,17 @@
 package com.ict.extravel.domain.member.entity;
 
-import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.nation.entity.Nation;
-import com.ict.extravel.domain.pointexchange.entity.PointCharge;
-import com.ict.extravel.domain.pointexchange.entity.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.Date;
 
+@Slf4j
 @Getter
 @Setter
 @AllArgsConstructor @NoArgsConstructor
@@ -75,11 +74,29 @@ public class Member {
     @Column(name = "access_token")
     private String accessToken;
 
+
+
     @Size(max = 255)
     @Column(name = "refresh_token")
     private String refreshToken;
 
     @Column(name = "refresh_token_expiry_date")
     private Date refreshTokenExpiryDate;
+
+
+    public void changeAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        log.info("member accessToekn : {}, accessToken");
+    }
+
+    public void changeRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void changeRefreshExpiryDate(Date date) {
+        this.refreshTokenExpiryDate = date;
+    }
+
+
 
 }

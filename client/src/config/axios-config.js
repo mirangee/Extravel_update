@@ -5,17 +5,17 @@
 
 import axios from 'axios';
 import {
+  API_BASE_URL,
   API_BASE_URL as BASE,
-  TODO,
   USER,
 } from './host-config';
 
-const TODO_URL = BASE + TODO;
+const OTHER_URL = BASE;
 const USER_URL = BASE + USER;
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: TODO_URL,
+  baseURL: OTHER_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -26,11 +26,12 @@ Axios Interceptor는 요청 또는 응답이 처리되기 전에 실행되는 �
 요청을 수정하거나, 응답에 대한 결과 처리를 수행할 수 있습니다.
 */
 
-// Request Interceptor 설정
+// Request Interceptor 설정 : 로그인 직후
 axiosInstance.interceptors.request.use(
   // 요청 보내기 전에 일괄 처리해야 할 내용을 함수로 선언.
   (config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');
+    console.log('token: ', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -39,7 +40,7 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response Interceptor 설정
+// Response Interceptor 설정 : 로그인 후 api 요청
 axiosInstance.interceptors.response.use(
   (response) => response, // 응답에 문제가 없었다면 그대로 응답 내용 리턴
   async (error) => {
@@ -90,8 +91,8 @@ axiosInstance.interceptors.response.use(
         }
       } catch (err) {
         // Refresh token이 만료된 경우
-        localStorage.removeItem('ACCESS_TOKEN');
-        localStorage.removeItem('REFRESH_TOKEN');
+        localStorage.clear();
+        location.href = API_BASE_URL + '/login';
       }
     }
     return Promise.reject(error);

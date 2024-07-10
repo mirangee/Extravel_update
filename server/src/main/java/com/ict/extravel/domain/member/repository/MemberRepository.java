@@ -36,8 +36,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     int updatePasswordByEmailAndPhoneNumber(@Param("email") String email, @Param("phoneNumber") String phoneNumber, @Param("newPassword") String newPassword);
 
 
+    //리프레쉬 토큰
+    Optional<Member> findByRefreshToken(String refreshToken);
 
-
-    // static Optional<Member> findByEmail(String email);
-    //Optional<Member> findByRefreshToken(String refreshToken);
 }

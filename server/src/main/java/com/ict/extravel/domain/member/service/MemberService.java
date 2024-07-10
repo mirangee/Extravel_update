@@ -3,12 +3,16 @@ package com.ict.extravel.domain.member.service;
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.NaverUserDTO;
 import com.ict.extravel.domain.member.dto.request.*;
-import com.ict.extravel.domain.member.dto.response.*;
+import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
+import com.ict.extravel.domain.member.dto.response.KakaoUserDTO;
+import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.entity.Member;
 import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
+import com.ict.extravel.global.auth.TokenProvider;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Size;
@@ -43,6 +47,8 @@ public class MemberService {
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
     private DefaultMessageService messageService;
+    private final TokenProvider tokenProvider;
+
 
     // naver login
     @Value("${NaverLogin.client_id}")
@@ -68,7 +74,7 @@ public class MemberService {
     @Value("${CoolSMS.web}")
     private String WEB;
     @Value("${CoolSMS.phone_number}")
-    private int PHONE_NUMBER;
+    private String PHONE_NUMBER;
 
     @PostConstruct //init 메서드가 sendOne 메서드 호출 시 자동으로 호출
     private void init() {
@@ -124,8 +130,16 @@ public class MemberService {
 
         log.info("{}님 로그인 성공!", member.getName());
 
+        Map<String, String> token = getTokenMap(member);
 
-        return new LoginResponseDTO(member);
+        // 리프레시 토큰은 수명이 깁니다. (최소 2~3주, 2~3개월도 가능)
+        // 데이터베이스에 저장해 놓고, 새로운 액세스 토큰 요청 때마다 만료일을 조회해서 비교.
+        member.changeRefreshToken(token.get("refresh_token"));
+        member.changeRefreshExpiryDate(tokenProvider.getExpiryDate(token.get("refresh_token")));
+        memberRepository.save(member);
+        log.info("LoginResponseDTO authenticate save(member) : {}, token : {}", member, token);
+
+        return new LoginResponseDTO(member, token);
     }
 
     //자체 회원가입
@@ -171,7 +185,8 @@ public class MemberService {
         findIDResponseDTO.setEmail(member.getEmail());
 
         log.info("컨트롤러의 member.getEmail{}", member.getEmail());
-        log.info("findIDResponseDTO 결과값 {}", findIDResponseDTO);
+        log.info("findIDResponseDTO 결과값 {}", findIDResponseDTO.getFormattedEmail());
+
         return findIDResponseDTO;
 
     }
@@ -210,7 +225,7 @@ public class MemberService {
         // SMS 전송 로직 구현 (예: 외부 API 사용)
         log.info("Sending SMS to: {} with new password: {}", phoneNumber, newPassword);
         Message message = new Message();
-        message.setFrom("01021356409");
+        message.setFrom(PHONE_NUMBER);
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL] 회원님의 임시 비밀번호는 [" + newPassword + "] 입니다!");
 
@@ -234,7 +249,11 @@ public class MemberService {
         boolean duplicate = isDuplicate(userDTO.getResponse().getEmail());
         if(duplicate){
             Member member = memberRepository.findByEmail(userDTO.getResponse().getEmail()).orElseThrow();
-            return new LoginResponseDTO(member);
+            Map<String, String> token = getTokenMap(member);
+            member.changeRefreshToken(token.get("refresh_token"));
+            member.changeRefreshExpiryDate(tokenProvider.getExpiryDate(token.get("refresh_token")));
+            Member save = memberRepository.save(member);
+            return new LoginResponseDTO(save,token);
         }else{
             return new LoginResponseDTO(userDTO.getResponse().getEmail(), userDTO.getResponse().getName());
         }
@@ -261,25 +280,25 @@ public class MemberService {
         return responseData;
     }
 
-   @Transactional
-   public Member saveMember(String name,String email){
-       boolean duplicate = isDuplicate(email);
-       if(!duplicate){
-           MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
-           dto.setEmail(email);
-           dto.setName(name);
-           dto.setPhoneNumber("sns");
-           dto.setPassword("sns는 비공개");
-           Nation us = nationRepository.findById("US").orElseThrow();
-           Member saved = memberRepository.save(dto.toEntity(us));
+    @Transactional
+    public Member saveMember(String name,String email){
+        boolean duplicate = isDuplicate(email);
+        if(!duplicate){
+            MemberSignUpRequestDTO dto = new MemberSignUpRequestDTO();
+            dto.setEmail(email);
+            dto.setName(name);
+            dto.setPhoneNumber("sns");
+            dto.setPassword("sns는 비공개");
+            Nation us = nationRepository.findById("US").orElseThrow();
+            Member saved = memberRepository.save(dto.toEntity(us));
 
-           log.info("dto에 들어가는saved{}",saved);
-           return saved;
-       }else{
-           return null;
-       }
+            log.info("dto에 들어가는saved{}",saved);
+            return saved;
+        }else{
+            return null;
+        }
 
-   }
+    }
 
 
 
@@ -296,7 +315,11 @@ public class MemberService {
         boolean duplicate = isDuplicate(userDTO.getKakaoAccount().getEmail());
         if(duplicate){
             Member member = memberRepository.findByEmail(userDTO.getKakaoAccount().getEmail()).orElseThrow();
-            return new LoginResponseDTO(member);
+            Map<String, String> token = getTokenMap(member);
+            member.changeRefreshToken(token.get("refresh_token"));
+            member.changeRefreshExpiryDate(tokenProvider.getExpiryDate(token.get("refresh_token")));
+            Member save = memberRepository.save(member);
+            return new LoginResponseDTO(save,token);
         }else{
             return new LoginResponseDTO(userDTO.getKakaoAccount().getEmail(), userDTO.getKakaoAccount().getProfile().getNickname());
         }
@@ -398,12 +421,15 @@ public class MemberService {
         boolean duplicate = isDuplicate(userDTO.getEmail());
         if(duplicate){
             Member member = memberRepository.findByEmail(userDTO.getEmail()).orElseThrow();
-            return new LoginResponseDTO(member);
+            Map<String, String> token = getTokenMap(member);
+            member.changeRefreshToken(token.get("refresh_token"));
+            member.changeRefreshExpiryDate(tokenProvider.getExpiryDate(token.get("refresh_token")));
+            Member save = memberRepository.save(member);
+            return new LoginResponseDTO(save,token);
         }else{
             return new LoginResponseDTO(userDTO.getEmail(), userDTO.getName());
         }
     }
-
 
     public String exchangeCheck(ExchangeCheckRequestDTO dto) {
         Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
@@ -413,6 +439,39 @@ public class MemberService {
             return "400";
         }
     }
+
+
+
+
+    // AccessKey와 RefreshKey를 새롭게 발급받아 Map으로 포장해 주는 메서드.
+    private Map<String, String> getTokenMap(Member member) {
+        String accessToken = tokenProvider.createAccessKey(member);
+        String refreshToken = tokenProvider.createRefreshKey(member);
+        log.info("멤버서비스의 accessToken : {}", accessToken);
+        log.info("멤버서비스의 refreshToken : {}", refreshToken);
+
+        Map<String, String> token = new HashMap<>();
+        token.put("access_token", accessToken);
+        token.put("refresh_token", refreshToken);
+        return token;
+    }
+
+    public String renewalAccessToken(Map<String, String> tokenRequest) {
+        String refreshToken = tokenRequest.get("refreshToken");
+        log.info("서비스의 refreshToken : {}", refreshToken);
+        boolean isValid = tokenProvider.validateRefreshToken(refreshToken);
+        if (isValid) {
+            // 토큰 값이 유효하다면 만료일자를 검사하자
+            Member foundUser = memberRepository.findByRefreshToken(refreshToken).orElseThrow();
+            if (!foundUser.getRefreshTokenExpiryDate().before(new Date())) {
+                // 만료일이 오늘보다 이전이 아니라면 -> 만료되지 않았다면
+                String newAccessKey = tokenProvider.createAccessKey(foundUser);
+                return newAccessKey;
+            }
+        }
+        return null;
+    }
+
 
     public List<Member> deleteId(Integer id) {
 
@@ -443,25 +502,13 @@ public class MemberService {
                 .path(dto.getPath())
                 .grade(Member.Grade.BRONZE)
                 .build();
+        Map<String, String> token = getTokenMap(member);
+        member.changeRefreshToken(token.get("refresh_token"));
+        member.changeRefreshExpiryDate(tokenProvider.getExpiryDate(token.get("refresh_token")));
         Member save = memberRepository.save(member);
         walletRepository.insertWallet(save.getId(), BigDecimal.valueOf(0.0));
-        return new LoginResponseDTO(save);
+        return new LoginResponseDTO(save, token);
+        //@@@
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

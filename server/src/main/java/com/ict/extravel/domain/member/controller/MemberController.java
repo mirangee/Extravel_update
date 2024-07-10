@@ -3,8 +3,9 @@ package com.ict.extravel.domain.member.controller;
 
 import com.ict.extravel.domain.member.dto.GoogleUserInfoDTO;
 import com.ict.extravel.domain.member.dto.request.*;
-import com.ict.extravel.domain.member.dto.response.*;
-import com.ict.extravel.domain.member.entity.Member;
+import com.ict.extravel.domain.member.dto.response.FindIDResponseDTO;
+import com.ict.extravel.domain.member.dto.response.LoginResponseDTO;
+import com.ict.extravel.domain.member.dto.response.MemberSignUpResponseDTO;
 import com.ict.extravel.domain.member.service.CoolSMSService;
 import com.ict.extravel.domain.member.service.MemberService;
 import jakarta.annotation.PostConstruct;
@@ -17,7 +18,6 @@ import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -50,7 +49,7 @@ public class MemberController {
     @Value("${CoolSMS.web}")
     private String WEB;
     @Value("${CoolSMS.phone_number}")
-    private int PHONE_NUMBER;
+    private String PHONE_NUMBER;
 
 
     @PostConstruct //init 메서드가 sendOne 메서드 호출 시 자동으로 호출
@@ -116,8 +115,20 @@ public class MemberController {
         if (response != null) return response;
 
         LoginResponseDTO responseDTO = memberService.authenticate(dto);
+        log.info("LoginResponseDTO responseDTO : ", responseDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
+
+    // 로그아웃 처리
+//    @GetMapping("/logout")
+//    public ResponseEntity<?> logout(
+//            @AuthenticationPrincipal TokenUserInfo userInfo
+//    ) {
+//        log.info("/api/auth/logout - GET! - user: {}", userInfo.getEmail());
+//
+//        String result = memberService.logout(userInfo);
+//        return ResponseEntity.ok().body(result);
+//    }
 
     //자체 분실된 아이디 찾기
     @PostMapping("/findid")
@@ -125,6 +136,7 @@ public class MemberController {
         try {
             log.info("컨틀롤러 넘어옴!!!{}", requestDTO);
             FindIDResponseDTO email = memberService.findEmail(requestDTO);
+            email.getEmail();
             log.info("컨트롤러의 email{}", email);
             log.info("컨트롤러의 리스폰스!!!{}", requestDTO);
 
@@ -142,19 +154,19 @@ public class MemberController {
     public ResponseEntity<FindIDResponseDTO> sendFoundId(String phoneNumber, FindIDResponseDTO email) throws NurigoMessageNotReceivedException, NurigoEmptyResponseException, NurigoUnknownException {
         log.info("sendFoundId의 phoneNumber{}, email{}", phoneNumber, email);
 
-//        Message message = new Message();
-//        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
-//        message.setFrom("01021356409");
-//        message.setTo(phoneNumber);
-//        message.setText("[EXTRAVEL]" +
-//                "당신의 아이디는" +
-//                "[" + email + "]" +
-//                "입력해주세요!");
+        Message message = new Message();
+        log.info("PHONE_NUMBER : {}, phoneNumber {} : , email {} :", PHONE_NUMBER, phoneNumber, email);
+        message.setFrom(PHONE_NUMBER);
+        message.setTo(phoneNumber);
+        message.setText("[EXTRAVEL]" +
+                "당신의 아이디는" +
+                "[" + email + "]" +
+                "입력해주세요!");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, email);
 
-//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
-//        log.info("{}", messageSentResponse.toString());
+        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);// SMS 발송 요청
+        log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
         return ResponseEntity.ok().body(email);
     }
@@ -209,10 +221,23 @@ public class MemberController {
         String s = memberService.UpdateNation(dto);
         return ResponseEntity.ok(s);
     }
+
     @PostMapping("/exchange/check")
     public ResponseEntity<?> exchangeCheck(@RequestBody ExchangeCheckRequestDTO dto) {
         String result = memberService.exchangeCheck(dto);
         return ResponseEntity.ok().body(result);
+    }
+
+
+    // 리프레쉬 토큰을 활용한 액세스 토큰 재발급 요청
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> tokenRequest) {
+        log.info("/api/auth/refresh: POST! - tokenRequest: {}", tokenRequest);
+        String renewalAccessToken = memberService.renewalAccessToken(tokenRequest);
+        if (renewalAccessToken != null) {
+            return ResponseEntity.ok().body(Map.of("accessToken", renewalAccessToken));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
     }
 
     @PutMapping("/remove/{id}")
@@ -231,4 +256,3 @@ public class MemberController {
     }
 
 }
-

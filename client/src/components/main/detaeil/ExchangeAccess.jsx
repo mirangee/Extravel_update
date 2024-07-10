@@ -9,11 +9,16 @@ import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
 import { width } from '@mui/system';
-import { API_BASE_URL } from '../../../config/host-config';
+import {
+  API_BASE_URL,
+  API_BASE_URL as BASE,
+  USER,
+} from '../../../config/host-config';
 import axios from 'axios';
+import axiosInstance from '../../../config/axios-config';
 
 const ExchangeAccess = ({ data, close }) => {
-  const SEND_ONE_URL = API_BASE_URL + '/access';
+  const SEND_ONE_URL = BASE + USER + '/access';
   const [access, setAccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -97,7 +102,7 @@ const ExchangeAccess = ({ data, close }) => {
     };
     const vaild = async () => {
       const response = await axios.post(
-        `{API_BASE_URL}/user/auth/exchange/check`,
+        `${API_BASE_URL}/user/auth/exchange/check`,
         data,
       );
       const result = response.data;
@@ -157,7 +162,7 @@ const ExchangeAccess = ({ data, close }) => {
     }
   };
   //환전하기
-  const handleClick = () => {
+  const handleClick = async () => {
     const send = {
       email: localStorage.getItem('EMAIL'),
       nation: data.nation,
@@ -166,18 +171,28 @@ const ExchangeAccess = ({ data, close }) => {
       to: data.to,
       exchangeRate: data.finalRate,
     };
-    axios
-      .post({ API_BASE_URL } + '/api/v2/exchange', send)
-      .then((res) => {
-        const result = res.data;
-        if (result === 'success') {
-          alert('환전이 완료되었습니다.');
-        } else {
-          alert('환전 실패.');
-        }
-        close();
-      });
+    try {
+      const response = await axiosInstance.post(
+        BASE + '/api/v2/exchange',
+        send,
+      );
+      const result = response.data;
+
+      if (result === 'success') {
+        alert('환전이 완료되었습니다.');
+      } else {
+        alert('환전 실패.');
+      }
+
+      close();
+    } catch (error) {
+      console.error(
+        'axios 요청 보낼 때 오류가 발생했습니다.',
+        error,
+      );
+    }
   };
+
   return (
     <div>
       <div className={Styles.title}>

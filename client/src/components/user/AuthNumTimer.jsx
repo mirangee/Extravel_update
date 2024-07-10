@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function AuthNumTimer({
   onTimeZero,
-  sendSMS,
+  handleSendSMS,
   phoneNumber,
 }) {
   // 초기 타이머 시간 (초)을 정의함. 180초, 3분.
@@ -42,16 +42,12 @@ function AuthNumTimer({
   // 재전송 버튼을 클릭했을 때 호출되는 함수 정의.
   const handleResendClick = () => {
     // 남은 횟수를 알림으로 표시
-    const remainingAttempts = 2 - resendClickCount - 1; // 현재 클릭 후 남은 시도 횟수 계산
+    const remainingAttempts = 6 - resendClickCount - 1; // 현재 클릭 후 남은 시도 횟수 계산
     if (remainingAttempts > 0) {
       //가능 횟수
       setRemainingTime(initialTime); // 남은 시간을 초기값으로 설정하여 타이머 재설정.
       setResendClickCount((prevCount) => prevCount + 1); // 클릭 횟수 증가
-      sendSMS(phoneNumber);
-      console.log(
-        'AuthNumTimer의 전화번호 : ',
-        phoneNumber,
-      );
+      handleSendSMS();
       onTimeZero(false); // 타이머가 0이 아님을 부모 컴포넌트에 알림
 
       alert(
@@ -71,31 +67,42 @@ function AuthNumTimer({
         alignItems: 'center',
       }}
     >
-      {/* 인증번호 유효 시간을 화면에 출력. */}
-      <h1 style={{ fontSize: '16px' }}>
-        인증번호 유효 시간:{' '}
-        <span style={{ color: 'red' }}>
-          {formatTime(remainingTime)}
-        </span>
-      </h1>
+      <div
+        style={{
+          // padding: '10px 20px',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+        }}
+      >
+        {/* 인증번호 유효 시간을 화면에 출력. */}
+        <h1 style={{ fontSize: '16px' }}>
+          인증번호 유효 시간:{' '}
+          <span style={{ color: 'red' }}>
+            {formatTime(remainingTime)}
+          </span>
+        </h1>
 
-      {/* 재전송 버튼을 추가하고, 스타일을 지정. */}
-      {resendClickCount < 3 && (
-        <button
-          onClick={handleResendClick}
-          style={{
-            padding: '10px 15px',
-            fontSize: '16px',
-            backgroundColor: 'gray',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
-          재전송
-        </button>
-      )}
+        {/* 재전송 버튼을 추가하고, 스타일을 지정. */}
+        {resendClickCount < 6 && (
+          <button
+            onClick={handleResendClick}
+            style={{
+              width: '100px',
+              margin: '0 10px 0 10px',
+              padding: '10px 15px',
+              fontSize: '12px',
+              backgroundColor: 'gray',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            재전송
+          </button>
+        )}
+      </div>
     </div>
   );
 }

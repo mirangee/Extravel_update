@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Random;
 
-
-//@Slf4j
-
-
 @RestController
 @RequestMapping("/user/auth")
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class CoolSMSApi {
     @Value("${CoolSMS.web}")
     private String WEB;
     @Value("${CoolSMS.phone_number}")
-    private int PHONE_NUMBER;
+    private String PHONE_NUMBER;
 
     @PostConstruct //init 메서드가 sendOne 메서드 호출 시 자동으로 호출
     private void init() {
@@ -69,6 +65,8 @@ public class CoolSMSApi {
         log.info("요청 들어옴 {} ", phoneNumber);
 
         boolean isDuplicate = isFindIdPw ? coolSMSService.findIDPWservice(phoneNumber) : coolSMSService.sendSmsToFindEmail(phoneNumber);
+        log.info("phoneNumber ? : {}", phoneNumber);
+        log.info("isDuplicate ? : {} ", isDuplicate);
         int verificationCode = generateRandomNumber();
 
         if (isDuplicate && !isFindIdPw) {
@@ -79,16 +77,16 @@ public class CoolSMSApi {
             return ResponseEntity.badRequest().body("없는 번호입니다.");
         }
 
-//        Message message = new Message();
-//        message.setFrom("01021356409");
-//        message.setTo(phoneNumber);
-//        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
+        Message message = new Message();
+        message.setFrom(PHONE_NUMBER);
+        message.setTo(phoneNumber);
+        message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, verificationCode);
 
-//        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
-//        log.info("{}", messageSentResponse.toString());
-//        log.info("SMS sent successfully to {}", phoneNumber);
+        MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
+        log.info("{}", messageSentResponse.toString());
+        log.info("SMS sent successfully to {}", phoneNumber);
 
         return ResponseEntity.ok().body(verificationCode);
     }
@@ -104,7 +102,7 @@ public class CoolSMSApi {
         int verificationCode = generateRandomNumber();
 
         /*Message message = new Message();
-        message.setFrom("01021356409");
+
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
 
@@ -118,5 +116,3 @@ public class CoolSMSApi {
     }
 
 }
-
-
