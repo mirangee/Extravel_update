@@ -45,7 +45,7 @@ public class ExchageCrolling {
     private final WeekExchangeRepository weekExchangeRepository;
     private final MonthExchangeRepository monthExchangeRepository;
     private final CurrentExchangeRepository currentExchangeRepository;
-   // @Scheduled(cron = "0 0 12 * * ?")
+   // @Scheduled(cron = "0 0 10 * * ?")
     public void saveCurExchageData(){
         List<String> curList = getCurList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
