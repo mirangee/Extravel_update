@@ -35,8 +35,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Service
-//@EnableScheduling
+@EnableScheduling
 @RequiredArgsConstructor
 @Component
 public class ExchageCrolling {
@@ -45,7 +44,7 @@ public class ExchageCrolling {
     private final WeekExchangeRepository weekExchangeRepository;
     private final MonthExchangeRepository monthExchangeRepository;
     private final CurrentExchangeRepository currentExchangeRepository;
-   // @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void saveCurExchageData(){
         List<String> curList = getCurList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
