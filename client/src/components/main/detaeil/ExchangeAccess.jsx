@@ -9,14 +9,11 @@ import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
 import { width } from '@mui/system';
-import {
-  API_BASE_URL as BASE,
-  USER,
-} from '../../../config/host-config';
+import { API_BASE_URL } from '../../../config/host-config';
 import axios from 'axios';
 
 const ExchangeAccess = ({ data, close }) => {
-  const SEND_ONE_URL = BASE + USER + '/access';
+  const SEND_ONE_URL = API_BASE_URL + '/access';
   const [access, setAccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -100,7 +97,7 @@ const ExchangeAccess = ({ data, close }) => {
     };
     const vaild = async () => {
       const response = await axios.post(
-        `http://localhost:8181/user/auth/exchange/check`,
+        `{API_BASE_URL}/user/auth/exchange/check`,
         data,
       );
       const result = response.data;
@@ -170,7 +167,7 @@ const ExchangeAccess = ({ data, close }) => {
       exchangeRate: data.finalRate,
     };
     axios
-      .post('http://localhost:8181/api/v2/exchange', send)
+      .post({ API_BASE_URL } + '/api/v2/exchange', send)
       .then((res) => {
         const result = res.data;
         if (result === 'success') {

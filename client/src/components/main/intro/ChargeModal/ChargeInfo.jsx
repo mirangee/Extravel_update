@@ -19,6 +19,7 @@ const ChargeInfo = ({
   const [chargePoint, setChargePoint] = useState(0);
   const [text, setText] = useState(0);
   const [currentEtp, setCurrentEtp] = useState(0);
+  const [countPoint, setCountPoint] = useState(0); // 충전 누적합
   const [isButtonDisabled, setIsButtonDisabled] =
     useState(true);
 
@@ -30,8 +31,8 @@ const ChargeInfo = ({
           API_BASE_URL + '/payment/pointInfo',
           { id },
         );
-        console.log(response.data);
         setCurrentEtp(response.data.etPoint);
+        setCountPoint(response.data.countPoint);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -64,6 +65,7 @@ const ChargeInfo = ({
               etPoint: res.data.etPoint,
               plusPoint: res.data.plusPoint,
               amount: res.data.amount,
+              countPoint: res.data.countPoint,
             });
             break;
           case 'CANCELED':
@@ -106,10 +108,6 @@ const ChargeInfo = ({
   };
 
   const payHandler = async () => {
-    console.log('충전하기 버튼이 클릭됨!');
-    console.log('text에 담긴 값: ', text);
-    console.log('id에 담긴 값: ', id);
-
     setLoading(true);
     try {
       const res = await axios.post(
@@ -196,7 +194,13 @@ const ChargeInfo = ({
   return (
     <>
       <div className={styles.currentMoney}>
-        보유 포인트
+        누적 충전 포인트
+        <div className={styles.currentMoneyInput}>
+          {countPoint.toLocaleString('ko-KR')}P
+        </div>
+      </div>
+      <div className={styles.currentMoney}>
+        현재 보유 포인트
         <div className={styles.currentMoneyInput}>
           {currentEtp.toLocaleString('ko-KR')}P
         </div>

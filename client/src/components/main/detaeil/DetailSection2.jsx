@@ -7,6 +7,7 @@ import ExRateCard from './ExRateCard';
 import Styles from '../../../scss/DetailSection2.module.scss';
 import axios from 'axios';
 import AuthContext from '../../../utils/AuthContext';
+import { API_BASE_URL } from '../../../config/host-config';
 const DetailSection2 = () => {
   const [exChanges, setExChanges] = useState('');
   const { nation } = useContext(AuthContext);
@@ -14,7 +15,7 @@ const DetailSection2 = () => {
     if (nation) {
       const getData = async () => {
         const response = await axios.get(
-          `http://localhost:8181/api/rate/currency?nation=${nation}`,
+          `${API_BASE_URL}/api/rate/currency?nation=${nation}`,
         );
         setExChanges(response.data);
       };

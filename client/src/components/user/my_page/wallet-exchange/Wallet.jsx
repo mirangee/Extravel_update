@@ -8,10 +8,12 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../../config/host-config';
 import AuthContext from '../../../../utils/AuthContext';
 import WalletCard from './WalletCard';
+import { motion } from 'framer-motion';
 
 const Wallet = () => {
   const { id } = useContext(AuthContext);
   const [hasList, setHasList] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [wallet, setWallet] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -25,37 +27,43 @@ const Wallet = () => {
       }
     };
     fetchData();
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (wallet.length === 0) {
+      setHasList(false);
+    } else {
+      setHasList(true);
+    }
+  }, [wallet]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
-    <div>
+    <motion.div
+      animate={{ x: 100 }}
+      transition={{ ease: 'easeOut', duration: 2 }}
+    >
       <div className={styles.title}>
         {' '}
         <h1 className={styles.pageHeader}>My Wallet</h1>
       </div>
-      {/* 
-      {!hasList ? (
-        <div className={styles.noList}>
-          보유 외화가 없습니다
-        </div>
-      ) : (
-        wallet.map((item, key) => (
-          <WalletCard key={key} item={item} />
-        ))
-      )} */}
       <ul className={styles.listUl}>
         {!hasList ? (
           <div className={styles.noList}>
             보유 외화가 없습니다
           </div>
         ) : (
-          wallet.map((item, key) => (
+          wallet.map((item) => (
             <li className={styles.mapLi}>
-              <WalletCard key={key} item={item} />
+              <WalletCard key={item.key} item={item} />
             </li>
           ))
         )}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

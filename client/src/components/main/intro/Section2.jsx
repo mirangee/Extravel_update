@@ -12,6 +12,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { createTheme } from '@mui/material/styles';
 import VirualEx from './VirualEx';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from './../../../config/host-config';
 
 const Section2 = () => {
   const [liveData, setLiveData] = useState([]);
@@ -25,7 +26,7 @@ const Section2 = () => {
   useEffect(() => {
     const getLiveData = async () => {
       await axios
-        .get('http://localhost:8181/api/rate/currency/live')
+        .get(`${API_BASE_URL}/api/rate/currency/live`)
         .then((res) => {
           setLiveData(res.data);
           setLoading(true);

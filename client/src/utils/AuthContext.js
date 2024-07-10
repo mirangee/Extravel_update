@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config/host-config';
 
 //컨텍스트 생성
 export const AuthContext = React.createContext({
@@ -10,6 +11,7 @@ export const AuthContext = React.createContext({
   onLogout: () => {},
   onLogin: () => {},
   onChangeNation: () => {},
+  onChangeGrade: () => {},
 });
 
 //컨텍스트 프로바이더
@@ -51,10 +53,7 @@ export const AuthContextProvider = (props) => {
         nationCode,
       };
       axios
-        .put(
-          'http://localhost:8181/user/auth/nation',
-          userInfo,
-        )
+        .put(`${API_BASE_URL}/user/auth/nation`, userInfo)
         .then((res) => {
           setNation(res.data);
           localStorage.setItem('NATION', res.data);
@@ -71,6 +70,10 @@ export const AuthContextProvider = (props) => {
     setId('');
     setGrade('');
     setPhoneNumber('');
+  };
+
+  const gradeHandler = (grade) => {
+    setGrade(grade);
   };
 
   //컴포넌트가 마운트될 때 로그인 상태 유지 (useEffect):
@@ -100,6 +103,7 @@ export const AuthContextProvider = (props) => {
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,
+        onChangeGrade: gradeHandler,
       }}
     >
       {props.children}

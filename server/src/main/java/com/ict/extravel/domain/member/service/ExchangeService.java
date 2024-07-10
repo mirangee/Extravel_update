@@ -107,8 +107,10 @@ public class ExchangeService {
         Nation nation = nationRepository.findById(nationCode).orElseThrow();
         Currency byNationCode = currencyRepository.findByNationCode(nation);
         List<ExchangeHistory> byCurrencyCode = exChangeHistoryRepository.findByCurrencyCode(byNationCode);
-        double v = byCurrencyCode.stream().mapToDouble(x -> Double.parseDouble(String.valueOf(x.getUseEtPoint()))).average().orElse(0.0);
-        return HistoryAverResponseDTO.builder().average(v).name(nation.getName()).build();
+//        double v = byCurrencyCode.stream().mapToDouble(x -> Double.parseDouble(String.valueOf(x.getUseEtPoint()))).average().orElse(0.0);
+        double s = byCurrencyCode.stream().mapToDouble(x -> Double.parseDouble(String.valueOf(x.getUseEtPoint()))).sum();
+        return HistoryAverResponseDTO.builder().sum(s).name(nation.getName()).build();
+
     }
     public List<WalletTotalResponseDTO> getWalletTotal(Integer id) {
         List<WalletExchange> walletExchangeList = walletExchangeRepository.findAllByMemberId(id);

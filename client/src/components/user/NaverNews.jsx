@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from './../../config/host-config';
 
 function NaverNews() {
   const [article, setArticle] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8181/api/v1/news')
+    fetch({ API_BASE_URL } + '/api/v1/news')
       .then((response) => response.json())
       .then((data) => {
         const items = data.items;

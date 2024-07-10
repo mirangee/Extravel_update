@@ -15,10 +15,11 @@ import {
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const AvChangeCard = () => {
   const [name, setName] = useState();
-  const [average, setAverage] = useState(0.0);
+  const [sum, setSum] = useState(0.0);
   const { nation } = useContext(AuthContext);
   const date = new Date();
   const options = {
@@ -34,10 +35,10 @@ const AvChangeCard = () => {
     if (nation) {
       const getData = async () => {
         const response = await axios.get(
-          `http://localhost:8181/api/v2/exchange/average?nation=${nation}`,
+          `${API_BASE_URL}/api/v2/exchange/average?nation=${nation}`,
         );
         setName(response.data.name);
-        setAverage(response.data.average);
+        setSum(response.data.sum);
       };
       getData();
     }
@@ -90,16 +91,14 @@ const AvChangeCard = () => {
                   height: '20px',
                 }}
               >
-                평균{' '}
+                누적{' '}
                 <span
                   style={{
                     fontWeight: 'bold',
                     fontSize: '36px',
                   }}
-                >
-                  {}
-                </span>
-                {Number(average.toFixed(0)).toLocaleString(
+                ></span>
+                {Number(sum.toFixed(0)).toLocaleString(
                   'ko-KR',
                 )}
                 원 환전했어요.

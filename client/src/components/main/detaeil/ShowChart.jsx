@@ -19,6 +19,7 @@ import axios from 'axios';
 import CustomTooltip from './CustomTooltip';
 import Styles from '../../../scss/ShowChart.module.scss';
 import AuthContext from '../../../utils/AuthContext';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const ShowChart = () => {
   const [data, setData] = useState({});
@@ -29,7 +30,7 @@ const ShowChart = () => {
   useEffect(() => {
     if (nation) {
       const axiosInstance = axios.create({
-        baseURL: `http://localhost:8181/api/rate/${date}/showchart?nation=${nation}`,
+        baseURL: `${API_BASE_URL}/api/rate/${date}/showchart?nation=${nation}`,
         headers: {
           'Content-Type': 'application/json',
         },

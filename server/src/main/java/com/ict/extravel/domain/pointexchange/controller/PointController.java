@@ -24,4 +24,6 @@ public class PointController {
         log.info(historyList.toString());
         return ResponseEntity.ok().body(historyList);
     }
+
+
 }

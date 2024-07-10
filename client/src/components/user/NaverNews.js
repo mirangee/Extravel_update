@@ -1,29 +1,44 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config/host-config';
 
 function NaverNews() {
   const [article, setArticle] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8181/api/v1/news')
+    fetch(`${API_BASE_URL}/api/v1/news`)
       .then((response) => response.json())
       .then((data) => {
         const items = data.items;
+        const parser = new DOMParser();
 
-        const transformArticle = items.map((item) => ({
-          title: item.title.replace(/(<([^>]+)>)/gi, ''),
-          description: item.description.replace(
-            /(<([^>]+)>)/gi,
-            '',
-          ),
-          link: item.link,
-        }));
+        const transformArticle = items.map((item) => {
+          const decodedTitle = parser.parseFromString(
+            item.title,
+            'text/html',
+          ).body.textContent;
+          const decodedDescription = parser.parseFromString(
+            item.description,
+            'text/html',
+          ).body.textContent;
+
+          return {
+            title: decodedTitle.replace(
+              /(<([^>]+)>)/gi,
+              '',
+            ),
+            description: decodedDescription.replace(
+              /(<([^>]+)>)/gi,
+              '',
+            ),
+            link: item.link,
+          };
+        });
         setArticle(transformArticle);
       })
       .catch((error) =>
         console.error('Error fetching data : ', error),
       );
   }, []);
-
   return (
     <div>
       <style>

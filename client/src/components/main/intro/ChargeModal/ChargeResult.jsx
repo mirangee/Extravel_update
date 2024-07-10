@@ -1,9 +1,28 @@
-import React from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import styles from '../../../../scss/ChargeResult.module.scss';
+import AuthContext from '../../../../utils/AuthContext';
 
 const ChargeResult = ({ pointInfo, setPayResult }) => {
+  const { grade, onChangeGrade } = useContext(AuthContext);
+  if (
+    pointInfo.countPoint < 10000000 &&
+    pointInfo.countPoint >= 5000000 &&
+    grade === 'BRONZE'
+  ) {
+    alert('축하합니다! SILVER 등급으로 승급되었습니다.');
+    onChangeGrade('SILVER');
+  } else if (
+    pointInfo.countPoint >= 10000000 &&
+    grade !== 'GOLD'
+  ) {
+    alert('축하합니다! GOLD 등급으로 승급되었습니다.');
+    onChangeGrade('GOLD');
+  }
   const eventHandler = () => {
-    console.log('charge result 컴포넌트에서 버튼 클릭됨!');
     setPayResult(false);
   };
   return (
@@ -46,6 +65,19 @@ const ChargeResult = ({ pointInfo, setPayResult }) => {
             <div className={styles.pointContainer}>
               <div className={styles.point}>
                 {pointInfo.etPoint.toLocaleString('ko-KR')}{' '}
+              </div>{' '}
+              P
+            </div>
+          </div>
+          <div className={styles.pointOuterContainer}>
+            <div className={styles.chargeAmountTitle}>
+              누적 충전 포인트
+            </div>
+            <div className={styles.pointContainer}>
+              <div className={styles.point}>
+                {pointInfo.countPoint.toLocaleString(
+                  'ko-KR',
+                )}{' '}
               </div>{' '}
               P
             </div>

@@ -13,6 +13,7 @@ const ChargeModal = ({ toggle, modalOpen }) => {
     etPoint: 0,
     plusPoint: 0,
     amount: 0,
+    countPoint: 0,
   });
   useEffect(() => {
     setPayResult(false);
@@ -20,6 +21,7 @@ const ChargeModal = ({ toggle, modalOpen }) => {
       etPoint: 0,
       plusPoint: 0,
       amount: 0,
+      countPoint: 0,
     });
   }, []);
   return (
@@ -31,7 +33,6 @@ const ChargeModal = ({ toggle, modalOpen }) => {
             onClick={toggle}
           />
           <h1>ETP 충전하기</h1>
-          <h5>ExTravel Point</h5>
           {!payResult && !loading && <ChargeTable />}
           {!payResult && !loading && (
             <ChargeInfo

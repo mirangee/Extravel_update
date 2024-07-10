@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -28,4 +27,8 @@ public interface PointChargeRepository extends JpaRepository<PointCharge, String
 
     @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND (p.status = 'SUCCESS' OR p.status = 'USED') ORDER BY p.createdAt DESC")
     List<PointCharge> findAllByMemberId(@Param("memberId") Integer id);
+
+
+    @Query("SELECT p FROM PointCharge p WHERE p.member.id = :memberId AND p.status = 'SUCCESS'")
+    List<PointCharge> findByMember(@Param("memberId")Integer memberId);
 }

@@ -16,6 +16,7 @@ import 'swiper/css/pagination';
 import styles from '../../../scss/YoutubeList.module.scss';
 import AuthContext from '../../../utils/AuthContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const YoutubeList = () => {
   const { nation } = useContext(AuthContext);
@@ -27,10 +28,8 @@ const YoutubeList = () => {
 
     if (nation) {
       console.log('if nation:{}', nation);
-      axios
-        .get(
-          `http://localhost:8181/api/v1/youtube/` + nation,
-        )
+      axios //get요청보내기
+        .get(`${API_BASE_URL}/api/v1/youtube/` + nation)
         .then((response) => {
           setYoutubeLink(response.data);
           if (swiperRef.current) {

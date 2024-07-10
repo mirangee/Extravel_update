@@ -31,6 +31,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { API_BASE_URL } from '../../../config/host-config';
 
 const style = {
   position: 'absolute',
@@ -97,7 +98,7 @@ const DetailSection3 = () => {
     if (nation) {
       const getData = async () => {
         const response = await axios.get(
-          `http://localhost:8181/api/rate/currency/exchange?nation=${nation}`,
+          `${API_BASE_URL}/api/rate/currency/exchange?nation=${nation}`,
         );
         setData(response.data);
         setFlag(response.data.nation.flag);
@@ -105,7 +106,7 @@ const DetailSection3 = () => {
       const getWallet = async () => {
         const email = localStorage.getItem('EMAIL');
         const response = await axios.get(
-          `http://localhost:8181/api/wallet?email=${email}`,
+          `${API_BASE_URL}/api/wallet?email=${email}`,
         );
         setBalance(response.data);
       };
