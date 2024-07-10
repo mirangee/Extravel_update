@@ -422,7 +422,11 @@ const Login = () => {
                 <span className={styles.span}>
                   혹은 이메일을 사용하여 회원가입 하기
                 </span>
-                <Grid className={styles.GridAll}>
+                <Grid
+                  item
+                  xs={12}
+                  className={styles.GridAll}
+                >
                   <Grid>
                     <Grid className={styles.GridBox2}>
                       <Controller
@@ -509,9 +513,9 @@ const Login = () => {
                               variant='contained'
                               className={styles.NumCheckBtn}
                               style={{
-                                display: !isAuthCompleted
-                                  ? 'block'
-                                  : 'none',
+                                opacity: isAuthCompleted
+                                  ? 0
+                                  : 1,
                               }}
                             >
                               번호인증
@@ -629,6 +633,10 @@ const Login = () => {
                                 fieldState.error &&
                                 fieldState.error.message
                               }
+                              size='small'
+                              InputProps={{
+                                readOnly: !showEmailInput,
+                              }} //@@@ mui 기능
                             />
                             <button
                               className={styles.CheckButton}
@@ -706,18 +714,17 @@ const Login = () => {
                         )}
                       />
                     </Grid>
-                    <Grid className={styles.GridBox}>
-                      <Button
-                        type='submit'
-                        variant='contained'
-                        hidden={
-                          !isAuthCompleted ||
-                          !isEmailChecked
-                        }
-                      >
-                        가입하기
-                      </Button>
-                    </Grid>
+                    {/* <Grid className={styles.GridBox}> */}
+                    <Button
+                      type='submit'
+                      variant='contained'
+                      hidden={
+                        !isAuthCompleted || !isEmailChecked
+                      }
+                    >
+                      가입하기
+                    </Button>
+                    {/* </Grid> */}
                   </Grid>
                 </Grid>
                 {isSignUpSuccessful && (
