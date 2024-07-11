@@ -45,10 +45,9 @@ public class MakePayRequest {
         // 아래 url은 사용자가 결제 url에서 결제를 성공, 실패, 취소시
         // redirect할 url로 위에서 설명한 동작 과정에서 5번과 6번 사이 과정에서
         // 나온 결과로 이동할 url을 설정해 주는 것입니다.
-        map.add("approval_url", "http://localhost:8181/payment/success"+"/"+id); // 성공 시 redirect url
-//        map.add("approval_url", "http://localhost:3000"); // 성공 시 redirect url
-        map.add("cancel_url", "http://localhost:8181/payment/cancel"+"/"+id); // 취소 시 redirect url
-        map.add("fail_url", "http://localhost:8181/payment/fail"+"/"+id); // 실패 시 redirect url
+        map.add("approval_url", "http://extravel.store/payment/success"+"/"+id); // 성공 시 redirect url
+        map.add("cancel_url", "http://extravel.store/payment/cancel"+"/"+id); // 취소 시 redirect url
+        map.add("fail_url", "http://extravel.store/payment/fail"+"/"+id); // 실패 시 redirect url
 
         return new PayRequest("https://kapi.kakao.com/v1/payment/ready",map);
     }
