@@ -1,16 +1,12 @@
 package com.ict.extravel.domain.pointexchange.controller;
 
-import com.ict.extravel.domain.member.entity.Member;
-import com.ict.extravel.domain.member.repository.MemberRepository;
 import com.ict.extravel.domain.pointexchange.dto.PayInfoDto;
 import com.ict.extravel.domain.pointexchange.dto.request.PointInfoRequestDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PayConfirmResponseDTO;
-import com.ict.extravel.domain.pointexchange.dto.response.PayReadyResDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PaymentDto;
 import com.ict.extravel.domain.pointexchange.dto.response.PointInfoResponseDto;
 import com.ict.extravel.domain.pointexchange.entity.PointCharge;
 import com.ict.extravel.domain.pointexchange.repository.PointChargeRepository;
-import com.ict.extravel.domain.pointexchange.repository.WalletRepository;
 import com.ict.extravel.domain.pointexchange.service.KakaoPayService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.PrintWriter;
-import java.math.BigDecimal;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/payment")
 @Slf4j
 public class KakaoPayController {
+
+
 
     private final KakaoPayService kakaoPayService;
     private final PointChargeRepository pointChargeRepository;
