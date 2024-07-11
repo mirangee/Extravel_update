@@ -171,7 +171,7 @@ const Login = () => {
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
 
-      navigate('/'); // 회원가입 후 메인 페이지로 이동
+      navigate('/login'); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
       alert(
@@ -329,7 +329,7 @@ const Login = () => {
         return true; // 중복된 이메일이면 true 반환
       } else {
         alert('사용 가능한 이메일 입니다.');
-        // setshowEmailInput(false);
+        setshowEmailInput(false);
         setIsEmailChecked(true);
 
         return false; // 중복되지 않은 이메일이면 false 반환
@@ -428,7 +428,7 @@ const Login = () => {
                   className={styles.GridAll}
                 >
                   <Grid>
-                    <Grid className={styles.GridBox2}>
+                    <Grid className={styles.GridBox0}>
                       <Controller
                         className={styles.resultMsg}
                         name='name' // 컨트롤러의 이름
@@ -654,7 +654,7 @@ const Login = () => {
                       />
                     </Grid>
 
-                    <Grid className={styles.GridBox2}>
+                    <Grid className={styles.GridBox4}>
                       <Controller
                         name='password'
                         defaultValue={''}
@@ -686,7 +686,7 @@ const Login = () => {
                         )}
                       />
                     </Grid>
-                    <Grid className={styles.GridBox2}>
+                    <Grid className={styles.GridBox5}>
                       <Controller
                         name='passwordConfirm'
                         defaultValue={''}

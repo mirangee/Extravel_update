@@ -101,7 +101,7 @@ public class CoolSMSApi {
         String phoneNumber = data.get("phoneNumber");
         int verificationCode = generateRandomNumber();
 
-        /*Message message = new Message();
+        Message message = new Message();
 
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
@@ -111,7 +111,7 @@ public class CoolSMSApi {
         MultipleDetailMessageSentResponse messageSentResponse = messageService.send(message);
         log.info("{}", messageSentResponse.toString());
         log.info("SMS sent successfully to {}", phoneNumber);
-        */
+
         return ResponseEntity.ok().body(verificationCode);
     }
 

@@ -12,7 +12,7 @@ import AuthContext from '../../../../utils/AuthContext';
 import { Button } from 'reactstrap';
 
 const PointHistory = () => {
-  const { id } = useContext(AuthContext);
+  const { id, redirect } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [currentEtp, setCurrentEtp] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ const PointHistory = () => {
     // 비동기 함수 호출
     fetchCurrentPoint();
     fetchData();
-  }, [id]);
+  }, [id, redirect]);
 
   useEffect(() => {
     if (history.length === 0) {

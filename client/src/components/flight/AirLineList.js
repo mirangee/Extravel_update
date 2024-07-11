@@ -253,7 +253,7 @@ export const AirLineList = {
   },
   VJ: {
     title: '비엣젯 항공',
-    img: 'https://i.namu.wiki/i/na1FphqkScPoloyEJmpGpQu9MF5Xlt_9Ja33M0hbX2eAHCC0qqTH-PRUoNXXSU2P9wlt2oLXKOD7pV_XiRIWMhuMkPbv3YDRTx9wtKspU3YsW9J1TBUrAP6seEhaO6y_6aF6J7ZctEeH6iLTOKxOKg.svg',
+    img: 'https://i.namu.wiki/i/4rrOTT1xg-YBD4_zi7pt8lXHCheWwREctFXazMLR4BiZhhs86xdhWShV7sVu9H1x5HIVqZaxjApRs4l-Sb2Pl9_Ggr8fcVIxjrWYRkRT6d2_4lYCzZ1qUnxI-1_q_iyMJJb_hc1DgPbN_G8-Rx-f9w.svg',
   },
   GA: {
     title: '가루다 인도네시아 항공',

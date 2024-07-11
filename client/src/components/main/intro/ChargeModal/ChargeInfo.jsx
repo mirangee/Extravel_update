@@ -14,7 +14,8 @@ const ChargeInfo = ({
   setPointInfo,
   setPayResult,
 }) => {
-  const { id, grade, name } = useContext(AuthContext);
+  const { id, grade, name, onRedirect } =
+    useContext(AuthContext);
   const [calculatedNumber, setCalculatedNumber] =
     useState(0);
   const [chargePoint, setChargePoint] = useState(0);
@@ -24,29 +25,11 @@ const ChargeInfo = ({
   const [isButtonDisabled, setIsButtonDisabled] =
     useState(true);
 
-  // useEffect(() => {
-  //   setIsButtonDisabled(true);
-  //   async function fetchData() {
-  //     try {
-  //       const response = await axios.post(
-  //         API_BASE_URL + '/payment/pointInfo',
-  //         { id },
-  //       );
-  //       console.log(response.data);
-  //       setCurrentEtp(response.data.etPoint);
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     setIsButtonDisabled(true);
     async function fetchData() {
       try {
         const response = await axios.post(
-          // axios 대신 axiosInstance 사용
           API_BASE_URL + '/payment/pointInfo',
           { id },
         );
@@ -74,6 +57,7 @@ const ChargeInfo = ({
           case 'SUCCESS':
             alert('ET 포인트 충전이 완료되었습니다.');
             setPayResult(true);
+            onRedirect();
             console.log('보유 포인트: ', res.data.etPoint);
             console.log(
               '적립 포인트: ',

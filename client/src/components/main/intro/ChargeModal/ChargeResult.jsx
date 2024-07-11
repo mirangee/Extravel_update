@@ -1,8 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext } from 'react';
 import styles from '../../../../scss/ChargeResult.module.scss';
 import AuthContext from '../../../../utils/AuthContext';
 

@@ -52,10 +52,8 @@ public class KakaoPayService {
      * 테스트  가맹점 코드로 'TC0ONETIME'를 사용 */
     @Transactional
     public PayReadyResDto getRedirectUrl(PayInfoDto payInfoDto)throws Exception{
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String name = authentication.getName();
-
-        Member member = memberRepository.findById(payInfoDto.getId()).orElseThrow(() -> new Exception("해당 유저가 존재하지 않습니다."));
+        Member member = memberRepository.findById(payInfoDto.getId())
+                .orElseThrow(() -> new Exception("해당 유저가 존재하지 않습니다."));
 
         HttpHeaders headers=new HttpHeaders();
 
@@ -68,11 +66,13 @@ public class KakaoPayService {
         PayRequest payRequest=makePayRequest.getReadyRequest(payInfoDto);
 
         /** Header와 Body 합쳐서 RestTemplate로 보내기 위한 밑작업 */
-        HttpEntity<MultiValueMap<String, String>> urlRequest = new HttpEntity<>(payRequest.getMap(), headers);
+        HttpEntity<MultiValueMap<String, String>> urlRequest
+                = new HttpEntity<>(payRequest.getMap(), headers);
 
         /** RestTemplate로 Response 받아와서 DTO로 변환후 return */
         RestTemplate rt = new RestTemplate();
-        PayReadyResDto payReadyResDto = rt.postForObject(payRequest.getUrl(), urlRequest, PayReadyResDto.class);
+        PayReadyResDto payReadyResDto
+                = rt.postForObject(payRequest.getUrl(), urlRequest, PayReadyResDto.class);
 
         log.info("payReadyResDto 응답옴! {}", payReadyResDto);
 
@@ -81,11 +81,11 @@ public class KakaoPayService {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime createdAt = LocalDateTime.parse(createdAtStr, formatter);
 
-        // String으로 받은 price를 Integer로 변환
-        Integer amount = Integer.parseInt(payInfoDto.getPrice());
+        // String으로 받은 price를 BigDecimal로 변환
+        BigDecimal amount = BigDecimal.valueOf(Long.parseLong(payInfoDto.getPrice()));
 
         // plusPoint 계산
-        BigDecimal plusPoint = calcTotalPoint(member.getId(), amount).subtract(BigDecimal.valueOf(amount));
+        BigDecimal plusPoint = calcTotalPoint(member.getId(), amount).subtract(amount);
 
         // 여기서 tbl_charge_history에 데이터 추가
         PointCharge pointCharge = PointCharge.builder()
@@ -170,7 +170,7 @@ public class KakaoPayService {
 
     public void calcTotalResult(Integer id, PaymentDto paymentDto) {
         // 멤버 등급에 따라 plus point 산정해 총 적립 포인트 계산하는 메서드
-        BigDecimal newEtPoint = calcTotalPoint(id, paymentDto.getAmount().getTotal());
+        BigDecimal newEtPoint = calcTotalPoint(id, BigDecimal.valueOf(paymentDto.getAmount().getTotal()));
 
         // 현재 가지고 있는 et point 조회
         Wallet wallet = walletRepository.findById(id).orElseThrow();
@@ -182,7 +182,7 @@ public class KakaoPayService {
     }
 
 
-    private BigDecimal calcTotalPoint(Integer id, int amount) {
+    private BigDecimal calcTotalPoint(Integer id, BigDecimal amount) {
         Member member = memberRepository.findById(id).orElseThrow();
         BigDecimal plusRate = BigDecimal.ZERO;
         log.info("멤버의 등급을 표기합니다 {}", member.getGrade());
@@ -198,8 +198,7 @@ public class KakaoPayService {
                 break;
         }
 
-        BigDecimal amountBD = BigDecimal.valueOf(amount);
-        BigDecimal result = amountBD.multiply(BigDecimal.ONE.add(plusRate));
+        BigDecimal result = amount.multiply(BigDecimal.ONE.add(plusRate));
 
         // 소수점 이하 3자리로 반올림
         result = result.setScale(3, RoundingMode.HALF_UP);

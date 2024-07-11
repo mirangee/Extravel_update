@@ -160,7 +160,7 @@ public class MemberController {
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL]" +
                 "당신의 아이디는" +
-                "[" + email + "]" +
+                "[" + email.getEmail() + "]" +
                 "입력해주세요!");
 
         log.info("Sending SMS to: {} with verification code: {}", phoneNumber, email);

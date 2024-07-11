@@ -12,6 +12,7 @@ export const AuthContext = React.createContext({
   id: '',
   grade: '',
   phoneNumber: '',
+  onRedirect: () => {},
   onLogout: () => {},
   onLogin: (res) => {},
   onChangeNation: (nationCode) => {},
@@ -27,6 +28,7 @@ export const AuthContextProvider = (props) => {
   const [id, setId] = useState('');
   const [grade, setGrade] = useState('');
   const [phone, setPhone] = useState('');
+  const [redirect, setRedirect] = useState(false);
   const navi = useNavigate();
 
   const loginHandler = (res) => {
@@ -44,6 +46,7 @@ export const AuthContextProvider = (props) => {
       'REFRESH_TOKEN',
       res.token.refresh_token,
     );
+    localStorage.setItem('PHONE', res.phoneNumber);
     //localStorage 토큰 넣기
     // localStorage.setItem('ROLE', role);
     setPhone(res.phoneNumber);
@@ -53,6 +56,9 @@ export const AuthContextProvider = (props) => {
     setId(res.id);
     setGrade(res.grade);
     setIsLoggedIn(true);
+  };
+  const redirectHandler = () => {
+    setRedirect(!redirect);
   };
 
   const nationHandler = (nationCode) => {
@@ -98,6 +104,7 @@ export const AuthContextProvider = (props) => {
       setEmail(localStorage.getItem('EMAIL'));
       setId(localStorage.getItem('ID'));
       setGrade(localStorage.getItem('GRADE'));
+      setPhone(localStorage.getItem('PHONE'));
     }
   }, []);
 
@@ -112,6 +119,8 @@ export const AuthContextProvider = (props) => {
         email,
         grade,
         phoneNumber: phone,
+        redirect,
+        onRedirect: redirectHandler,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onChangeNation: nationHandler,
