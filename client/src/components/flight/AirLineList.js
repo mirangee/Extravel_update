@@ -244,8 +244,8 @@ export const AirLineList = {
     img: 'https://i.namu.wiki/i/4cyZ9U_tE-i8D4itYPxmd9KilMm-NW5UEsZx5bgxaNKAJn7jgWehyEMYCu8jsjMIjIlXFakvzbaKHqAa2JV_Vy9nbaya01bxT228MgqKmWLM7dXa9NyixTDEITpbZNPouc5Gchn_L074U9ZoHs453g.webp',
   },
   ET: {
-    title: '에타오피아 항공',
-    img: 'https://i.namu.wiki/i/LH8LPxYMa4jGvEsCQ7hv74eQP5fw-Zvz41Jyc_ky3T2O_9CGssZhFrdzRZ5QUk-jMRq0ATBGonsZt3ODimAx4Z77HGSf3UHla-s9PizcAPaD4ayrC0vG3mj7uZKG3VOCpGt13RUmGVwigiSaXzED2A.svg',
+    title: '에티오피아 항공',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Ethiopian_Airlines_Logo.svg/200px-Ethiopian_Airlines_Logo.svg.png',
   },
   MH: {
     title: '말레이시아 항공',
@@ -253,7 +253,7 @@ export const AirLineList = {
   },
   VJ: {
     title: '비엣젯 항공',
-    img: 'https://i.namu.wiki/i/4rrOTT1xg-YBD4_zi7pt8lXHCheWwREctFXazMLR4BiZhhs86xdhWShV7sVu9H1x5HIVqZaxjApRs4l-Sb2Pl9_Ggr8fcVIxjrWYRkRT6d2_4lYCzZ1qUnxI-1_q_iyMJJb_hc1DgPbN_G8-Rx-f9w.svg',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/VietJet_Air_logo.svg/250px-VietJet_Air_logo.svg.png',
   },
   GA: {
     title: '가루다 인도네시아 항공',
@@ -345,7 +345,7 @@ export const AirLineList = {
   },
   EH: {
     title: '아나 윙즈 항공',
-    img: 'https://i.namu.wiki/i/ZQFgQW6XWAFwBRXcInE2nyVto77zsv37kH1Q9gTXsD9T7Qaawc4x4lRwyLGNvtbHWpPK4X4VXRGKwPrbmz97V5e8qgEoOqvaaxfKAwyc_n6s_QAERWB7dPtNfAL2vyoeZUE_o-HuJTr2trPSWLOHFg.png',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/All_Nippon_Airways_Logo.svg/250px-All_Nippon_Airways_Logo.svg.png',
   },
   FM: {
     title: '상하이 항공',

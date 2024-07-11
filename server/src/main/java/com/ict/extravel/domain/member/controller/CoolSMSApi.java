@@ -103,6 +103,7 @@ public class CoolSMSApi {
 
         Message message = new Message();
 
+        message.setFrom(PHONE_NUMBER);
         message.setTo(phoneNumber);
         message.setText("[EXTRAVEL] 아래의 인증번호를 [" + verificationCode + "] 입력해주세요!\n");
 
