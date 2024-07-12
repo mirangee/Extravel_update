@@ -67,14 +67,8 @@ public class Member {
     private String path;
 
     @Size(max = 255)
-    @Column(name = "tid")
-    private String tid;
-
-    @Size(max = 255)
     @Column(name = "access_token")
     private String accessToken;
-
-
 
     @Size(max = 255)
     @Column(name = "refresh_token")
@@ -96,7 +90,4 @@ public class Member {
     public void changeRefreshExpiryDate(Date date) {
         this.refreshTokenExpiryDate = date;
     }
-
-
-
 }

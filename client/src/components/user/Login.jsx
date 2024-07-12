@@ -171,7 +171,7 @@ const Login = () => {
         `${result.name}님 회원가입이 성공적으로 완료되었습니다.`,
       );
 
-      navigate('/login'); // 회원가입 후 메인 페이지로 이동
+      location.reload(); // 회원가입 후 메인 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
       alert(

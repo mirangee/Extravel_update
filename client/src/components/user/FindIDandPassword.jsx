@@ -152,15 +152,16 @@ const FindIDandPassword = () => {
         setShowAuthNumTimer(false);
         setShowAuthNumInput(false);
         setShowAuthButton(true);
+
+        setDisableInputs({
+          name: false,
+          email: false, // 이메일 입력 필드 비활성화
+          phoneNumber: false, // 전화번호 입력 필드 비활성화
+        });
       } else {
         // UI 업데이트
         setShowAuthNumInput(true); //인증번호 창
         setShowAuthNumTimer(true);
-        // setDisableInputs({
-        //   name: true,
-        //   email: true, // 이메일 입력 필드 비활성화
-        //   phoneNumber: true, // 전화번호 입력 필드 비활성화
-        // });
       }
     });
   };
