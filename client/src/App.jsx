@@ -121,7 +121,7 @@ const App = () => {
           ></Route>
 
           <Route
-            path='api/v1/shopping'
+            path='package/v1/shopping'
             element={<NaverShopping />}
           ></Route>
           <Route

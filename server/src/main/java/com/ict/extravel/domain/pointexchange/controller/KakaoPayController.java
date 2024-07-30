@@ -32,7 +32,7 @@ public class KakaoPayController {
     @PostMapping("/ready")
     public ResponseEntity<?> getRedirectUrl(@RequestBody PayInfoDto payInfoDto) {
         try {
-            log.info("/payment/ready 요청 들어 옴! {}", payInfoDto);
+            log.info("/payment/ready 요청 들어 왔다리따따! {}", payInfoDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(kakaoPayService.getRedirectUrl(payInfoDto));
 

@@ -167,7 +167,7 @@ const Header = () => {
                 </li>
                 <motion.li whileHover={{ scale: 1.2 }}>
                   <Link
-                    to='/api/v1/shopping/'
+                    to='/package/v1/shopping/'
                     onClick={scrollToTop}
                   >
                     패키지

@@ -32,7 +32,9 @@ const NaverShopping = () => {
     axios
       .get(`${API_BASE_URL}/api/v1/shopping/${nation}`)
       .then((response) => {
-        const items = response.data.items;
+        console.log(response);
+        console.log(response.data);
+        const items = response.data;
 
         const transformArticle = items.map((item) => ({
           title: item.title.replace(/(<([^>]+)>)/gi, ''),
@@ -43,7 +45,7 @@ const NaverShopping = () => {
         setArticle(transformArticle);
       })
       .catch((error) => {
-        console.error('Error fetching data : ', error);
+        console.error('Error fetching data : {} ', error);
       });
   }, [nation]);
 

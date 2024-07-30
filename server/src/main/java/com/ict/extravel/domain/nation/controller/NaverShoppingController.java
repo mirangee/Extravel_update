@@ -1,14 +1,15 @@
 package com.ict.extravel.domain.nation.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ict.extravel.domain.nation.dto.NaverShoppingResponseDTO;
 import com.ict.extravel.domain.nation.entity.Nation;
 import com.ict.extravel.domain.nation.repository.NationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 
 @RestController
@@ -34,12 +37,12 @@ public class NaverShoppingController {
     private String SECRET;
 
     @GetMapping("/shopping/{nation}")
-    public ResponseEntity<String> ShoppingEntity(@PathVariable String nation) {
+    public ResponseEntity<?> ShoppingEntity(@PathVariable String nation) {
         Nation findNation = nationRepository.findById(nation).orElseThrow();
 
-        String Url = "https://openapi.naver.com/v1/search/shop.json";
+        String url = "https://openapi.naver.com/v1/search/shop.json";
 
-        URI uri = UriComponentsBuilder.fromUriString(Url)
+        URI uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("query", findNation.getName() + "여행")
                 .queryParam("display" , 100)
                 .queryParam("filter", "naverpay")
@@ -55,14 +58,24 @@ public class NaverShoppingController {
         headers.set("X-Naver-Client-Secret", SECRET);
         log.info("Headers요청 {}" , headers);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> ShoppingResponse = restTemplate.exchange(
-                uri, HttpMethod.GET,entity,String.class);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                uri, HttpMethod.GET, entity, String.class);
 
-        log.info("쇼핑API 요청 : {}" ,ShoppingResponse);
-        return ShoppingResponse;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
+            JsonNode itemsNode = rootNode.get("items");
 
-
-
+            List<NaverShoppingResponseDTO> responseDTOList = objectMapper.readValue(
+                    itemsNode.toString(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, NaverShoppingResponseDTO.class)
+            );
+            log.info("쇼핑 API 요청: {}", responseDTOList);
+            return ResponseEntity.ok().body(responseDTOList);
+        } catch (IOException e) {
+            log.error("JSON 파싱 실패: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to parse JSON response");
+        }
     }
 }
