@@ -133,7 +133,7 @@ const MyPage = () => {
         animate={{ x: 100 }}
         transition={{ ease: 'easeOut', duration: 2 }}
       >
-        <h1 className='PageHeader'>My Profile🛫</h1>
+        <h1 className='PageHeader'>My Profile</h1>
         <div className='ProfileHeader'>
           <img src={medalImage} alt='Profile' />
           <div>

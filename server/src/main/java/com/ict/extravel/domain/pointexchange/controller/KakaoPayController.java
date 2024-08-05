@@ -32,7 +32,7 @@ public class KakaoPayController {
     @PostMapping("/ready")
     public ResponseEntity<?> getRedirectUrl(@RequestBody PayInfoDto payInfoDto) {
         try {
-            log.info("/payment/ready 요청 들어 왔다리따따! {}", payInfoDto);
+            log.info("/payment/ready 요청 들어옴! {}", payInfoDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(kakaoPayService.getRedirectUrl(payInfoDto));
 
@@ -63,7 +63,7 @@ public class KakaoPayController {
             out.println("<title>Payment Success</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>ET 포인트 충전 결제가 성공적으로 완료되었습니다");
+            out.println("<h1>ET 포인트 충전 결제가 성공적으로 완료되었습니다</h1>");
             out.println("<script type=\"text/javascript\">");
             out.println("window.onload = function() {");
             out.println("    window.close();");
@@ -97,7 +97,7 @@ public class KakaoPayController {
             out.println("<title>Payment Success</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>ET 포인트 충전 결제가 취소되었습니다");
+            out.println("<h1>ET 포인트 충전 결제가 취소되었습니다</h1>");
             out.println("<script type=\"text/javascript\">");
             out.println("window.onload = function() {");
             out.println("    window.close();");
@@ -133,7 +133,7 @@ public class KakaoPayController {
             out.println("<title>Payment Success</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>ET 포인트 충전 결제가 실패하였습니다");
+            out.println("<h1>ET 포인트 충전 결제가 실패하였습니다</h1>");
             out.println("<script type=\"text/javascript\">");
             out.println("window.onload = function() {");
             out.println("    window.close();");

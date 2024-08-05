@@ -112,6 +112,10 @@ const LoginPhoneNumber = () => {
     setResultMsg(msg);
   };
 
+  const onClickBtn = () => {
+    redirection(-1); // 바로 이전 페이지로 이동, '/main' 등 직접 지정도 당연히 가능
+  };
+
   return (
     <div className={styles.login}>
       <div className={`${styles['form-container']}`}>
@@ -231,6 +235,12 @@ const LoginPhoneNumber = () => {
             )}
           </>
         )}
+        <button
+          className={styles.backButton}
+          onClick={onClickBtn}
+        >
+          뒤로 돌아가기
+        </button>
       </div>
     </div>
   );

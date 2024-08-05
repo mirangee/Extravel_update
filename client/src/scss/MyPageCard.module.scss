@@ -57,9 +57,12 @@
   }
 
   .flag {
-    width: 150px;
-    // height: 100px;
     margin-top: 25px;
+
+    img {
+      width: 150px;
+      // height: 100px;
+    }
   
     h3 {
       text-align: center;

@@ -2,20 +2,12 @@ import React, {
   useState,
   useContext,
   useEffect,
-  input,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  useNavigate,
-  Link,
-  Outlet,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button, Grid, TextField } from '@mui/material';
 import naverCircle from '../../assets/img/naver_circle.png';
 import kakaoCircle from '../../assets/img/kakao_circle.png';
-import a7 from '../../assets/img/a7.jpg';
 import styles from '../../scss/Login.module.scss';
 import { NAVER_AUTH_URI } from '../../config/Naver-config';
 import { KAKAO_AUTH_URL } from '../../config/kakao-config';
@@ -23,8 +15,6 @@ import GoogleLogin from './GoogleLogin';
 import axios from 'axios';
 import AuthContext from '../../utils/AuthContext';
 import AuthNumTimer from './AuthNumTimer';
-import FindIDandPassword from './FindIDandPassword';
-
 import {
   API_BASE_URL as BASE,
   USER,
@@ -348,22 +338,6 @@ const Login = () => {
       setIsSignUpEnabled(false); // 회원 가입 비활성화
     }
   };
-
-  // 회원가입 데이터 초기화
-  // const handleSignUpReset = () => {
-  //   setEmail('');
-  //   setPassword('');
-  //   setRandomCode('');
-  //   setCheckCode('');
-  //   setShowAuthNumTimer(false);
-  //   setResultMsg('');
-  //   setIsSignUpEnabled(false);
-  //   setIsAuthCompleted(false);
-  //   setIsEmailChecked(false);
-  //   setPhoneNumber('');
-  //   setIsTimeZero(false);
-  //   setShowPhoneNumInput(true);
-  // };
 
   return (
     <>

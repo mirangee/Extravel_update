@@ -29,9 +29,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
-import static com.ict.extravel.domain.member.entity.QMember.member;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,26 +59,29 @@ public class KakaoPayService {
         String auth = "KakaoAK " + adminKey;
         headers.set("Content-type","application/x-www-form-urlencoded;charset=utf-8");
         headers.set("Authorization",auth);
-        log.info("요청 해더에 adminkey를 넣었습니다 {}", auth);
 
         /** 요청 Body */
         PayRequest payRequest=makePayRequest.getReadyRequest(payInfoDto);
-        log.info("payRequest 객체를 만들었습니다 {}", payRequest.toString());
 
         /** Header와 Body 합쳐서 RestTemplate로 보내기 위한 밑작업 */
         HttpEntity<MultiValueMap<String, String>> urlRequest
                 = new HttpEntity<>(payRequest.getMap(), headers);
-
-
-        log.info("payRequest 객체 준비를 마친 후 RT로 요청 보내기 직전입니다");
-
+        
         /** RestTemplate로 Response 받아와서 DTO로 변환후 return */
         RestTemplate rt = new RestTemplate();
         PayReadyResDto payReadyResDto
                 = rt.postForObject(payRequest.getUrl(), urlRequest, PayReadyResDto.class);
-
         log.info("payReadyResDto 응답옴! {}", payReadyResDto);
 
+        /** PointCharge Entity로 변환 */
+        PointCharge pointCharge = toPointChargeEntity(payInfoDto, payReadyResDto, member);
+        PointCharge saved = pointChargeRepository.save(pointCharge);
+        log.info("DB에 1차 저장 완료! {}", saved);
+
+        return payReadyResDto;
+    }
+
+    private PointCharge toPointChargeEntity(PayInfoDto payInfoDto, PayReadyResDto payReadyResDto, Member member) {
         // String으로 받은 create_at을 LocalDateTime으로 변환
         String createdAtStr = payReadyResDto.getCreated_at();  // "2023-06-21T15:30:00" 같은 형식의 문자열
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -104,13 +104,9 @@ public class KakaoPayService {
                 .status(PointCharge.Status.PENDING)
                 .inUse(true)
                 .build();
-        System.out.println("pointCharge = " + pointCharge);
+        log.info("pointCharge : {} ", pointCharge);
 
-        PointCharge save = pointChargeRepository.save(pointCharge);
-        System.out.println(save);
-        log.info("DB에 1차 저장 완료!");
-
-        return payReadyResDto;
+        return pointCharge;
     }
 
     @Transactional

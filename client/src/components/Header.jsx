@@ -21,13 +21,12 @@ import {
 import { motion } from 'framer-motion';
 import {
   Dropdown,
-  DropdownItem,
   DropdownMenu,
   DropdownToggle,
 } from 'reactstrap';
 import ChargeModal from './main/intro/ChargeModal/ChargeModal';
-import { render } from '@testing-library/react';
 import { API_BASE_URL } from './../config/host-config';
+import { BsXLg } from 'react-icons/bs';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -125,6 +124,7 @@ const Header = () => {
   };
 
   const toggleSidebar = () => {
+    console.log('hamburger 버튼 클릭됨!');
     setSidebarOpen(!sidebarOpen);
   };
 
@@ -143,12 +143,6 @@ const Header = () => {
           className={styles.logo}
           onClick={goToIntro}
         />
-        <div
-          className={styles.hamburger}
-          onClick={toggleSidebar}
-        >
-          <FontAwesomeIcon icon={faBars} size='2x' />
-        </div>
         <nav className={styles.nav}>
           <ul className={styles.menu}>
             {isLoggedIn && (
@@ -259,6 +253,127 @@ const Header = () => {
           </ul>
         </nav>
       </header>
+
+      <header
+        className={`${styles.header2} ${scrolled || render ? styles.scrolled : ''}`}
+      >
+        <img
+          src={logoImage}
+          alt='Logo'
+          className={styles.logo}
+          onClick={goToIntro}
+        />
+        <nav className={styles.nav}>
+          <ul className={styles.menu}>
+            {isLoggedIn ? (
+              <div
+                className={styles.hamburger}
+                onClick={toggleSidebar}
+              >
+                <FontAwesomeIcon icon={faBars} size='2x' />
+              </div>
+            ) : (
+              <Link
+                to='/login'
+                className={styles.login}
+                onClick={scrollToTop}
+              >
+                로그인
+              </Link>
+            )}
+          </ul>
+        </nav>
+      </header>
+      {sidebarOpen && (
+        <>
+          <nav
+            className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}
+          >
+            <BsXLg
+              className={styles.closeButton}
+              onClick={toggleSidebar}
+            />
+            <ul className={styles.menu}>
+              <>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link
+                    to='/package/v1/shopping/'
+                    onClick={scrollToTop}
+                  >
+                    패키지
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link to='/flight' onClick={scrollToTop}>
+                    항공권
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link
+                    to='/main/exrates'
+                    onClick={scrollToTop}
+                  >
+                    환율 정보
+                  </Link>
+                </motion.li>
+                <motion.li whileHover={{ scale: 1.2 }}>
+                  <Link to='/mypage' onClick={scrollToTop}>
+                    내&nbsp;&nbsp;정보
+                  </Link>
+                </motion.li>
+              </>
+              <Dropdown
+                isOpen={dropdownOpen}
+                toggle={toggleDropdown}
+                direction='down'
+              >
+                <DropdownToggle
+                  caret
+                  style={{ background: '#14505c' }}
+                >
+                  <FontAwesomeIcon
+                    icon={faMoneyCheckDollar}
+                    size='xl'
+                    style={{ color: '#38bc8a' }}
+                  />
+                </DropdownToggle>
+                <DropdownMenu
+                  style={{
+                    backgroundColor: 'white',
+                    zIndex: '1500',
+                  }}
+                >
+                  <ChargeModal
+                    toggle={toggleDropdown}
+                    modalOpen={dropdownOpen}
+                  />
+                </DropdownMenu>
+              </Dropdown>
+
+              <li>
+                <Select
+                  value={countryOptions.find(
+                    (option) => option.value === country,
+                  )}
+                  onChange={handleCountryChange}
+                  options={countryOptions}
+                  className={styles.countrySelect}
+                  classNamePrefix={styles.reactSelect}
+                />
+              </li>
+              <ul>
+                <li
+                  type='button'
+                  className={styles.logout}
+                  onClick={clickLogoutHandler}
+                >
+                  로그아웃
+                </li>
+              </ul>
+            </ul>
+          </nav>
+        </>
+      )}
     </>
   );
 };

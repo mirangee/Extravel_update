@@ -32,7 +32,7 @@
     display: none;
   }
   .logo {
-    width: 350px;
+    width: 320px;
     height: auto;
     padding-left: 150px;
     cursor: pointer;
@@ -40,9 +40,6 @@
 
   .hamburger {
     display: none; /* 기본적으로 숨김 */
-  }
-  .sidebar {
-    display: none;
   }
 
   .nav {
@@ -117,46 +114,115 @@
       }
     }
   }
-
-  /* 반응형 웹 디자인 */
-  @media (max-width: 1280px) {
-    .nav {
-      display: none; /* 작은 화면에서 네비게이션 숨기기 */
-    }
-  }
 }
 
-.sidebar {
-  // display: none;
-  position: fixed;
-  top: 0;
-  right: 0; /* 오른쪽에 고정 */
-  width: 250px;
-  height: 100%;
-  background-color: #fff;
-  z-index: 1001;
-  padding-top: 60px;
-  transition: transform 0.3s ease;
-  transform: translateX(100%);
+.sidebar, .header2 {
+  display: none;
+}
 
-  &.open {
-    display: block;
-    transform: translateX(0);
+
+
+/* 반응형 웹 디자인 */
+@media (max-width: 1280px) {
+  .header {
+    display: none; 
   }
 
-  .closeButton{
-    color: #14505c;
-    margin: 5px;
-    padding-bottom: 30px;
-    padding-right: 30px;
-    text-align: right;
-    cursor: pointer;
-  }
-
-  .nav {
+  .header2 {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #14505c;
+    background-color: transparent;
+    z-index: 1000;
+    
+    &.scrolled {
+      background-color: #14505c;
+    }
+  
+    .logo {
+      width: 320px;
+      height: auto;
+      padding-left: 150px;
+      cursor: pointer;
+    }
+
+    .nav {
+      ul {
+        list-style: none;
+        display: flex;
+        gap: 0px;
+        margin: 0;
+        padding: 0; 
+      }
+
+      li{
+        min-width: 170px;
+      }
+  
+      a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 17px;
+        padding-right: 95px;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      
+  
+      .menu {
+        margin-right: 100px;
+        display: flex;
+        align-items: center;
+      }
+  
+      .login{
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        margin-left: 20px;
+      }      
+    }
+
+    .hamburger {
+      color: #fff;
+      margin-right: 30px;
+      display: block; 
+      cursor: pointer;
+    }
+  }
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0; 
+    width: 180px;
+    height: 100%;
+    background-color: #fff;
+    z-index: 99999;
+    padding-top: 60px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+
+    &.open {
+      transform: translateX(0);
+    }
+
+    .closeButton{
+      margin-left: 130px;
+      color: #14505c;
+      cursor: pointer;
+      font-size: 20px;
+    }
 
     .menu {
       display: flex;
@@ -166,26 +232,32 @@
       li {
         width: 100%;
         list-style: none;
-
+        
         a {
           display: block;
-          padding: 15px 20px;
-          width: 100%;
+          margin-bottom: 30px;
           text-align: left;
           color: #14505c;
           font-weight: bold;
           font-size: 18px;
-
+          text-decoration: none;
           &:hover {
-            background-color: #3d6c72;
-            color: #fff;
-            border-radius: 20px;
+            text-decoration: double;
           }
         }
       }
 
+      li:first-child {
+        margin-top: 50px;
+      } 
+
       .countrySelect {
         margin-top: 30px;
+        width: 90px;
+        font-size: 10px;
+        img {
+          width: 30px;
+        }
       }
 
       .logout {
@@ -194,8 +266,10 @@
         color: #14505c;
         font-weight: bold;
         font-size: 18px;
-        margin-top: 200px;
-        // margin-left: 10px;
+        position: absolute;
+        bottom: 10%;
+        right: -22%;
+        
 
         &:hover {
           text-decoration: underline;
@@ -207,15 +281,158 @@
 
 @media (max-width: 640px) {
   .header {
-    justify-content: space-around;
+    display: none; /* 작은 화면에서 네비게이션 숨기기 */
+  }
+
+  .header2 {
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #14505c;
+    background-color: transparent;
+    z-index: 1000;
+    
+    &.scrolled {
+      background-color: #14505c;
+    }
+  
 
     .logo {
-      width: 200px;
+      width: 300px;
       height: auto;
-      padding-left: 5px; /* 수정된 부분: 좌측 패딩을 줄임 */
+      position: absolute;
+      transform: translate(-10%, -10%);
       cursor: pointer;
+    }
+
+    .hamburger {
+      color: #fff;
+      display: block;
+      position: absolute;
+      transform: translate(1200%, -10%); 
+      cursor: pointer;
+    }
+
+    .nav {
+      ul {
+        list-style: none;
+        display: flex;
+        gap: 0px;
+        margin: 0;
+        padding: 0; 
+      }
+
+      li{
+        min-width: 170px;
+      }
+  
+      a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 17px;
+        padding-right: 95px;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      
+  
+      .menu {
+        margin-right: 100px;
+        display: flex;
+        align-items: center;
+      }
+  
+      .login{
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        position: absolute;
+        transform: translate(210%, -10%); 
+        cursor: pointer;
+      }      
     }
   }
 
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0; 
+    width: 180px;
+    height: 100%;
+    background-color: #fff;
+    z-index: 99999;
+    padding-top: 60px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
 
+    &.open {
+      transform: translateX(0);
+    }
+
+    .closeButton{
+      margin-left: 130px;
+      color: #14505c;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      li {
+        width: 100%;
+        list-style: none;
+        
+        a {
+          display: block;
+          margin-bottom: 30px;
+          text-align: left;
+          color: #14505c;
+          font-weight: bold;
+          font-size: 18px;
+          text-decoration: none;
+          &:hover {
+            text-decoration: double;
+          }
+        }
+      }
+
+      li:first-child {
+        margin-top: 50px;
+      } 
+
+      .countrySelect {
+        margin-top: 30px;
+        width: 90px;
+        font-size: 15px;
+      }
+
+      .logout {
+        border: none;
+        background: #fff;
+        color: #14505c;
+        font-weight: bold;
+        font-size: 18px;
+        position: absolute;
+        bottom: 10%;
+        right: -22%;
+        
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }

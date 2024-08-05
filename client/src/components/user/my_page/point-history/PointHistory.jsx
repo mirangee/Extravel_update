@@ -72,7 +72,7 @@ const PointHistory = () => {
     <div>
       <div className={styles.title}>
         {' '}
-        <h1 className={styles.pageHeader}>ETP history🛫</h1>
+        <h1 className={styles.pageHeader}>ETP history</h1>
         <p>
           {' '}
           보유 포인트 &nbsp;&nbsp;

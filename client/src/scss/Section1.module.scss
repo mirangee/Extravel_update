@@ -91,7 +91,8 @@
   .section1Body {
     .section1Title {
       color: #fff;
-      font-size: 60px;
+      font-size: 55px;
+      text-align: left;
       margin-top: 40px;
       animation: fadeIn 1.6s ease-in forwards;
     }
@@ -103,16 +104,18 @@
       margin-bottom: 40px;
     }
     .section1Explore {
+      font-size: 16px;
       width: 120px;
       height: 50px;
       margin: 10px;
     }
 
     .section1SideRectangle {
-      width: 90%;
-      margin: 30px;
-      font-size: 15px;
-      border-radius: 20px;
+      // width: 90%;
+      // margin: 30px;
+      // font-size: 15px;
+      // border-radius: 10px;
+      display: none;
     }
   }
 }
