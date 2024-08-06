@@ -63,6 +63,7 @@ const SideBar = ({
   // 로그아웃 핸들러
   const clickLogoutHandler = () => {
     onLogout();
+    setSidebarOpen(false);
     redirection('/');
     alert('로그아웃 되었습니다.');
   };
