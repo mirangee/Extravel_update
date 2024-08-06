@@ -66,11 +66,11 @@ public class Member {
     @Column(name = "path")
     private String path;
 
-    @Size(max = 255)
+    @Size(max = 512)
     @Column(name = "access_token")
     private String accessToken;
 
-    @Size(max = 255)
+    @Size(max = 512)
     @Column(name = "refresh_token")
     private String refreshToken;
 

@@ -21,3 +21,10 @@
 .topButton:hover {
   opacity: 0.8;
 }
+
+@media (max-width:768px) {
+  .scrollToTop, .topButton {
+    display: none;
+    background-color: yellow;
+  }
+}

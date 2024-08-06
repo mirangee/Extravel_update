@@ -87,34 +87,61 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .section1Body {
+    width: 100%;
+    background-image: url(../assets/img/home1.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  
     .section1Title {
-      color: #fff;
-      font-size: 55px;
       text-align: left;
-      margin-top: 40px;
+      color: #fff;
+      font-size: 50px;
+      margin: 50px auto 30px;
       animation: fadeIn 1.6s ease-in forwards;
     }
+  
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  
     .section1Small {
-      margin: 15px;
       color: #fff;
-      font-size: 15px;
+      font-size: 18px;
       animation: fadeIn 2.4s ease-in forwards;
-      margin-bottom: 40px;
+      margin: 40px auto;
+      letter-spacing: 2px;
+      line-height: 2;
     }
+  
     .section1Explore {
-      font-size: 16px;
-      width: 120px;
+      width: 140px;
       height: 50px;
-      margin: 10px;
+      background-color: #14505c;
+      color: #fff;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      animation: fadeIn 3.2s ease-in forwards;
+      transition:
+      background-color 0.3s,
+      color 0.3s,
+      transform 0.3s;
+      margin-left: 25%;
     }
-
+  
     .section1SideRectangle {
-      // width: 90%;
-      // margin: 30px;
-      // font-size: 15px;
-      // border-radius: 10px;
       display: none;
     }
   }

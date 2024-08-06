@@ -13,7 +13,7 @@
 
   .form-container {
     background: white;
-    height: 40%;
+    height: 48%;
     transition: all 0.6s ease-in-out;
     display: flex;
     flex-direction: column;
@@ -71,9 +71,9 @@
       margin-bottom: 10px;
 
       .certifiedNumberTextField {
-        width: 400px;
+        width: 390px;
         padding: 10px;
-        margin: 0 0 10px 20px;
+        margin: 0 0 10px 50px;
       }
 
 
@@ -92,15 +92,20 @@
         }
       }
     }
-    .backButton {
-      background:#14505c;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      color: #ffffff;
+    .backButton {       
       width: 150px; 
       height: 50px; 
       margin: 40px auto;
+      background:#14505c;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 15px;
+      border-radius: 10px;
+      &:hover {
+        background: #fff;
+        color: black;
+        border: 5px solid #14505c;
+      }
     }
   }
 }
@@ -123,4 +128,264 @@
   text-align: center;
 }
 
+@media (max-width: 1280px) {
+  .login {
+    white-space: pre-wrap;
+    background: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 110vh;
+    background-image: url('../assets/img/loginbg.jpg');
+    background-size: cover;
+    z-index: -1;
+  
+    .form-container {
+      background: white;
+      height: 70%;
+      transition: all 0.6s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      border-radius: 10px;
+      padding: 50px 10px;
+      box-shadow:
+        0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+  
+      .phoneCertification {
+        font-size: 15px;
+        font-weight: bold;
+        color: black;
+        z-index: 200;
+        margin-top: 10%;
+        text-align: center;
+      }
+  
+      .textButton {
+        display: flex;
+        flex-direction: row;
+        margin-top: 30px;
+        justify-content: space-around;
+        align-items: center;
+  
+        .textField {
+          width: 400px;
+          padding: 10px;
+          margin-left: 50px;
+        }
+  
+        .phoneNumberCheck {
+          color: #14505c;
+          width: 100px;
+          height: 40px;
+          padding-right: 60px;
+          font-size: 15px;
+          
+          cursor: pointer;
+  
+          &:hover {
+            color: black;
+          }
+        }
+      }
+  
+  
+      .grid {
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 10px;
+  
+        .certifiedNumberTextField {
+          width: 390px;
+          padding: 10px;
+          margin: 0 0 10px 50px;
+        }
+  
+  
+        .certificationButton {
+          width: 100px;
+          height: 40px;
+          background: #14505c;
+          color: white;
+          font-size: 15px;
+          border-radius: 10px;
+  
+          &:hover {
+            background: #fff;
+            color: black;
+            border: 5px solid #14505c;
+          }
+        }
+      }
+      .backButton {       
+        width: 150px; 
+        height: 50px; 
+        margin: 40px auto;
+        background:#14505c;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 15px;
+        border-radius: 10px;
+        &:hover {
+          background: #fff;
+          color: black;
+          border: 5px solid #14505c;
+        }
+      }
+    }
+  }
+  
+  .logoBox {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    
+    img {
+      width: 150px;
+    }  
+  }
+  
+  .text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #14505c;
+    margin-top: 20px;
+    text-align: center;
+  }
+}
 
+@media (max-width: 768px) {
+  .login {
+    white-space: pre-wrap;
+    background: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 110vh;
+    background-image: url('../assets/img/loginbg.jpg');
+    background-size: cover;
+    z-index: -1;
+  
+    .form-container {
+      background: white;
+      height: 60%;
+      transition: all 0.6s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      border-radius: 10px;
+      padding: 50px 10px;
+      box-shadow:
+        0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+  
+      .phoneCertification {
+        font-size: 12px;
+        font-weight: bold;
+        color: black;
+        z-index: 200;
+        margin-top: 10%;
+        text-align: center;
+      }
+  
+      .textButton {
+        display: flex;
+        flex-direction: row;
+        margin-top: 30px;
+        justify-content: space-around;
+        align-items: center;
+  
+        .textField {
+          width: 80%;
+          margin-left: 10px;
+          padding: 10px;
+        }
+  
+        .phoneNumberCheck {
+          color: #14505c;
+          width: 100px;
+          height: 40px;
+          padding-right: 30px;
+          font-size: 30px;
+          
+          cursor: pointer;
+  
+          &:hover {
+            color: black;
+          }
+        }
+      }
+  
+  
+      .grid {
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 10px;
+  
+        .certifiedNumberTextField {
+          width: 390px;
+          padding: 10px;
+          margin: 0 0 10px 10px;
+        }
+  
+  
+        .certificationButton {
+          width: 150px;
+          height: 40px;
+          background: #14505c;
+          color: white;
+          font-size: 15px;
+          border-radius: 10px;
+  
+          &:hover {
+            background: #fff;
+            color: black;
+            border: 5px solid #14505c;
+          }
+        }
+      }
+      .backButton {       
+        width: 150px; 
+        height: 50px; 
+        margin: 40px auto;
+        background:#14505c;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 15px;
+        border-radius: 10px;
+        &:hover {
+          background: #fff;
+          color: black;
+          border: 5px solid #14505c;
+        }
+      }
+    }
+  }
+  
+  .logoBox {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    
+    img {
+      width: 150px;
+    }  
+  }
+  
+  .text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #14505c;
+    margin-top: 20px;
+    text-align: center;
+  }
+}

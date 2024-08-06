@@ -12,17 +12,6 @@ const Phone = () => {
   return (
     <>
       <div className={styles.wrapper}>
-        {/* <div className={styles.backgroundPanels}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div> */}
         <div className={styles.phone}>
           <div className={styles.phoneBack}>
             <div className={styles.phoneLeftSide}>
@@ -220,10 +209,12 @@ const Phone = () => {
             style={{
               backgroundColor: '#275963',
               borderRadius: '10px',
+              textAlign: 'left',
             }}
           >
             {' '}
-            항공권 검색하러가기
+            항공권 <br />
+            검색하러 가기
           </Button>
         </div>
       </div>

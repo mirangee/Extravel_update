@@ -36,7 +36,6 @@
     margin-left: 30px;
     
     img {
-      // margin-top: 15px;
       width: 150px;
       margin-left: 10px;
     }
@@ -61,7 +60,6 @@
 
     img {
       width: 150px;
-      // height: 100px;
     }
   
     h3 {
@@ -78,7 +76,7 @@
     padding-left: 30px;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
  
   .cardActions {
     align-items: baseline;

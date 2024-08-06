@@ -123,8 +123,8 @@ const LoginPhoneNumber = () => {
           <img src={Logo} />
         </div>
         <div className={styles.text}>
-          원활한 서비스 이용을 위하여 휴대전화 인증을 진행
-          합니다.
+          원활한 서비스 이용을 위하여
+          <br /> 휴대전화 인증을 진행 합니다.
         </div>
 
         <Grid item style={{ width: '100%' }}>

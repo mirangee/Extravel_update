@@ -120,8 +120,6 @@
   display: none;
 }
 
-
-
 /* 반응형 웹 디자인 */
 @media (max-width: 1280px) {
   .header {
@@ -279,7 +277,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .header {
     display: none; /* 작은 화면에서 네비게이션 숨기기 */
   }
@@ -287,6 +285,7 @@
   .header2 {
     display: flex;
     height: 80px;
+    width: 100vw;
     justify-content: space-between;
     align-items: center;
     position: fixed;
@@ -303,11 +302,12 @@
   
 
     .logo {
-      width: 300px;
+      width: 150px;
       height: auto;
       position: absolute;
-      transform: translate(-10%, -10%);
+      transform: translate(80%, -10%);
       cursor: pointer;
+      padding-left: 0;
     }
 
     .hamburger {
@@ -355,7 +355,7 @@
         color: white;
         font-size: 16px;
         position: absolute;
-        transform: translate(210%, -10%); 
+        transform: translate(225%, -10%); 
         cursor: pointer;
       }      
     }

@@ -119,17 +119,6 @@ public class MemberController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    // 로그아웃 처리
-//    @GetMapping("/logout")
-//    public ResponseEntity<?> logout(
-//            @AuthenticationPrincipal TokenUserInfo userInfo
-//    ) {
-//        log.info("/api/auth/logout - GET! - user: {}", userInfo.getEmail());
-//
-//        String result = memberService.logout(userInfo);
-//        return ResponseEntity.ok().body(result);
-//    }
-
     //자체 분실된 아이디 찾기
     @PostMapping("/findid")
     public ResponseEntity<?> findID(@RequestBody FindIDRequestDTO requestDTO) {
@@ -191,6 +180,12 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> getMemberInfo(@PathVariable("id") int id) {
+        log.info("/user/auth/info/id- My 페이지 정보 읽기 요청 들어옴! id: {}", id);
+        LoginResponseDTO responseDTO = memberService.getMemberInfo(id);
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
 
     @GetMapping("/naverlogin")

@@ -2,7 +2,6 @@ import React, { Children, useContext } from 'react';
 import {
   Route,
   Routes,
-  Link,
   useLocation,
   Navigate,
 } from 'react-router-dom';
@@ -22,9 +21,7 @@ import NaverNews from './components/main/detaeil/NaverNews';
 import FlightOffer from './components/flight/FlightOffer';
 import MyPage from './components/user/my_page/MyPage';
 import MyPageModify from './components/user/my_page/MyPageModify';
-import { Switch } from '@mui/material';
 import NaverShopping from './components/user/NaverShopping';
-import DailyRatesTable from './components/main/detaeil/DailyRatesTable';
 import RealTimeExchanges from './components/main/detaeil/RealTimeExchanges';
 import LoginPhoneNumber from './components/user/LoginPhoneNumber';
 const IsLoginHandler = ({ children }) => {

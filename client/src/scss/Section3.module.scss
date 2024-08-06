@@ -152,10 +152,11 @@ html {
     // align-items: baseline;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .section3container {
     width: 100%;
     height: auto;
+    margin: 50px auto;
 
     .section3InnerBox {
       flex-direction: column;

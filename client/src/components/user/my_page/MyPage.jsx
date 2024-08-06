@@ -1,4 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Button } from 'reactstrap';
 import { motion } from 'framer-motion';
 import { Input } from '@mui/material';
@@ -15,20 +19,40 @@ import Wallet from './wallet-exchange/Wallet';
 import { API_BASE_URL } from '../../../config/host-config';
 
 const MyPage = () => {
-  const { email, grade, name, nation, phoneNumber } =
+  const { id, email, grade, nation, onLogout } =
     useContext(AuthContext);
+  const redirection = useNavigate();
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
   let medalImage = bronzeMedal;
   if (grade === 'SILVER') {
     medalImage = silverMedal;
   } else if (grade === 'GOLD') {
     medalImage = goldMedal;
   }
-  const part1 = phoneNumber.slice(0, 3);
-  const part2 = phoneNumber.slice(3, 7);
-  const part3 = phoneNumber.slice(7);
-  const phone = part1 + '-' + part2 + '-' + part3;
-  const { id, onLogout } = useContext(AuthContext);
-  const redirection = useNavigate();
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${API_BASE_URL}/user/auth/info/${id}`,
+        );
+        console.log(res.data);
+        setName(res.data.name);
+        const part1 = res.data.phoneNumber.slice(0, 3);
+        const part2 = res.data.phoneNumber.slice(3, 7);
+        const part3 = res.data.phoneNumber.slice(7);
+        setPhoneNumber(`${part1}-${part2}-${part3}`);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleDeleteProfile = (e) => {
     e.preventDefault();
@@ -155,7 +179,7 @@ const MyPage = () => {
           <Input
             fullWidth
             disabled
-            value={phone}
+            value={phoneNumber}
             style={{
               width: '700px',
               height: '72px',

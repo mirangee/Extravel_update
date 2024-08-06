@@ -521,4 +521,13 @@ public class MemberService {
         memberRepository.save(member);
         return "success";
     }
+
+    public LoginResponseDTO getMemberInfo(int id) {
+        Member foundMember = memberRepository.findById(id).orElseThrow();
+        return LoginResponseDTO.builder().email(foundMember.getEmail())
+                .grade(foundMember.getGrade())
+                .name(foundMember.getName())
+                .nationCode(foundMember.getNationCode().getName())
+                .phoneNumber(foundMember.getPhoneNumber()).build();
+    }
 }

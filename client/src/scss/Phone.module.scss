@@ -14,29 +14,6 @@
   margin-top: 50px;
 }
 
-// .backgroundPanels {
-//   position: absolute;
-//   top: 40%;
-//   left: 50%;
-//   display: flex;
-//   width: 1800px;
-//   border: 2px solid #0F0F0F;
-//   flex-wrap: wrap;
-//   transform: translate(-50%, -50%) rotate(-30deg) skewX(30deg);
-// }
-
-// .backgroundPanels div {
-//   height: 500px;
-//   width: 580px;
-//   border: 2px solid #0F0F0F;
-//   box-shadow:
-//     inset 3px 0 0px -1px #4B4C4F, 
-//     inset 0 -3px 1px -1px #424346,
-//     inset 0 -4px 0 -1px #353639,
-//     inset 5px 0 1px -1px rgba(182, 182, 190, .6),
-//     inset 0 -5px 1px -1px rgba(182, 182, 190, .2);
-// }
-
 .introduceBox{
   margin-right: 230px;
 
@@ -1248,14 +1225,35 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .wrapper{
-    margin-top: 10px;
-    min-height: 40vh;
+    width: 100vw;
+    margin: 10px auto;
+    min-height: 60vh;
+    .phone {
+      margin-top: 500px;
+      margin-left: 250px;
+    }
   }
   .introduceBox{
-    h3{
-      font-size: 38px;
+    display: block;
+    width: 80%;
+    h3 {
+      text-align: center;
+      font-size: 30px;
+    }
+    p {
+      display: block;
+      width: 95%;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 16px;
+    }
+    Button {
+      margin: 30px auto;
+      margin-left: 120px;
+      width: 160px;
+      text-align: left;
     }
   }
 }
