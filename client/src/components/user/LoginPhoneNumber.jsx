@@ -121,7 +121,7 @@ const LoginPhoneNumber = () => {
         </div>
         <div className={styles.text}>
           원활한 서비스 이용을 위하여
-          <br /> 휴대전화 인증을 진행 합니다.
+          <br /> 휴대전화 인증을 진행합니다.
         </div>
 
         <Grid item style={{ width: '100%' }}>
