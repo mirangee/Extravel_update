@@ -46,10 +46,8 @@ const ExchangeAccess = ({ data, close }) => {
         phoneNumber,
       });
       if (res && res.data) {
-        console.log('발송 성공!!! : ', phoneNumber);
         const saveRandomCode = res.data;
         setRandomCode(saveRandomCode);
-        console.log('randomCode: ', saveRandomCode);
         alert('인증번호가 발송되었습니다.');
       } else {
         console.error(
@@ -106,7 +104,6 @@ const ExchangeAccess = ({ data, close }) => {
         data,
       );
       const result = response.data;
-      console.log(result);
       if (result === 200) {
         setAccess(true);
         sendSMS(phoneNum);

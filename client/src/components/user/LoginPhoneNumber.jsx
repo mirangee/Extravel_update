@@ -38,7 +38,6 @@ const LoginPhoneNumber = () => {
       path,
     },
   } = useLocation();
-  console.log(email, name);
   // 번호 인증을 위한 SMS 전송
   const sendSMS = async (phoneNumber) => {
     console.log('로그인 phoneNumber : ', phoneNumber);
@@ -53,9 +52,7 @@ const LoginPhoneNumber = () => {
         phoneNumber,
       });
       if (res && res.data) {
-        console.log('발송 성공!!! : ', phoneNumber);
         const saveRandomCode = res.data;
-        console.log('randomCode: ', saveRandomCode);
         setRandomCode(saveRandomCode);
         alert('인증번호가 발송되었습니다.');
         setShowAuthNumTimer(true);

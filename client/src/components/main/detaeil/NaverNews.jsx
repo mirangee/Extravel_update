@@ -8,7 +8,6 @@ function NaverNews() {
     fetch({ API_BASE_URL } + '/api/v1/news')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.items);
         const items = data.items;
         const transformArticle = items.map((item) => ({
           title: item.title,

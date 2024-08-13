@@ -124,7 +124,6 @@ const Header = () => {
   };
 
   const toggleSidebar = () => {
-    console.log('hamburger 버튼 클릭됨!');
     setSidebarOpen(!sidebarOpen);
   };
 

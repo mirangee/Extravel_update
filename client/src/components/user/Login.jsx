@@ -187,7 +187,6 @@ const Login = () => {
 
   // 번호 인증을 위한 SMS 전송
   const sendSMS = async (phoneNumber) => {
-    console.log('로그인 phoneNumber : ', phoneNumber);
     try {
       if (!phoneNumber || phoneNumber.length !== 11) {
         alert('전화번호를 11자리로 입력해주세요!!!');
@@ -200,10 +199,8 @@ const Login = () => {
       });
 
       if (res && res.data) {
-        console.log('발송 성공!!! : ', phoneNumber);
         const saveRandomCode = res.data;
         setRandomCode(saveRandomCode);
-        // console.log('발송 후 randomCode: ', saveRandomCode);
         alert('인증번호가 발송되었습니다.');
         setShowPhoneNumInput(false);
         setShowAuthNumTimer(true);
@@ -285,8 +282,6 @@ const Login = () => {
       const res = await axios.post(CHECK_EMAIL_URL, {
         email,
       });
-
-      console.log('check로 데이터 전송 email : ', email);
       if (res.data) {
         alert('이미 등록된 이메일입니다.');
         setIsEmailChecked(false);

@@ -50,20 +50,12 @@ const ChargeInfo = ({
         API_BASE_URL + '/payment/confirm/' + tid,
       );
       if (res.status === 200) {
-        console.log(res.data);
         const result = res.data.status;
-
         switch (result) {
           case 'SUCCESS':
             alert('ET 포인트 충전이 완료되었습니다.');
             setPayResult(true);
             onRedirect();
-            console.log('보유 포인트: ', res.data.etPoint);
-            console.log(
-              '적립 포인트: ',
-              res.data.plusPoint,
-            );
-            console.log('결제액: ', res.data.amount);
             setPointInfo({
               etPoint: res.data.etPoint,
               plusPoint: res.data.plusPoint,
@@ -158,13 +150,10 @@ const ChargeInfo = ({
 
   const handleChange = (e) => {
     const { value } = e.target;
-    console.log(value);
-    console.log(isButtonDisabled);
     const numberValue = Number(value.replace(/,/g, ''));
 
     if (numberValue >= 1000) {
       setIsButtonDisabled(false);
-      console.log(isButtonDisabled);
     } else if (numberValue < 1000) {
       setIsButtonDisabled(true);
     }

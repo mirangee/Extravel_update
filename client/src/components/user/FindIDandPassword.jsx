@@ -144,8 +144,6 @@ const FindIDandPassword = () => {
       //@@@ 요청 보낸거 받기
       // then 프로미스 값 해제 할 때(외부에서 호출 한 곳에서 비동기 통신한 결과 가져오기 : 컴포넌트 다를 경우 then으로 풀어야 함) @@@
       // 'sendSMS' 함수가 성공적으로 실행되고 반환된 인증 코드를 'code'로 받음
-      console.log('promise 내의 result: ', code);
-      console.log('phoneNumber : ', phoneNumber);
       setRandomAuthCode(code); //프로미스 code -> set에 담기
       if (!code) {
         //@@@ 요청 받은 값 false 일 때 처리
@@ -200,7 +198,6 @@ const FindIDandPassword = () => {
   // 인풋 값 변경 핸들러 : dispatch
   const onChangeName = (e) => {
     const nameValue = e.target.value;
-    console.log(e.target.value);
     dispatchFindID({
       type: 'INPUT_NAME',
       name: nameValue,
@@ -269,13 +266,11 @@ const FindIDandPassword = () => {
   const onChangePhoneNumber = (e) => {
     const phoneNumberValue = e.target.value; //변경1
     if (showIDSection) {
-      console.log(e.target.value);
       dispatchFindID({
         type: 'INPUT_PHONE',
         phoneNumber: phoneNumberValue, //변경2
       });
     } else {
-      console.log(e.target.value);
       dispatchFindPW({
         type: 'INPUT_PHONE',
         phoneNumber: phoneNumberValue,
@@ -291,13 +286,11 @@ const FindIDandPassword = () => {
     const checkCodeValue = e.target.value;
 
     if (showIDSection) {
-      console.log(e.target.value);
       dispatchFindID({
         type: 'INPUT_CODE',
         checkCode: checkCodeValue,
       });
     } else {
-      console.log(e.target.value);
       dispatchFindPW({
         type: 'INPUT_CODE',
         checkCode: checkCodeValue,
@@ -307,29 +300,7 @@ const FindIDandPassword = () => {
     setShowAuthButton(false);
   };
 
-  // 인증 번호 확인 버튼 클릭 핸들러
-  // const onCheckCodeConfirm = (e) => {
-  //   e.preventDefault();
-
-  //   if (!isTimeZero) {
-  //     checkSMS(
-  //       checkCode,
-  //       randomCode,
-  //       setIsAuthCompleted,
-  //       setResultMsg,
-  //       setShowAuthNumTimer(false),
-  //     );
-  //   } else {
-  //     setResultMsg(
-  //       '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
-  //     );
-  //   }
-
-  //   setShowAuthNumTimer(false);
-  // };
-
   const onChangeEmail = (e) => {
-    console.log(e.target.value);
     dispatchFindPW({
       type: 'INPUT_EMAIL',
       email: e.target.value,
@@ -379,12 +350,6 @@ const FindIDandPassword = () => {
         phoneNumber: true,
         checkCode: false,
       });
-
-      // setShowCompleteButton(true);
-
-      // 아이디 찾기 섹션에서의 인증 클릭 횟수 증가 및 상태 업데이트
-      // dispatchIDClick({ type: 'INCREMENT_AUTH_CLICK' });
-      // console.log('IDClickState:', IDClickState);
     } else {
       // 비밀번호 찾기 섹션인 경우
       if (!emailValue || !phoneNumberValue) {
@@ -412,46 +377,11 @@ const FindIDandPassword = () => {
     }
   };
 
-  // const isValidPhoneNumber = (phoneNumber) => {
-  //   const phoneNumberRegex = /^[0-9-]*$/;
-  //   const isValid = phoneNumberRegex.test(phoneNumber);
-
-  //   if (!isValid) {
-  //     alert('숫자만 입력해주세요.');
-  //     return false;
-  //   }
-
-  //   // '-' 제외하고 숫자만 남기기
-  //   const filteredPhoneNumber = phoneNumber.replace(
-  //     /-/g,
-  //     '',
-  //   );
-
-  //   if (filteredPhoneNumber.length > 13) {
-  //     alert('최대 13글자까지 입력할 수 있습니다.');
-  //     return false;
-  //   }
-
-  //   if (phoneNumber.includes('-')) {
-  //     alert("'-'를 제외하고 입력해주세요.");
-  //     return false;
-  //   }
-
-  //   return true;
-  // };
-
   // 폼 제출 핸들러
   const onSubmitForm = async (data) => {
-    console.log('FindID state: ', findIDState);
-    console.log('FindPW state: ', findPWState);
-
     try {
       const url = showIDSection ? FINDID_URL : FINDPW_URL;
-      console.log(
-        'onSubmitForm의 name, phoneNumber 상단 : ',
-        name,
-        phoneNumber,
-      );
+
       /* eslint-disable prettier/prettier */
       const data = showIDSection
         ? {
@@ -465,12 +395,10 @@ const FindIDandPassword = () => {
           checkCode: findPWState.checkCode,
         };
       /* eslint-disable prettier/prettier */
-      console.log('onSubmitForm의 하단 data : ', data);
 
       const response = await axios.post(url, data);
       if (!response.data.success) {
         // 성공적인 응답 처리
-        console.log('response : ', response);
         alert('등록하신 전화번호로 데이터를 전송했습니다.');
 
         setShowAuthNumTimer(false);
@@ -510,7 +438,6 @@ const FindIDandPassword = () => {
 
   useEffect(() => {
     console.log('useEffect Called!');
-    console.log(IDClickState.authClickCount);
   }, [IDClickState]);
   //[IDClickState])에 포함된 값이 변경될 때마다 호출
   //useEffect는 IDClickState가 변경될 때마다 실행됩니다.
@@ -523,15 +450,11 @@ const FindIDandPassword = () => {
   const handleButtonClick = () => {
     onAuthClick();
     setShowIDSection(true);
-    // sendSMS();
-    console.log('handleButtonClick 실행됨!!!');
   };
 
   const handleButtonClick2 = () => {
     onAuthClick();
     setShowIDSection(false);
-    // sendSMS();
-    console.log('handleButtonClick 실행됨2!!!');
   };
 
   const resetState = () => {
@@ -621,11 +544,6 @@ const FindIDandPassword = () => {
                           e.preventDefault();
 
                           if (!isTimeZero) {
-                            console.log(
-                              '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
-                              randomAuthCode,
-                              isTimeZero,
-                            );
                             const result = checkSMS(
                               //@@@ checkSMS 객체 true 리턴 FindIDandPW -> SMSUtils
                               checkCode,
@@ -644,10 +562,6 @@ const FindIDandPassword = () => {
                                 checkCode: true,
                               });
                             }
-                            console.log(
-                              '인증번호 확인 클릭  : checkCode',
-                              checkCode,
-                            );
                           } else {
                             alert(
                               '인증 시간이 만료되었습니다. 재전송 버튼을 눌러 다시 시도하세요.',
@@ -784,11 +698,6 @@ const FindIDandPassword = () => {
                           e.preventDefault();
 
                           if (!isTimeZero) {
-                            console.log(
-                              '인증확인 버튼의 randomAuthCode: , isTimeZero: ',
-                              randomAuthCode,
-                              isTimeZero,
-                            );
                             const result = checkSMS(
                               checkCode,
                               randomAuthCode,

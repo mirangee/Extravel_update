@@ -21,9 +21,7 @@ const GoogleCustomLogin = () => {
             },
           },
         );
-        console.log(res.data); // 사용자 정보가 res.data에 포함됩니다.
         const { email, name } = res.data;
-        console.log(`Email: ${email}, Name: ${name}`);
         const response = await axios.post(
           `${API_BASE_URL}/user/auth/google`,
           { name, email },

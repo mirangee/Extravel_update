@@ -8,10 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const KakaoLoginHandler = () => {
-  console.log(
-    '사용자가 동의 화면을 통해 필수 정보 동의 후 kakao 인증 서버에서 redirect를 진행함!',
-  );
-
   const { onLogin } = useContext(AuthContext);
   const redirection = useNavigate();
 

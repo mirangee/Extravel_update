@@ -24,10 +24,7 @@ const YoutubeList = () => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    console.log('유튜브페이지국가:{}', nation);
-
     if (nation) {
-      console.log('if nation:{}', nation);
       axios //get요청보내기
         .get(`${API_BASE_URL}/api/v1/youtube/` + nation)
         .then((response) => {
